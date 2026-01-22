@@ -13,8 +13,6 @@ import {
   getFooterUserPrompt,
   getAINewsSiteSystemPrompt,
   getAINewsSiteUserPrompt,
-  getGitHubTrendingExtractionSystemPrompt,
-  getGitHubTrendingExtractionUserPrompt,
   getArticleExtractionSystemPrompt,
   getArticleExtractionUserPrompt,
   getLinkExtractionSystemPrompt,
@@ -289,9 +287,9 @@ export class AISummarizer implements ContentSummarizer {
       
       // 动态计算 max_tokens：输入内容越长，需要的输出 tokens 越多
       // 估算：中文翻译后长度约为英文的 1.2-1.5 倍（考虑 JSON 格式开销）
-      // 使用 3 倍输入 tokens 以确保有足够空间完成翻译
+      // 使用 4 倍输入 tokens，最大 100k，确保超长文章也能完整翻译
       const estimatedInputTokens = Math.ceil(content.length / 3);
-      const safeMaxTokens = Math.max(16384, Math.min(estimatedInputTokens * 3, 65536));
+      const safeMaxTokens = Math.max(32768, Math.min(estimatedInputTokens * 4, 100000));
       
       logger.info(`[SINGLE_URL 翻译] 输入长度: ${content.length} 字符, 预估 tokens: ${estimatedInputTokens}, 设置 max_tokens: ${safeMaxTokens}`);
       
@@ -634,57 +632,6 @@ export class AISummarizer implements ContentSummarizer {
   }
 
   /**
-   * 从 GitHub Trending 页面提取项目列表
-   */
-  async extractGitHubTrendingProjects(
-    content: string,
-  ): Promise<{ fullName: string; url: string }[]> {
-    if (!content) {
-      return [];
-    }
-
-    return RetryUtil.retryOperation(async () => {
-      const llm = await this.llmFactory.getLLMProvider(
-        await this.configInstance.get(
-          SummarizarSetting.AI_SUMMARIZER_LLM_PROVIDER,
-        ),
-      );
-      
-      const response = await llm.createChatCompletion([
-        {
-          role: "system",
-          content: getGitHubTrendingExtractionSystemPrompt(),
-        },
-        {
-          role: "user",
-          content: getGitHubTrendingExtractionUserPrompt(content),
-        },
-      ], {
-        temperature: 0.1,
-        max_tokens: 4096,
-        response_format: { type: "json_object" },
-        thinkingLevel: "none",
-      });
-
-      const completion = response.choices[0]?.message?.content;
-      if (!completion) {
-        throw new Error("未获取到有效的 GitHub 项目提取结果");
-      }
-
-      try {
-        const result = parseJsonFromLLM<{ projects: { fullName: string; url: string }[] }>(completion);
-        return result.projects || [];
-      } catch (error) {
-        throw new Error(
-          `解析 GitHub 项目提取结果失败: ${
-            error instanceof Error ? error.message : "未知错误"
-          }`,
-        );
-      }
-    });
-  }
-
-  /**
    * AI 新闻网站内容与图片提取
    */
   async extractArticleContent(
@@ -752,9 +699,9 @@ export class AISummarizer implements ContentSummarizer {
       // 使用 "PROVIDER:MODEL" 格式传递完整配置
       const llm = await this.llmFactory.getLLMProvider(`${provider}:${model}`);
       
-      // SINGLE_URL 转载：保留更多内容，用更大的 max_tokens
+      // SINGLE_URL 转载：提取并压缩内容，确保能完整翻译
       const estimatedInputTokens = Math.ceil(content.length / 3);
-      const safeMaxTokens = Math.max(12288, Math.min(estimatedInputTokens * 1.5, 32768));
+      const safeMaxTokens = Math.max(16384, Math.min(estimatedInputTokens * 0.8, 24576));
       
       const response = await llm.createChatCompletion([
         {

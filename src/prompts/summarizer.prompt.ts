@@ -531,49 +531,6 @@ ${content}
 };
 
 /**
- * GitHub Trending 项目提取 - 系统提示词
- */
-export const getGitHubTrendingExtractionSystemPrompt = (): string => {
-  return `你是一位专业的技术分析专家，擅长从 GitHub Trending 页面的 Markdown 内容中精准识别和提取热门项目。
-
-## 任务目标
-从提供的 GitHub Trending 页面 Markdown 中提取项目列表。每个项目包含项目全名（owner/repo）和项目 URL。
-
-## 提取规则
-1. **项目名称**：提取形如 "owner / repo" 的项目全名。
-2. **项目 URL**：提取该项目对应的 GitHub 链接，通常是 "https://github.com/owner/repo"。
-3. **过滤**：只提取真正的项目入口，忽略导航链接、社交链接等。
-
-## 输出格式 (JSON)
-必须返回一个合法的 JSON 对象。
-
-\`\`\`json
-{
-    "projects": [
-        { "fullName": "owner/repo", "url": "https://github.com/owner/repo" },
-        ...
-    ]
-}
-\`\`\`
-
-**重要**：
-- 确保 JSON 可以通过 \`JSON.parse()\` 解析。
-- 只返回 JSON 对象，不要包含其他说明。`;
-};
-
-/**
- * GitHub Trending 项目提取 - 用户提示词
- */
-export const getGitHubTrendingExtractionUserPrompt = (content: string): string => {
-  return `请分析以下 GitHub Trending 页面的 Markdown 文本，提取其中包含的热门项目列表。
-
-## 原始文本
-${content.substring(0, 15000)}
-
-请直接输出 JSON 结果。`;
-};
-
-/**
  * AI 新闻网站内容与图片提取 - 系统提示词
  */
 export const getArticleExtractionSystemPrompt = (): string => {
