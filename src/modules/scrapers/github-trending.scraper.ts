@@ -8,6 +8,7 @@ import { ConfigManager } from "@src/utils/config/config-manager.ts";
 import { FireCrawlScraper } from "./fireCrawl.scraper.ts";
 import { HttpClient } from "@src/utils/http/http-client.ts";
 import { GitHubProjectRegistry } from "@src/utils/github-project-registry.ts";
+import { AISummarizer } from "@src/modules/summarizer/ai.summarizer.ts";
 
 const logger = new Logger("github-trending-scraper");
 
@@ -31,20 +32,21 @@ export class GitHubTrendingScraper implements ContentScraper {
   private configManager: ConfigManager;
   private httpClient: HttpClient;
   private fireCrawlScraper: FireCrawlScraper;
-  private readonly SERPER_URL = "https://scrape.serper.dev";
+  private summarizer: AISummarizer;
   private readonly TRENDING_URL = "https://github.com/trending";
 
   constructor() {
     this.configManager = ConfigManager.getInstance();
     this.httpClient = HttpClient.getInstance();
     this.fireCrawlScraper = new FireCrawlScraper();
+    this.summarizer = new AISummarizer();
     logger.debug("GitHub Trending 抓取器初始化完成");
   }
 
   /**
    * 抓取 GitHub Trending 项目
-   * 使用 Serper API 获取列表，使用 FireCrawl v2 获取详情
-   * @param _sourceId 忽略此参数 (由 ref.txt 决定逻辑)
+   * 使用 FireCrawl v2 获取首页内容，使用 LLM 提取项目列表，使用 FireCrawl v2 获取详情
+   * @param _sourceId 忽略此参数
    * @param options 抓取选项
    */
   async scrape(
@@ -53,11 +55,6 @@ export class GitHubTrendingScraper implements ContentScraper {
   ): Promise<ScrapedContent[]> {
     const startTime = Date.now();
     const limit = options?.limit || 5; // 默认获取 5 个项目
-    const serperApiKey = await this.configManager.get("SERPER_API_KEY");
-
-    if (!serperApiKey) {
-      throw new Error("SERPER_API_KEY 未配置，无法使用 GitHub Trending 抓取功能");
-    }
 
     logger.info(`[GitHub Trending] 开始抓取趋势项目, 限制: ${limit}`);
 
@@ -68,15 +65,41 @@ export class GitHubTrendingScraper implements ContentScraper {
     logger.info(`[GitHub Trending] 项目库统计: 总计 ${stats.totalCount} 个，最近7天 ${stats.recentlyScraped} 个`);
 
     try {
-      // 1. 使用 Serper 抓取列表 (严格遵循 ref.txt URL)
-      const trendingText = await this.fetchTrendingListFromSerper(serperApiKey);
+      // 1. 使用 FireCrawl v2 抓取 GitHub Trending 首页内容
+      logger.info(`[GitHub Trending] 正在抓取首页: ${this.TRENDING_URL}`);
       
-      // 调试：输出前 500 字符
-      logger.debug(`[GitHub Trending] Serper 返回文本（前500字符）:\n${trendingText.substring(0, 500)}`);
+      // 使用用户提供的 API 调用逻辑
+      const fcApiKey = await this.configManager.get("FIRE_CRAWL_API_KEY") || "fc-d1e706a347fe474a89f908dae6a97d88";
+      const scrapeUrl = 'https://api.firecrawl.dev/v2/scrape';
+      const scrapeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${fcApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "url": this.TRENDING_URL,
+          "onlyMainContent": true,
+          "maxAge": 172800000,
+          "parsers": [],
+          "formats": ["markdown"]
+        })
+      };
+
+      const response = await fetch(scrapeUrl, scrapeOptions);
+      const data = await response.json();
       
-      // 2. 解析项目列表 (严格遵循 ref.txt 解析逻辑)
-      const allProjects = this.parseTrendingList(trendingText, limit * 2); // 多解析一些，以便过滤后有足够数量
-      logger.info(`[GitHub Trending] 解析到 ${allProjects.length} 个项目`);
+      if (!data.success || !data.data?.markdown) {
+        throw new Error(`首页抓取失败: ${data.error || "未知错误"}`);
+      }
+
+      const trendingMarkdown = data.data.markdown;
+      logger.debug(`[GitHub Trending] 首页抓取成功，Markdown 长度: ${trendingMarkdown.length}`);
+
+      // 2. 使用 LLM 提取项目列表
+      logger.info(`[GitHub Trending] 正在使用 LLM 提取项目列表...`);
+      const allProjects = await this.summarizer.extractGitHubTrendingProjects(trendingMarkdown);
+      logger.info(`[GitHub Trending] LLM 提取到 ${allProjects.length} 个项目`);
       
       // 3. 过滤已爬取的项目，只保留未爬取的项目
       const unscrapedProjects = projectRegistry.filterUnscrapedProjects(allProjects);
@@ -175,55 +198,6 @@ export class GitHubTrendingScraper implements ContentScraper {
       logger.error("[GitHub Trending] 抓取失败:", error);
       throw error;
     }
-  }
-
-  /**
-   * 使用 Serper API 抓取 Trending 列表文本
-   */
-  private async fetchTrendingListFromSerper(apiKey: string): Promise<string> {
-    const response = await this.httpClient.request<any>(this.SERPER_URL, {
-      method: "POST",
-      headers: {
-        "X-API-KEY": apiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        url: this.TRENDING_URL,
-        includeMarkdown: true,
-      }),
-    });
-
-    return response.text || "";
-  }
-
-  /**
-   * 解析 Serper 返回的文本，提取项目信息
-   */
-  private parseTrendingList(text: string, limit: number): GitHubTrendingProject[] {
-    const projects: GitHubTrendingProject[] = [];
-    const lines = text.split("\n");
-    
-    // 匹配 "owner / repo" 格式
-    const repoRegex = /^([\w.-]+\s*\/\s*[\w.-]+)$/;
-    
-    for (let i = 0; i < lines.length && projects.length < limit; i++) {
-      const line = lines[i].trim();
-      const match = line.match(repoRegex);
-      
-      if (match) {
-        const fullName = match[1].trim();
-        const urlPath = fullName.replace(/\s+/g, "");
-        projects.push({
-          fullName,
-          url: `https://github.com/${urlPath}`,
-        });
-        
-        // 跳过下一行（通常是项目描述）
-        i++;
-      }
-    }
-    
-    return projects;
   }
 
   /**

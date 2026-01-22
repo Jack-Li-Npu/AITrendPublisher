@@ -13,6 +13,8 @@ import {
   getFooterUserPrompt,
   getAINewsSiteSystemPrompt,
   getAINewsSiteUserPrompt,
+  getGitHubTrendingExtractionSystemPrompt,
+  getGitHubTrendingExtractionUserPrompt,
   getArticleExtractionSystemPrompt,
   getArticleExtractionUserPrompt,
   getLinkExtractionSystemPrompt,
@@ -624,6 +626,57 @@ export class AISummarizer implements ContentSummarizer {
       } catch (error) {
         throw new Error(
           `解析链接提取结果失败: ${
+            error instanceof Error ? error.message : "未知错误"
+          }`,
+        );
+      }
+    });
+  }
+
+  /**
+   * 从 GitHub Trending 页面提取项目列表
+   */
+  async extractGitHubTrendingProjects(
+    content: string,
+  ): Promise<{ fullName: string; url: string }[]> {
+    if (!content) {
+      return [];
+    }
+
+    return RetryUtil.retryOperation(async () => {
+      const llm = await this.llmFactory.getLLMProvider(
+        await this.configInstance.get(
+          SummarizarSetting.AI_SUMMARIZER_LLM_PROVIDER,
+        ),
+      );
+      
+      const response = await llm.createChatCompletion([
+        {
+          role: "system",
+          content: getGitHubTrendingExtractionSystemPrompt(),
+        },
+        {
+          role: "user",
+          content: getGitHubTrendingExtractionUserPrompt(content),
+        },
+      ], {
+        temperature: 0.1,
+        max_tokens: 4096,
+        response_format: { type: "json_object" },
+        thinkingLevel: "none",
+      });
+
+      const completion = response.choices[0]?.message?.content;
+      if (!completion) {
+        throw new Error("未获取到有效的 GitHub 项目提取结果");
+      }
+
+      try {
+        const result = parseJsonFromLLM<{ projects: { fullName: string; url: string }[] }>(completion);
+        return result.projects || [];
+      } catch (error) {
+        throw new Error(
+          `解析 GitHub 项目提取结果失败: ${
             error instanceof Error ? error.message : "未知错误"
           }`,
         );
