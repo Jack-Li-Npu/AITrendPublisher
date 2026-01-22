@@ -71,6 +71,9 @@ export class GitHubTrendingScraper implements ContentScraper {
       // 1. 使用 Serper 抓取列表 (严格遵循 ref.txt URL)
       const trendingText = await this.fetchTrendingListFromSerper(serperApiKey);
       
+      // 调试：输出前 500 字符
+      logger.debug(`[GitHub Trending] Serper 返回文本（前500字符）:\n${trendingText.substring(0, 500)}`);
+      
       // 2. 解析项目列表 (严格遵循 ref.txt 解析逻辑)
       const allProjects = this.parseTrendingList(trendingText, limit * 2); // 多解析一些，以便过滤后有足够数量
       logger.info(`[GitHub Trending] 解析到 ${allProjects.length} 个项目`);
