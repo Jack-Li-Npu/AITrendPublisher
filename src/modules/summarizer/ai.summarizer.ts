@@ -282,7 +282,8 @@ export class AISummarizer implements ContentSummarizer {
     const maxLen = Number(await this.configInstance.get("ARTICLE_MAX_LENGTH")) || 2000;
 
     return RetryUtil.retryOperation(async () => {
-      const llm = await this.llmFactory.getLLMProvider(provider);
+      // 使用 "PROVIDER:MODEL" 格式传递完整配置
+      const llm = await this.llmFactory.getLLMProvider(`${provider}:${model}`);
       
       // 动态计算 max_tokens：输入内容越长，需要的输出 tokens 越多
       // 估算：中文翻译后长度约为英文的 1.2-1.5 倍（考虑 JSON 格式开销）
@@ -695,7 +696,8 @@ export class AISummarizer implements ContentSummarizer {
     const model = (await this.configInstance.get(SummarizarSetting.SINGLE_URL_LLM_MODEL)) || "gemini-2.0-flash-exp";
 
     return RetryUtil.retryOperation(async () => {
-      const llm = await this.llmFactory.getLLMProvider(provider);
+      // 使用 "PROVIDER:MODEL" 格式传递完整配置
+      const llm = await this.llmFactory.getLLMProvider(`${provider}:${model}`);
       
       // SINGLE_URL 转载：保留更多内容，用更大的 max_tokens
       const estimatedInputTokens = Math.ceil(content.length / 3);
