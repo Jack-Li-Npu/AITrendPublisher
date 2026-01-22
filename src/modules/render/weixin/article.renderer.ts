@@ -11,7 +11,7 @@ export class WeixinArticleTemplateRenderer
   extends BaseTemplateRenderer<WeixinTemplate[]> {
   constructor() {
     super("article");
-    this.availableTemplates = ["default", "modern", "tech", "mianpro"];
+    this.availableTemplates = ["default", "modern", "tech", "mianpro", "qbit"];
   }
 
   /**
@@ -21,6 +21,13 @@ export class WeixinArticleTemplateRenderer
    */
   private processArticleContent(article: WeixinTemplate): WeixinTemplate {
     if (!article.media || article.media.length === 0) {
+      return article;
+    }
+
+    // 检测正文是否已有图片
+    const hasImagesInContent = /!\[.*?\]\(.*?\)|<img.*?>/i.test(article.content);
+    if (hasImagesInContent) {
+      console.log(`[WeixinArticleTemplateRenderer] 文章 "${article.title}" 正文已有图片，跳过 media 插入逻辑`);
       return article;
     }
 
@@ -80,6 +87,21 @@ export class WeixinArticleTemplateRenderer
       ),
       mianpro: await this.getTemplateContent(
         "/templates/article.mianpro.ejs",
+      ),
+      qbit: await this.getTemplateContent(
+        "/templates/article.qbit.ejs",
+      ),
+      minimal: await this.getTemplateContent(
+        "/templates/article.minimal.ejs",
+      ),
+      card: await this.getTemplateContent(
+        "/templates/article.card.ejs",
+      ),
+      academic: await this.getTemplateContent(
+        "/templates/article.academic.ejs",
+      ),
+      future: await this.getTemplateContent(
+        "/templates/article.future.ejs",
       ),
     };
   }

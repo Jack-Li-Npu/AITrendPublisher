@@ -1,16 +1,16 @@
-import { getDataSources } from "../data-sources/getDataSources.ts";
+import { getDataSources} from "../data-sources/getDataSources.ts";
 import { ContentRanker } from "@src/modules/content-rank/ai.content-ranker.ts";
-import { ContentPublisher } from "@src/modules/interfaces/publisher.interface.ts";
 import {
   ContentScraper,
   ScrapedContent,
+  ScraperOptions,
 } from "@src/modules/interfaces/scraper.interface.ts";
-import { ContentSummarizer } from "@src/modules/interfaces/summarizer.interface.ts";
 import { BarkNotifier } from "@src/modules/notify/bark.notify.ts";
 import { WeixinPublisher } from "@src/modules/publishers/weixin.publisher.ts";
 import { WeixinTemplate } from "../modules/render/weixin/interfaces/article.type.ts";
 import { FireCrawlScraper } from "@src/modules/scrapers/fireCrawl.scraper.ts";
-import { TwitterScraper } from "@src/modules/scrapers/twitter.scraper.ts";
+import { GitHubTrendingScraper } from "@src/modules/scrapers/github-trending.scraper.ts";
+import { AINewsScraper } from "@src/modules/scrapers/ai-news.scraper.ts";
 import { AISummarizer } from "@src/modules/summarizer/ai.summarizer.ts";
 import { ImageGeneratorFactory } from "@src/providers/image-gen/image-generator-factory.ts";
 import { WeixinArticleTemplateRenderer } from "../modules/render/weixin/article.renderer.ts";
@@ -23,35 +23,60 @@ import {
 } from "@src/works/workflow.ts";
 import { WorkflowTerminateError } from "@src/works/workflow-error.ts";
 import { Logger } from "@zilla/logger";
-import ProgressBar from "jsr:@deno-library/progress";
+import { SimpleProgress } from "@src/utils/simple-progress.ts";
 import { ImageGeneratorType } from "@src/providers/interfaces/image-gen.interface.ts";
 import { VectorService } from "@src/services/vector-service.ts";
 import { EmbeddingProvider } from "@src/providers/interfaces/embedding.interface.ts";
 import { EmbeddingFactory } from "@src/providers/embedding/embedding-factory.ts";
 import { EmbeddingProviderType } from "@src/providers/interfaces/embedding.interface.ts";
 import { VectorSimilarityUtil } from "@src/utils/VectorSimilarityUtil.ts";
+import { ImageFillerService } from "@src/services/image-filler.service.ts";
+import { ScrapedDataStorage } from "@src/utils/scraped-data-storage.ts";
+import { ArticleStorage } from "@src/utils/article-storage.ts";
+import { UrlRegistry } from "@src/utils/url-registry.ts";
 const logger = new Logger("weixin-article-workflow");
 
 interface WeixinWorkflowEnv {
   name: string;
 }
 
+/**
+ * 内容模式类型
+ * - TECH_NEWS: 科技新闻模式（默认）
+ * - GITHUB_TRENDING: GitHub 热门项目模式
+ * - SINGLE_URL: 指定 URL 爬取模式
+ * - TOPIC_SEARCH: 指定主题搜索模式
+ * - AI_NEWS_SITE: AI 新闻网站模式（artificialintelligence-news.com）
+ */
+export type ContentMode = "TECH_NEWS" | "GITHUB_TRENDING" | "SINGLE_URL" | "TOPIC_SEARCH" | "AI_NEWS_SITE";
+
 // 工作流参数类型定义
 interface WeixinWorkflowParams {
-  sourceType?: "all" | "firecrawl" | "twitter";
+  sourceType?: "all" | "firecrawl";
+  /** 内容模式 */
+  contentMode?: ContentMode;
+  /** 指定 URL (SINGLE_URL 模式使用) */
+  url?: string;
+  /** 搜索主题 (TOPIC_SEARCH 模式使用) */
+  topic?: string;
   maxArticles?: number;
   forcePublish?: boolean;
+  /** 使用的模板: default, modern, tech, mianpro, qbit */
+  template?: string;
 }
 
 export class WeixinArticleWorkflow
   extends WorkflowEntrypoint<WeixinWorkflowEnv, WeixinWorkflowParams> {
   private scraper: Map<string, ContentScraper>;
-  private summarizer: ContentSummarizer;
+  private summarizer: AISummarizer;
   private publisher: WeixinPublisher;
   private notifier: BarkNotifier;
   private renderer: WeixinArticleTemplateRenderer;
   private contentRanker: ContentRanker;
   private vectorService: VectorService;
+  private imageFillerService: ImageFillerService;
+  private scrapedDataStorage: ScrapedDataStorage;
+  private urlRegistry: UrlRegistry;
   private embeddingModel!: EmbeddingProvider;
   private existingVectors: { vector: number[]; content: string | null }[] = [];
   private stats = {
@@ -65,13 +90,17 @@ export class WeixinArticleWorkflow
     super(env);
     this.scraper = new Map<string, ContentScraper>();
     this.scraper.set("fireCrawl", new FireCrawlScraper());
-    this.scraper.set("twitter", new TwitterScraper());
+    this.scraper.set("github-trending", new GitHubTrendingScraper());
+    this.scraper.set("ai-news", new AINewsScraper());
     this.summarizer = new AISummarizer();
     this.publisher = new WeixinPublisher();
     this.notifier = new BarkNotifier();
     this.renderer = new WeixinArticleTemplateRenderer();
     this.contentRanker = new ContentRanker();
     this.vectorService = new VectorService();
+    this.imageFillerService = new ImageFillerService();
+    this.scrapedDataStorage = new ScrapedDataStorage();
+    this.urlRegistry = UrlRegistry.getInstance();
   }
 
   public getWorkflowStats(eventId: string) {
@@ -86,6 +115,15 @@ export class WeixinArticleWorkflow
       logger.info(
         `[工作流开始] 开始执行微信工作流, 当前工作流实例ID: ${this.env.id} 触发事件ID: ${event.id}`,
       );
+
+      const configManager = ConfigManager.getInstance();
+      const contentMode = event.payload.contentMode || 
+        await configManager.get<ContentMode>("CONTENT_MODE").catch(() => "TECH_NEWS" as ContentMode);
+      
+      logger.info(`[工作流] 当前内容模式: ${contentMode}`);
+
+      // 加载 URL 注册表
+      await this.urlRegistry.load();
 
       // 验证IP白名单
       await step.do("validate-ip-whitelist", {
@@ -108,101 +146,254 @@ export class WeixinArticleWorkflow
 
       // 获取数据源
       const sourceConfigs = await step.do("fetch-sources", async () => {
-        const configs = await getDataSources();
-        if (!configs.firecrawl) {
-          throw new WorkflowTerminateError("未找到firecrawl数据源配置");
-        }
-        if (!configs.twitter) {
-          throw new WorkflowTerminateError("未找到twitter数据源配置");
+        const configs = await getDataSources(contentMode as any);
+        // 如果是 GITHUB_TRENDING，configs.firecrawl 可能是空的，这没关系
+        if (contentMode === "TECH_NEWS" && (!configs.firecrawl || configs.firecrawl.length === 0)) {
+          throw new WorkflowTerminateError("未找到科技新闻 FireCrawl 数据源配置");
         }
         return configs;
       });
 
-      const totalSources = sourceConfigs.firecrawl.length +
-        sourceConfigs.twitter.length;
+      const totalSources = sourceConfigs.firecrawl.length;
 
-      if (totalSources === 0) {
-        throw new WorkflowTerminateError("未配置任何数据源");
+      if (contentMode === "TECH_NEWS" && totalSources === 0) {
+        throw new WorkflowTerminateError("未配置任何科技新闻数据源");
       }
 
-      logger.info(`[数据源] 发现 ${totalSources} 个数据源`);
+      if (contentMode === "TECH_NEWS") {
+        logger.info(`[数据源] 发现 ${totalSources} 个 FireCrawl 数据源`);
+      }
 
       // 3. 抓取内容
       const allContents = await step.do("scrape-contents", {
         retries: { limit: 3, delay: "10 second", backoff: "exponential" },
-        timeout: "10 minutes",
+        timeout: "15 minutes",
       }, async () => {
-        const contents: ScrapedContent[] = [];
+        let contents: ScrapedContent[] = [];
+        const contentsBySource = new Map<string, ScrapedContent[]>();
 
-        // 创建抓取进度条
-        const scrapeProgress = new ProgressBar({
-          title: "内容抓取进度",
-          total: totalSources,
-          clear: true, // 完成后清除进度条
-          display: ":title | :percent | :completed/:total | :time \n",
+        if (contentMode === "GITHUB_TRENDING") {
+          logger.info("[工作流] 切换到 GitHub Trending 抓取流程 ");
+          const githubScraper = this.scraper.get("github-trending");
+          if (!githubScraper) throw new Error("GitHubTrendingScraper not found");
+          contents = await githubScraper.scrape("trending", { limit: event.payload.maxArticles || 5 });
+          contentsBySource.set("github-trending", contents);
+        } else if (contentMode === "SINGLE_URL") {
+          const url = event.payload.url;
+          if (!url) throw new Error("SINGLE_URL 模式下必须提供 url 参数");
+          const fcScraper = this.scraper.get("fireCrawl") as FireCrawlScraper;
+          const response = await fcScraper.v2Scrape(url);
+          if (!response.success || !response.data) throw new Error(`抓取失败: ${response.error || '未知错误'}`);
+          contents = [{
+            id: `single_${Date.now()}`,
+            title: response.data.metadata?.title || "未知标题",
+            content: response.data.markdown || "",
+            url: url,
+            publishDate: new Date().toISOString().split("T")[0],
+            media: [],
+            metadata: { source: "fireCrawl", originalUrl: url, description: response.data.metadata?.description },
+          }];
+          contentsBySource.set("single-url", contents);
+        } else if (contentMode === "TOPIC_SEARCH") {
+          const topic = event.payload.topic;
+          const limit = event.payload.maxArticles || 5;
+          if (!topic) throw new Error("TOPIC_SEARCH 模式下必须提供 topic 参数");
+          const fcScraper = this.scraper.get("fireCrawl") as FireCrawlScraper;
+          const response = await fcScraper.v2Search(topic, limit);
+          if (!response.success || !response.data) throw new Error(`搜索失败: ${response.error || '未知错误'}`);
+          contents = response.data.map((item, index) => ({
+            id: `search_${Date.now()}_${index}`,
+            title: item.metadata?.title || item.url,
+            content: item.markdown || "",
+            url: item.url,
+            publishDate: new Date().toISOString().split("T")[0],
+            media: [],
+            metadata: { source: "fireCrawl", originalUrl: item.url, description: item.metadata?.description },
+          }));
+          contentsBySource.set("topic-search", contents);
+        } else if (contentMode === "AI_NEWS_SITE") {
+          const aiNewsScraper = this.scraper.get("ai-news");
+          if (!aiNewsScraper) throw new Error("AINewsScraper not found");
+          contents = await aiNewsScraper.scrape("ai-news-site", { limit: 50 });
+          contentsBySource.set("ai-news-site", contents);
+        } else {
+          // 默认 TECH_NEWS 逻辑
+          const fireCrawlScraper = this.scraper.get("fireCrawl");
+          if (!fireCrawlScraper) throw new Error("FireCrawlScraper not found");
+          const scrapeProgress = new SimpleProgress({ title: "内容抓取进度", total: totalSources });
+          let scrapeCompleted = 0;
+          let totalArticles = 0;
+
+          for (const source of sourceConfigs.firecrawl) {
+            const maxRecursiveLinks = (source as any).maxRecursiveLinks || 1;
+            const sourceContents = await this.scrapeSource("FireCrawl", source, fireCrawlScraper, {
+              filters: { enableRecursive: true, maxRecursiveLinks: maxRecursiveLinks }
+            });
+            contents.push(...sourceContents);
+            contentsBySource.set(source.identifier, sourceContents);
+            totalArticles += sourceContents.length;
+            await scrapeProgress.render(++scrapeCompleted, {
+              title: `抓取 FireCrawl: ${source.identifier} | 已获取文章: ${totalArticles}篇`,
+            });
+          }
+        }
+
+        // 过滤掉超过一周的新闻
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+        
+        const recentContents = contents.filter((content) => {
+          if (!content.publishDate) {
+            // 如果没有发布日期，保留（可能是实时新闻）
+            return true;
+          }
+          
+          try {
+            const publishDate = new Date(content.publishDate);
+            if (isNaN(publishDate.getTime())) {
+              // 日期格式无效，保留
+              return true;
+            }
+            
+            const isRecent = publishDate >= oneWeekAgo;
+            if (!isRecent) {
+              logger.debug(`[时间过滤] 过滤掉过期内容: ${content.title} (发布日期: ${content.publishDate})`);
+            }
+            return isRecent;
+          } catch (error) {
+            // 解析日期失败，保留
+            logger.warn(`[时间过滤] 无法解析日期: ${content.publishDate}`, error);
+            return true;
+          }
         });
-        let scrapeCompleted = 0;
-        let totalArticles = 0;
+        
+        const filteredCount = contents.length - recentContents.length;
+        if (filteredCount > 0) {
+          logger.info(`[时间过滤] 过滤掉 ${filteredCount} 篇超过一周的旧新闻`);
+        }
+        
+        // --- 统一对所有抓取的内容进行 URL 去重（GitHub 项目除外） ---
+        const filteredContents = recentContents.filter(content => {
+          // GitHub 项目只使用 github-project-registry.json 去重，不使用 url-registry.json
+          if (contentMode === "GITHUB_TRENDING") {
+            return true;
+          }
+          
+          if (this.urlRegistry.isProcessed(content.url)) {
+            logger.info(`[去重] URL 已存在，跳过: ${content.title} (${content.url})`);
+            return false;
+          }
+          return true;
+        });
 
-        // FireCrawl sources
-        const fireCrawlScraper = this.scraper.get("fireCrawl");
-        if (!fireCrawlScraper) {
-          throw new WorkflowTerminateError("FireCrawlScraper not found");
+        const dedupedCount = recentContents.length - filteredContents.length;
+        if (dedupedCount > 0) {
+          logger.info(`[去重] 基于 URL 过滤掉 ${dedupedCount} 篇已发布过的文章`);
         }
 
-        for (const source of sourceConfigs.firecrawl) {
-          const sourceContents = await this.scrapeSource(
-            "FireCrawl",
-            source,
-            fireCrawlScraper,
-          );
-          contents.push(...sourceContents);
-          totalArticles += sourceContents.length;
-          await scrapeProgress.render(++scrapeCompleted, {
-            title:
-              `抓取 FireCrawl: ${source.identifier}  | 已获取文章: ${totalArticles}篇`,
-          });
-        }
-
-        // Twitter sources
-        const twitterScraper = this.scraper.get("twitter");
-        if (!twitterScraper) {
-          throw new WorkflowTerminateError("TwitterScraper not found");
-        }
-
-        for (const source of sourceConfigs.twitter) {
-          const sourceContents = await this.scrapeSource(
-            "Twitter",
-            source,
-            twitterScraper,
-          );
-          contents.push(...sourceContents);
-          totalArticles += sourceContents.length;
-          await scrapeProgress.render(++scrapeCompleted, {
-            title:
-              `抓取 Twitter: ${source.identifier} | 已获取文章: ${totalArticles}篇`,
-          });
-        }
-
-        this.stats.contents = contents.length;
+        this.stats.contents = filteredContents.length;
         if (this.stats.contents === 0) {
-          throw new WorkflowTerminateError("未获取到任何内容，流程终止");
+          throw new WorkflowTerminateError("所有获取到的内容都已发布过，流程终止");
         }
 
+        // --- 新增：对所有内容执行 LLM 预提取 ---
+        // SINGLE_URL 模式使用专用的轻量级提取（保留更多原文）
+        await this.performGlobalLlmExtraction(filteredContents, contentMode);
+
+        // 按数据源分组过滤后的内容
+        const recentContentsBySource = new Map<string, ScrapedContent[]>();
+        for (const [sourceIdentifier, sourceContents] of contentsBySource.entries()) {
+          const recentSourceContents = sourceContents.filter((content) => {
+            // GitHub 项目只使用 github-project-registry.json 去重，不使用 url-registry.json
+            if (contentMode === "GITHUB_TRENDING") {
+              if (!content.publishDate) {
+                return true;
+              }
+              try {
+                const publishDate = new Date(content.publishDate);
+                if (isNaN(publishDate.getTime())) {
+                  return true;
+                }
+                return publishDate >= oneWeekAgo;
+              } catch {
+                return true;
+              }
+            }
+            
+            // 其他模式：同时应用时间过滤和 URL 过滤
+            if (!content.publishDate) {
+              return !this.urlRegistry.isProcessed(content.url);
+            }
+            try {
+              const publishDate = new Date(content.publishDate);
+              if (isNaN(publishDate.getTime())) {
+                return !this.urlRegistry.isProcessed(content.url);
+              }
+              return publishDate >= oneWeekAgo && !this.urlRegistry.isProcessed(content.url);
+            } catch {
+              return !this.urlRegistry.isProcessed(content.url);
+            }
+          });
+          if (recentSourceContents.length > 0) {
+            recentContentsBySource.set(sourceIdentifier, recentSourceContents);
+          }
+        }
+
+        // 保存爬取的数据到本地文件（按数据源分别保存）
+        logger.info(`[数据存储] 开始按数据源保存爬取的数据到本地`);
+        try {
+          const savedFolders = await this.scrapedDataStorage.saveScrapedDataBySource(recentContentsBySource);
+          logger.info(`[数据存储] 爬取数据已保存到 ${savedFolders.size} 个文件夹`);
+          for (const [sourceIdentifier, folderPath] of savedFolders.entries()) {
+            logger.info(`[数据存储] ${sourceIdentifier} -> ${folderPath}`);
+          }
+        } catch (error) {
+          logger.error("[数据存储] 保存爬取数据失败:", error);
+          // 保存失败不影响后续流程，继续使用内存中的数据
+        }
+
+        return filteredContents;
+      });
+
+      // 4. 从本地读取爬取的数据（针对模式做不同处理）
+      const localContents = await step.do("load-local-data", {
+        retries: { limit: 1, delay: "2 second" },
+        timeout: "2 minutes",
+      }, async () => {
+        if (contentMode === "GITHUB_TRENDING" || contentMode === "SINGLE_URL" || contentMode === "TOPIC_SEARCH" || contentMode === "AI_NEWS_SITE") {
+          logger.info(`[数据读取] ${contentMode} 模式，使用本次抓取的全部内容 (${allContents.length} 篇)`);
+          return allContents;
+        }
+
+        logger.info("[数据读取] 从本地文件读取爬取的数据，每个网站1篇");
+        // 每个网站1篇，总共4个网站，所以选择4篇
+        const contents = await this.scrapedDataStorage.loadRandomArticlesFromSources(4);
+        if (contents.length === 0) {
+          logger.warn("[数据读取] 本地文件为空，使用内存中的爬取数据");
+          // 如果本地没有数据，从内存数据中随机选择4篇
+          const shuffled = [...allContents].sort(() => Math.random() - 0.5);
+          return shuffled.slice(0, Math.min(4, shuffled.length));
+        }
+        logger.info(`[数据读取] 从本地文件随机挑选到 ${contents.length} 条数据`);
         return contents;
       });
 
-      // 4. 内容去重
+      // 5. 内容去重
       const uniqueContents = await step.do("dedup-contents", {
         retries: { limit: 2, delay: "5 second", backoff: "exponential" },
         timeout: "15 minutes",
       }, async () => {
+        // 这些模式跳过去重，保留抓到的所有内容
+        if (contentMode === "GITHUB_TRENDING" || contentMode === "SINGLE_URL" || contentMode === "TOPIC_SEARCH") {
+          return localContents;
+        }
+
         const ENABLE_DEDUPLICATION = await ConfigManager.getInstance().get(
           "ENABLE_DEDUPLICATION",
         );
 
         if (!ENABLE_DEDUPLICATION) {
-          return allContents;
+          return localContents;
         }
 
         // 初始化 embedding 模型
@@ -228,17 +419,15 @@ export class WeixinArticleWorkflow
         }[] = [];
 
         logger.info("[向量计算] 开始批量计算内容向量");
-        const embedProgress = new ProgressBar({
+        const embedProgress = new SimpleProgress({
           title: "向量计算进度",
-          total: allContents.length,
-          clear: true,
-          display: ":title | :percent | :completed/:total | :time \n",
+          total: localContents.length,
         });
         let embedCompleted = 0;
 
         // 并行计算所有内容的embedding
         await Promise.all(
-          allContents.map(async (content) => {
+          localContents.map(async (content) => {
             try {
               const embedding = await this.embeddingModel.createEmbedding(
                 content.content,
@@ -267,7 +456,7 @@ export class WeixinArticleWorkflow
         // 过滤掉重复内容
         const deduplicatedContents: ScrapedContent[] = [];
 
-        for (const content of allContents) {
+        for (const content of localContents) {
           const contentVector = contentEmbeddings.get(content.id);
           if (!contentVector) continue;
 
@@ -290,17 +479,26 @@ export class WeixinArticleWorkflow
         }
 
         logger.info(
-          `[去重] 完成内容去重，原始内容 ${allContents.length} 篇，去重后 ${deduplicatedContents.length} 篇，重复 ${this.stats.duplicates} 篇`,
+          `[去重] 完成内容去重，原始内容 ${localContents.length} 篇，去重后 ${deduplicatedContents.length} 篇，重复 ${this.stats.duplicates} 篇`,
         );
 
         return deduplicatedContents;
       });
 
-      // 5. 内容排序
+      // 6. 内容排序
       const rankedContents = await step.do("rank-contents", {
         retries: { limit: 2, delay: "5 second", backoff: "exponential" },
         timeout: "5 minutes",
       }, async () => {
+        // 这些模式跳过排序，直接使用全部内容
+        if (contentMode === "GITHUB_TRENDING" || contentMode === "SINGLE_URL" || contentMode === "TOPIC_SEARCH" || contentMode === "AI_NEWS_SITE") {
+          return uniqueContents.map((content, index) => ({
+            id: content.id,
+            score: 100 - index, // 保持原有顺序
+            reason: `${contentMode} 默认顺序`,
+          }));
+        }
+
         logger.info(`[内容排序] 开始排序 ${uniqueContents.length} 条内容`);
         const ranked = await this.contentRanker.rankContents(uniqueContents);
         if (ranked.length === 0) {
@@ -312,13 +510,24 @@ export class WeixinArticleWorkflow
         return ranked;
       });
 
-      // 6. 处理排序后的内容
+      // 7. 处理排序后的内容
       const processedContents = await step.do("process-contents", {
         retries: { limit: 2, delay: "5 second", backoff: "exponential" },
         timeout: "15 minutes",
       }, async () => {
-        const maxArticles = event.payload.maxArticles ||
-          await ConfigManager.getInstance().get("ARTICLE_NUM") || 10;
+        let maxArticles = event.payload.maxArticles ||
+          await ConfigManager.getInstance().get("ARTICLE_NUM") || 5; // 默认4篇（每个网站1篇）
+
+        // 这些模式有特殊处理
+        if (contentMode === "GITHUB_TRENDING" || contentMode === "SINGLE_URL" || contentMode === "TOPIC_SEARCH") {
+          maxArticles = rankedContents.length;
+        }
+        
+        // AI_NEWS_SITE 模式固定输出 5 篇
+        if (contentMode === "AI_NEWS_SITE") {
+          maxArticles = 5;
+          logger.info(`[内容处理] AI_NEWS_SITE 模式，固定输出 ${maxArticles} 篇文章`);
+        }
 
         // 取前maxArticles篇文章
         const topContents: ScrapedContent[] = [];
@@ -347,21 +556,26 @@ export class WeixinArticleWorkflow
         }
 
         logger.debug(
-          "[内容处理] 开始处理文章",
-          JSON.stringify(topContents, null, 2),
+          `[内容处理] 开始处理文章，共 ${topContents.length} 篇: ${topContents.map(c => c.title).join(", ")}`,
         );
 
         // 处理内容（润色等）
-        const processProgress = new ProgressBar({
+        const processProgress = new SimpleProgress({
           title: "内容处理进度",
           total: topContents.length,
-          clear: true,
-          display: ":title | :percent | :completed/:total | :time \n",
         });
         let processCompleted = 0;
 
+
+//         把每一个 content（内容）变成了每一个 Promise（任务）。
+//       结果就是把“内容数组”映射成了“任务数组”
+// Promise.all 汇总 (The Collector)
+// map 执行完后，它返回了一个数组：[任务A的Promise, 任务B的Promise, 任务C的Promise]。
+
+// Promise.all 把这三个“小取餐器”捆在一起，变成一个“大取餐器”。
+
         await Promise.all(topContents.map(async (content) => {
-          await this.processContent(content);
+          await this.processContent(content, contentMode);
           await processProgress.render(++processCompleted, {
             title: `已处理: ${content.title?.slice(0, 5) || "无标题"}...`,
           });
@@ -370,14 +584,85 @@ export class WeixinArticleWorkflow
         return topContents;
       });
 
-      // 7. 生成文章
-      const { summaryTitle, mediaId, renderedTemplate } = await step.do(
+      // 8. 生成文章
+      const { summaryTitle, mediaId, renderedTemplate, introduction, overviewImageUrl } = await step.do(
         "generate-article",
         {
           retries: { limit: 2, delay: "5 second", backoff: "exponential" },
           timeout: "10 minutes",
         },
         async () => {
+          // 8.1 生成引入内容（使用所有文章标题）
+          // SINGLE_URL 单篇转载模式不需要引入
+          logger.info("[引入内容] 开始生成文章开头引入内容");
+          let introduction: string = "";
+          
+          if (contentMode !== "SINGLE_URL") {
+            try {
+              const articleTitles = processedContents.map(c => c.title);
+              introduction = await this.summarizer.generateIntroduction({
+                articleTitles: articleTitles,
+                articleCount: processedContents.length,
+                contentMode: contentMode,
+              });
+              logger.info(`[引入内容] 引入内容生成成功 (${contentMode} 模式)，长度: ${introduction.length} 字符`);
+            } catch (error) {
+              logger.error("[引入内容] 生成引入内容失败:", error);
+              // 失败时使用默认引入（根据模式使用不同的默认文本）
+              const articleTitles = processedContents.map(c => c.title);
+              if (contentMode === "GITHUB_TRENDING") {
+                introduction = `本期精选 ${processedContents.length} 个 GitHub 热门项目：${articleTitles.slice(0, 2).map(t => t.split("(")[0].trim()).join("，")}等。`;
+              } else {
+                introduction = `今天为大家带来${processedContents.length}篇精选AI科技新闻，涵盖${articleTitles.slice(0, 3).join("、")}等前沿话题。让我们一起探索人工智能领域的最新动态和技术突破。`;
+              }
+            }
+          } else {
+            logger.info("[引入内容] SINGLE_URL 单篇转载模式，跳过引入内容生成");
+          }
+
+          // 8.2 生成整体介绍图（使用所有文章标题）
+          // SINGLE_URL 单篇转载模式不需要整体介绍图
+          logger.info("[整体介绍图] 开始生成整体介绍图，整合所有文章标题");
+          let overviewImageUrl: string | null = null;
+          
+          if (contentMode !== "SINGLE_URL") {
+            try {
+              // 收集所有文章的标题
+              const articleTitles = processedContents.map((content) => content.title);
+              
+              logger.info(`[整体介绍图] 收集到 ${processedContents.length} 篇文章标题`);
+              
+              // 使用 Gemini 3 Pro 生成整体介绍图
+              const { GeminiImageGenerator } = await import("@src/providers/image-gen/gemini/gemini-image-generator.ts");
+              const geminiImageGenerator = new GeminiImageGenerator();
+              
+              const generatedImageUrl = await geminiImageGenerator.generateOverviewImage(articleTitles);
+              
+              overviewImageUrl = generatedImageUrl;
+              if (overviewImageUrl) {
+                logger.info(`[整体介绍图] 整体介绍图生成成功，大小: ${overviewImageUrl.length} 字符`);
+                
+                // ✅ 立即上传到微信服务器，获取 media URL（避免 base64 导致内容过大）
+                try {
+                  logger.info(`[整体介绍图] 开始上传整体介绍图到微信服务器...`);
+                  const uploadedUrl = await this.publisher.uploadImage(overviewImageUrl);
+                  overviewImageUrl = uploadedUrl; // 使用微信 CDN URL 替换 base64
+                  logger.info(`[整体介绍图] 整体介绍图已上传到微信，URL: ${uploadedUrl.substring(0, 50)}...`);
+                } catch (uploadError) {
+                  logger.error("[整体介绍图] 上传到微信失败，将跳过整体介绍图:", uploadError);
+                  // 如果上传失败，不插入整体介绍图（避免内容过大）
+                  overviewImageUrl = null;
+                }
+              }
+            } catch (error) {
+              logger.error("[整体介绍图] 生成整体介绍图失败:", error);
+              // 失败不影响主流程，继续执行
+              overviewImageUrl = null;
+            }
+          } else {
+            logger.info("[整体介绍图] SINGLE_URL 单篇转载模式，跳过整体介绍图生成");
+          }
+
           // 准备模板数据
           const templateData: WeixinTemplate[] = processedContents.map(
             (content) => ({
@@ -392,42 +677,229 @@ export class WeixinArticleWorkflow
             }),
           );
 
-          // 生成总标题
-          const title = await this.summarizer.generateTitle(
-            processedContents.map((c) => c.title).join(" | "),
-          ).then((t) => {
-            t = `${new Date().toLocaleDateString()} AI速递 | ${t}`;
-            return t.slice(0, 64);
-          });
+          // 生成结语（在模板渲染之前，这样结语也可以被模板处理）
+          logger.info("[结语生成] 开始生成文章结语");
+          let footer: string = "";
+          try {
+            const footerImageUrl = await ConfigManager.getInstance().get<string>("FOOTER_IMAGE_URL") || 
+              "https://fastly.jsdelivr.net/gh/bucketio/img18@main/2026/01/06/1767672738369-47fc1fed-2c8b-49d2-ae30-f8a45edc41bb.png";
+            
+            const articleSummary = processedContents
+              .slice(0, 3)
+              .map(c => c.title)
+              .join("、");
+            
+            footer = await this.summarizer.generateFooter({
+              articleTitles: processedContents.map(c => c.title),
+              articleSummary: articleSummary,
+              footerImageUrl: footerImageUrl,
+            });
+            
+            logger.info("[结语生成] 结语生成成功");
+          } catch (error) {
+            logger.warn("[结语生成] 结语生成失败，使用默认结语:", error);
+            footer = `\n\n## 结语\n\n感谢阅读今日的 AI 速递！我们持续关注人工智能领域的最新动态，为您带来最前沿的技术资讯。\n\n💬 你用过哪些 AI 工具？欢迎评论区分享你的体验！\n⭐ 觉得有用？点个「在看」让更多开发者看到这篇内容！\n\n<center>\n    <img src="https://fastly.jsdelivr.net/gh/bucketio/img18@main/2026/01/06/1767672738369-47fc1fed-2c8b-49d2-ae30-f8a45edc41bb.png" style="width: 100px;">\n</center>`;
+          }
 
-          // 生成封面图片
+          // 将结语添加到最后一篇文章的内容末尾，使其能够被模板处理
+          if (templateData.length > 0 && footer) {
+            templateData[templateData.length - 1].content = templateData[templateData.length - 1].content + "\n\n" + footer;
+            logger.info("[结语处理] 结语已添加到最后一篇文章内容中，将在模板渲染时一起处理");
+          }
+
+          // 先渲染模板（包含引入内容和整体介绍图），获取完整内容用于生成标题
+          const USE_DOOCS_MD = await ConfigManager.getInstance().get<boolean>("USE_DOOCS_MD_RENDERER") ?? true;
+          
+          let renderedTemplate: string;
+          if (USE_DOOCS_MD) {
+            logger.info("[渲染] 使用 DoocsMd 渲染器（文章渲染，包含引入内容和整体介绍图）");
+            const { DoocsMdRenderer } = await import("@src/modules/render/weixin/doocs-md.renderer.ts");
+            const doocsMdRenderer = new DoocsMdRenderer({
+              theme: "default",
+              primaryColor: "#3f9cf5",
+              fontSize: 16,
+              codeBackgroundColor: "#282c34",        // 深色代码块背景（VS Code Dark 风格）
+              codeTextColor: "#abb2bf",              // 浅灰色代码文字
+              inlineCodeBackgroundColor: "rgba(27, 31, 35, 0.05)",
+              inlineCodeTextColor: "#d14",
+              showCitation: true,
+            });
+            // 传递引入内容、整体介绍图和内容模式到渲染器
+            renderedTemplate = await doocsMdRenderer.render(templateData, {
+              introduction: introduction,
+              overviewImageUrl: overviewImageUrl ?? undefined,
+              contentMode: contentMode, // 新增：传递内容模式，用于控制项目地址链接显示
+            });
+          } else {
+            logger.info("[渲染] 使用传统 EJS 模板（文章渲染）");
+            renderedTemplate = await this.renderer.doRender(templateData, "tech");
+            // 对于传统模板，需要在开头手动插入引入内容和整体介绍图
+            if (introduction || overviewImageUrl) {
+              let headerContent = "";
+              if (introduction) {
+                headerContent += `<p>${introduction.replace(/\n/g, '</p><p>')}</p>`;
+              }
+              if (overviewImageUrl) {
+                headerContent += `<img src="${overviewImageUrl}" alt="文章概览" style="width: 100%; max-width: 100%;" />`;
+              }
+              if (headerContent) {
+                renderedTemplate = headerContent + "\n<hr />\n" + renderedTemplate;
+              }
+            }
+          }
+
+          logger.info(`[渲染] 文章渲染完成，HTML 长度：${renderedTemplate.length} 字符`);
+
+          // 等待文章生成完毕后确定主标题
+          logger.info("[标题生成] 文章生成完毕，开始确定主标题");
+          
+          let generatedTitle = "";
+          // SINGLE_URL 转载模式：直接使用文章标题「转载某某人（作者）」
+          if (contentMode === "SINGLE_URL" && processedContents.length > 0) {
+            generatedTitle = processedContents[0].title;
+            logger.info(`[标题生成] SINGLE_URL 转载模式，使用标题: ${generatedTitle}`);
+          } else if (processedContents.length > 0) {
+            // 从第一篇文章中提取第一个 ### 标题
+            const firstArticle = processedContents[0];
+            const headingMatch = firstArticle.content.match(/^###\s+(.+)$/m);
+            
+            if (headingMatch && headingMatch[1]) {
+              generatedTitle = headingMatch[1].trim();
+              logger.info(`[标题生成] 从第一篇文章提取到标题: ${generatedTitle}`);
+            } else {
+              generatedTitle = firstArticle.title;
+              logger.warn(`[标题生成] 未找到 ### 标题，使用文章标题: ${generatedTitle}`);
+            }
+          } else {
+            generatedTitle = "AI 科技速递";
+            logger.warn(`[标题生成] 没有文章内容，使用默认标题: ${generatedTitle}`);
+          }
+          
+          // 验证字节数（微信公众号限制：64字节）
+          const getByteLength = (str: string): number => {
+            return new TextEncoder().encode(str).length;
+          };
+          
+          const maxBytes = 64; // 微信公众号标题最大64字节，必须严格遵守
+          const titleBytes = getByteLength(generatedTitle);
+          
+          if (titleBytes > maxBytes) {
+            logger.warn(`[标题验证] 标题字节数 ${titleBytes} 超过限制 ${maxBytes}，进行截断`);
+            
+            // 按字节截断
+            let truncated = "";
+            let byteCount = 0;
+            for (const char of generatedTitle) {
+              const charBytes = getByteLength(char);
+              if (byteCount + charBytes > maxBytes) {
+                break;
+              }
+              truncated += char;
+              byteCount += charBytes;
+            }
+            
+            generatedTitle = truncated;
+            logger.info(`[标题验证] 截断后标题: ${generatedTitle} (${getByteLength(generatedTitle)} 字节)`);
+          } else {
+            logger.info(`[标题验证] 标题长度符合要求: ${generatedTitle} (${titleBytes} 字节)`);
+          }
+          
+          logger.info(`[标题生成] 最终标题: ${generatedTitle}`);
+
+          // 生成封面图片（使用新生成的标题）
+          const imageGeneratorType = await ConfigManager.getInstance().get<string>("IMAGE_GENERATOR_TYPE") || "ALIWANX_POSTER";
           const imageGenerator = await ImageGeneratorFactory.getInstance()
-            .getGenerator(ImageGeneratorType.ALIWANX_POSTER);
-          const imageUrl = await imageGenerator.generate({
-            title: title.split(" | ")[1].trim().slice(0, 30),
-            sub_title: new Date().toLocaleDateString() + " AI速递",
-            prompt_text_zh: `科技前沿资讯 | 人工智能新闻 | 每日AI快报 - ${
-              title.split(" | ")[1].trim().slice(0, 30)
-            }`,
-            generate_mode: "generate",
-            generate_num: 1,
-          });
+            .getGenerator(imageGeneratorType as ImageGeneratorType);
+          
+          let coverImageUrl: string;
+          if (imageGeneratorType === "GEMINI" || imageGeneratorType === "GEMINI_PRO") {
+            // Gemini 图片生成器 - 左侧标题文字，右侧使用实例，强制2.35:1比例
+            const geminiGenerator = imageGenerator as any;
+            coverImageUrl = await geminiGenerator.generatePoster({
+              title: generatedTitle,
+              sub_title: undefined, // 不使用副标题
+              prompt_text_zh: `生成信息图表风格的封面图：左侧显示标题文字"${generatedTitle}"，右侧展示相关的使用实例和应用场景。要求：专业、现代、信息图表风格，不要包含时间、日期或"AI速递"等字样。`,
+              aspectRatio: "2.35:1", // 强制2.35:1比例
+            });
+          } else {
+            // 阿里云图片生成器
+            coverImageUrl = await imageGenerator.generate({
+              title: generatedTitle,
+              sub_title: "", // 不使用副标题
+              prompt_text_zh: `生成信息图表风格的封面图：左侧显示标题文字"${generatedTitle}"，右侧展示相关的使用实例和应用场景。要求：专业、现代、信息图表风格，不要包含时间、日期或"AI速递"等字样。`,
+              generate_mode: "generate",
+              generate_num: 1,
+            });
+          }
 
           // 上传封面图片
-          const media = await this.publisher.uploadImage(imageUrl);
+          const media = await this.publisher.uploadImage(coverImageUrl);
+          
+          logger.info(`[封面图片] 封面图片已生成并上传，mediaId: ${media}`);
 
-          // 渲染模板
-          const template = await this.renderer.render(templateData);
+          // --- 新增：保存文章到本地 ---
+          try {
+            logger.info("[文章存储] 开始保存文章到本地...");
+            const articleStorage = new ArticleStorage();
+            
+            // 构建完整 Markdown 内容
+            let fullMarkdown = `# ${generatedTitle}\n\n`;
+            
+            // SINGLE_URL 单篇转载模式：不添加引入、不添加文章标题层、直接使用内容
+            if (contentMode === "SINGLE_URL" && processedContents.length > 0) {
+              logger.info("[Markdown组装] SINGLE_URL 单篇模式，直接使用翻译后的内容");
+              fullMarkdown += processedContents[0].content + "\n\n";
+            } else {
+              // 多篇文章模式：添加引入、为每篇文章添加 ## 标题
+              if (introduction) {
+                fullMarkdown += `${introduction}\n\n---\n\n`;
+              }
+              
+              processedContents.forEach((content, index) => {
+                fullMarkdown += `## ${content.title}\n\n${content.content}\n\n`;
+                if (index < processedContents.length - 1) {
+                  fullMarkdown += `\n---\n\n`;
+                }
+              });
+            }
+
+            // 如果最后带有结语（已经在最后一张文章内容里了，所以这里不用重复添加，除非 processedContents 没被处理）
+            
+            const savedPath = await articleStorage.saveArticle({
+              title: generatedTitle,
+              markdown: fullMarkdown,
+              html: renderedTemplate,
+              coverImageUrl: coverImageUrl, // 使用生成的封面图 URL
+              metadata: {
+                contentMode,
+                articleCount: processedContents.length,
+                sourceUrls: processedContents.map(c => c.url),
+              }
+            });
+            logger.info(`[文章存储] 文章已成功保存到本地: ${savedPath}`);
+          } catch (storageError) {
+            logger.error(`[文章存储] 保存文章到本地失败: ${storageError instanceof Error ? storageError.message : String(storageError)}`);
+            // 存储失败不影响发布流程
+          }
+
+          // 记录整体介绍图的生成状态
+          if (overviewImageUrl) {
+            logger.info(`[整体介绍图] ✅ 整体介绍图生成成功，可在后续流程中使用`);
+          } else {
+            logger.warn(`[整体介绍图] ⚠️ 整体介绍图生成失败，已跳过`);
+          }
 
           return {
-            summaryTitle: title,
+            summaryTitle: generatedTitle,
             mediaId: media,
-            renderedTemplate: template,
+            renderedTemplate: renderedTemplate,
+            introduction: introduction, // 引入内容
+            overviewImageUrl: overviewImageUrl ?? undefined, // 整体介绍图URL（可选，base64格式，1K分辨率）
           };
         },
       );
 
-      // 8. 发布文章
+      // 9. 发布文章
       await step.do("publish-article", {
         retries: { limit: 3, delay: "10 second", backoff: "exponential" },
         timeout: "5 minutes",
@@ -441,7 +913,17 @@ export class WeixinArticleWorkflow
         );
       });
 
-      // 9. 完成报告
+      // 10. 注册已发布的文章 URL 到去重表（GitHub 项目除外）
+      // GitHub 项目只使用 github-project-registry.json 去重，不使用 url-registry.json
+      if (processedContents && processedContents.length > 0 && contentMode !== "GITHUB_TRENDING") {
+        logger.info(`[去重] 正在将 ${processedContents.length} 个 URL 注册到全局去重表`);
+        for (const content of processedContents) {
+          this.urlRegistry.register(content.url, content.title, contentMode);
+        }
+        await this.urlRegistry.save();
+      }
+
+      // 11. 完成报告
       const summary = `
         工作流执行完成
         - 数据源: ${totalSources} 个
@@ -477,10 +959,11 @@ export class WeixinArticleWorkflow
     type: string,
     source: { identifier: string },
     scraper: ContentScraper,
+    options?: ScraperOptions,
   ): Promise<ScrapedContent[]> {
     try {
       logger.debug(`[${type}] 抓取: ${source.identifier}`);
-      const contents = await scraper.scrape(source.identifier);
+      const contents = await scraper.scrape(source.identifier, options);
       this.stats.success++;
       return contents;
     } catch (error) {
@@ -495,12 +978,286 @@ export class WeixinArticleWorkflow
     }
   }
 
-  private async processContent(content: ScrapedContent): Promise<void> {
+  /**
+   * 预处理图片：提取、过滤、上传并建立映射
+   * @param content 待处理的内容
+   * @returns 原始URL -> 微信CDN URL 的映射表
+   */
+  private async preProcessImages(content: ScrapedContent): Promise<Map<string, string>> {
+    const mapping = new Map<string, string>();
+    
     try {
-      const summary = await this.summarizer.summarize(JSON.stringify(content));
-      content.title = summary.title;
-      content.content = summary.content;
-      content.metadata.keywords = summary.keywords;
+      // 1. 提取所有图片 URL（包括 Markdown 和 HTML）
+      const imageUrls = this.extractImageUrls(content.content);
+      
+      if (imageUrls.length === 0) {
+        logger.debug(`[图片预处理] ${content.id} 未发现图片`);
+        return mapping;
+      }
+      
+      logger.info(`[图片预处理] ${content.id} 发现 ${imageUrls.length} 张图片`);
+      
+      // 2. 使用 WeixinImageProcessor 检查尺寸并过滤
+      // 注意：需要导入 WeixinImageProcessor 并实例化
+      const { WeixinImageProcessor } = await import("@src/utils/image/image-processor.ts");
+      const imageProcessor = new WeixinImageProcessor(this.publisher);
+      const qualifiedImages: string[] = [];
+      
+      for (const url of imageUrls) {
+        // 跳过已经是微信 CDN 的图片
+        if (url.includes('mmbiz.qpic.cn')) {
+          logger.debug(`[图片预处理] 跳过微信CDN图片: ${url.substring(0, 50)}...`);
+          continue;
+        }
+        
+        // 检查尺寸
+        const isQualified = await imageProcessor.isHighQualityImage(url);
+        
+        if (isQualified) {
+          qualifiedImages.push(url);
+        }
+      }
+      
+      logger.info(`[图片预处理] ${content.id} 筛选出 ${qualifiedImages.length} 张符合尺寸要求的图片`);
+      
+      // 3. 处理并上传符合要求的图片
+      for (const url of qualifiedImages) {
+        try {
+          // 下载图片
+          const response = await fetch(url);
+          if (!response.ok) {
+            logger.warn(`[图片预处理] 下载失败: ${url.substring(0, 50)}...`);
+            continue;
+          }
+
+          // 若 Content-Type 明确为 HTML/XML，直接跳过，避免把错误页当图片上传
+          const contentType = (response.headers.get("content-type") || "").toLowerCase();
+          if (contentType.includes("text/html") || contentType.includes("application/xml") || contentType.includes("text/xml")) {
+            logger.warn(`[图片预处理] URL 返回 HTML/XML 而非图片，已跳过: ${url.substring(0, 50)}...`);
+            continue;
+          }
+
+          const imageBuffer = new Uint8Array(await response.arrayBuffer());
+          if (imageBuffer.length === 0) {
+            logger.warn(`[图片预处理] 图片数据为空: ${url.substring(0, 50)}...`);
+            continue;
+          }
+
+          // 检查文件头：拒绝 HTML/XML（<?xm、<!DO、<htm），只接受 JPEG/PNG
+          const isJPEG = imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8;
+          const isPNG = imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50 && imageBuffer[2] === 0x4E && imageBuffer[3] === 0x47;
+          const looksLikeXml = (imageBuffer[0] === 0x3c && imageBuffer[1] === 0x3f) || (imageBuffer[0] === 0x3c && imageBuffer[1] === 0x21) || (imageBuffer[0] === 0x3c && imageBuffer[1] === 0x68);
+
+          if (looksLikeXml) {
+            logger.warn(`[图片预处理] 返回内容为 HTML/XML 而非图片(文件头 3c...)，已跳过: ${url.substring(0, 50)}...`);
+            continue;
+          }
+          if (!isJPEG && !isPNG) {
+            const hex = Array.from(imageBuffer.slice(0, 4)).map((b) => b.toString(16).padStart(2, "0")).join(" ");
+            logger.warn(`[图片预处理] 格式非 JPEG/PNG(文件头: ${hex})，已跳过: ${url.substring(0, 50)}...`);
+            continue;
+          }
+
+          // 使用 processContent 中的 uploadContentImage 方法上传
+          const weixinUrl = await this.publisher.uploadContentImage(url, imageBuffer);
+          
+          mapping.set(url, weixinUrl);
+          logger.info(`[图片预处理] 上传成功: ${url.substring(0, 30)}... -> ${weixinUrl.substring(0, 50)}...`);
+        } catch (error) {
+          logger.warn(`[图片预处理] 处理图片失败: ${url.substring(0, 50)}... - ${error instanceof Error ? error.message : String(error)}`);
+        }
+      }
+      
+      logger.info(`[图片预处理] ${content.id} 完成，成功上传 ${mapping.size} 张图片`);
+      
+    } catch (error) {
+      logger.error(`[图片预处理] ${content.id} 预处理失败:`, error);
+    }
+    
+    return mapping;
+  }
+  
+  /**
+   * 从内容中提取所有图片 URL
+   * @param content Markdown 或 HTML 内容
+   * @returns 图片 URL 数组
+   */
+  private extractImageUrls(content: string): string[] {
+    const urls = new Set<string>();
+    
+    // Markdown 图片: ![alt](url)
+    const mdPattern = /!\[[^\]]*\]\(([^)]+)\)/g;
+    let match;
+    while ((match = mdPattern.exec(content)) !== null) {
+      urls.add(match[1]);
+    }
+    
+    // HTML img 标签: <img src="url" />
+    const imgPattern = /<img[^>]+src=["']([^"']+)["'][^>]*>/g;
+    while ((match = imgPattern.exec(content)) !== null) {
+      urls.add(match[1]);
+    }
+    
+    // 提取标题前的图片
+    const headingImageUrls = this.extractImagesBeforeHeadings(content);
+    headingImageUrls.forEach(url => urls.add(url));
+    
+    return Array.from(urls);
+  }
+
+  /**
+   * 提取每个标题前的图片
+   * 标题格式：## 或 ###
+   */
+  private extractImagesBeforeHeadings(content: string): string[] {
+    const urls: string[] = [];
+    const lines = content.split('\n');
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      // 检测标题：## 或 ###
+      if (line.match(/^#{2,3}\s+/)) {
+        // 向前查找，找到第一个图片（最多向前查找5行）
+        for (let j = Math.max(0, i - 5); j < i; j++) {
+          const prevLine = lines[j];
+          // 匹配 Markdown 图片
+          const mdMatch = prevLine.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+          if (mdMatch) {
+            urls.push(mdMatch[2]);
+            break; // 只取第一个图片
+          }
+          // 匹配 HTML img 标签
+          const htmlMatch = prevLine.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/);
+          if (htmlMatch) {
+            urls.push(htmlMatch[1]);
+            break;
+          }
+        }
+      }
+    }
+    
+    return urls;
+  }
+  
+  /**
+   * 替换内容中的图片 URL
+   * @param content 原始内容
+   * @param mapping 原始URL -> 微信CDN URL 的映射表
+   * @returns 替换后的内容
+   */
+  private replaceImageUrls(content: string, mapping: Map<string, string>): string {
+    let replacedContent = content;
+    
+    for (const [originalUrl, weixinUrl] of mapping.entries()) {
+      // 转义特殊字符
+      const escapedOriginalUrl = originalUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      
+      // 替换 Markdown 格式: ![alt](originalUrl)
+      replacedContent = replacedContent.replace(
+        new RegExp(`!\\[([^\\]]*)\\]\\(${escapedOriginalUrl}\\)`, 'g'),
+        `![$1](${weixinUrl})`
+      );
+      
+      // 替换 HTML 格式: <img src="originalUrl" />
+      replacedContent = replacedContent.replace(
+        new RegExp(`<img([^>]*)src=["']${escapedOriginalUrl}["']([^>]*)>`, 'g'),
+        `<img$1src="${weixinUrl}"$2>`
+      );
+    }
+    
+    return replacedContent;
+  }
+
+  private async processContent(content: ScrapedContent, mode: ContentMode): Promise<void> {
+    try {
+      // 0. 预处理图片：提取、过滤、上传并建立映射
+      const imageUrlMapping = await this.preProcessImages(content);
+      logger.info(`[内容处理] ${content.id} 预处理图片完成，建立 ${imageUrlMapping.size} 个URL映射`);
+
+      // 1. 生成摘要（LLM 会保留原始图片 URL）
+      let summary: { title: string; content: string; keywords?: string[] } | null = null;
+      if (mode === "GITHUB_TRENDING" && content.metadata.source === "github-trending") {
+        logger.info(`[内容处理] 采用 GitHub 专家模式处理: ${content.id}`);
+        summary = await this.summarizer.summarizeGitHubProject({
+          name: content.metadata.fullName || content.title,
+          url: content.url,
+          stars: content.metadata.stars,
+          readme: content.content,
+        });
+        // 注意：videoLink 已经在 FireCrawl 阶段被提取并保存到 content.metadata.videoLink 中
+      } else if (mode === "AI_NEWS_SITE" && content.metadata.source === "ai-news-site") {
+        logger.info(`[内容处理] 采用 AI 新闻网站翻译模式处理: ${content.id}`);
+        summary = await this.summarizer.summarizeAINewsSite(content.content);
+      } else if (mode === "SINGLE_URL") {
+        logger.info(`[内容处理] 采用 SINGLE_URL 转载模式：仅翻译+精辟扩充，轻量模型: ${content.id}`);
+        const res = await this.summarizer.translateAndLightExpandForRepost(content.content);
+        // 使用翻译后的标题，而不是固定的"转载{作者}（作者）"
+        content.title = res.translatedTitle || res.originalTitle || "无标题";
+        // 在内容开头添加一级标题（使用翻译后的标题）
+        content.content = `# ${content.title}\n\n${res.content}`;
+        content.metadata.keywords = [];
+        // 保存原文标题和作者信息到 metadata，供后续使用
+        content.metadata.originalTitle = res.originalTitle;
+        content.metadata.author = res.author;
+        summary = { title: content.title, content: content.content, keywords: [] };
+        logger.info(`[内容处理] SINGLE_URL 标题设置为: ${content.title}, 已在内容开头添加一级标题`);
+      }
+      if (!summary) {
+        summary = await this.summarizer.summarize(JSON.stringify(content));
+      }
+
+      if (summary && mode !== "SINGLE_URL") {
+        content.title = summary.title;
+        content.content = summary.content;
+        content.metadata.keywords = summary.keywords ?? [];
+      }
+
+      // 1.5. 替换图片 URL（将原始 URL 替换为微信 CDN URL）
+      if (imageUrlMapping.size > 0) {
+        content.content = this.replaceImageUrls(content.content, imageUrlMapping);
+        logger.info(`[内容处理] ${content.id} 完成图片URL替换`);
+      }
+      
+      // 2. 清理 LLM 可能生成的引用标记（如 [1]、[2] 等）
+      if (mode === "GITHUB_TRENDING") {
+        // 移除文章末尾的引用列表（如：[1] 项目主页: https://...）
+        content.content = content.content.replace(/\n*\[\d+\]\s*项目(主页|地址|链接)[：:]\s*https?:\/\/[^\s\n]+\s*/g, '');
+        content.content = content.content.replace(/\n*\[\d+\]\s*[^\n]*https?:\/\/github\.com[^\s\n]+\s*/g, '');
+        // 移除末尾多余的空行
+        content.content = content.content.replace(/\n{3,}$/g, '\n\n');
+        logger.debug(`[内容处理] ${content.id} 清理引用标记`);
+      }
+      
+      // 3. 优先使用爬取的图片，必要时AI补充（仅 Tech News 模式）
+      if (mode !== "GITHUB_TRENDING") {
+        try {
+          // 检查是否有现有图片（包括 media 数组和正文内容中）
+          const mediaImageCount = content.media?.length || 0;
+          const contentHasImages = /!\[.*?\]\(.*?\)|<img.*?>/i.test(content.content);
+          
+          logger.info(`[内容处理] ${content.id} 现有 media 图片: ${mediaImageCount}, 正文已有图片: ${contentHasImages}`);
+          
+          // 策略：优先使用网上获取或正文已有的图片，只有在完全没有图片时才调用AI补充
+          if (mediaImageCount >= 1 || contentHasImages) {
+            logger.info(`[内容处理] ${content.id} 已有图片，无需额外补充`);
+          } else {
+            logger.info(`[内容处理] ${content.id} 完全没有图片，调用AI生成一张图片`);
+            const filledContent = await this.imageFillerService.fillImages(content, {
+              minImagesPerArticle: 1, // 没有图片时生成1张
+              maxImagesPerArticle: 1, // 最多生成1张
+              generateCoverImage: false, // 不生成封面，只生成内容配图
+            });
+            content.media = filledContent.media;
+            const aiGeneratedCount = (filledContent.media?.length || 0) - mediaImageCount;
+            logger.info(
+              `[内容处理] ${content.id} 图片补充完成，共 ${content.media?.length || 0} 张（AI生成${aiGeneratedCount}张）`
+            );
+          }
+        } catch (imageError) {
+          logger.warn(`[内容处理] ${content.id} 图片补充失败:`, imageError);
+          // 图片补充失败不影响主流程
+        }
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       logger.error(`[内容处理] ${content.id} 处理失败:`, message);
@@ -543,5 +1300,67 @@ export class WeixinArticleWorkflow
       logger.error(`[去重] 检查重复失败: ${error}`);
       return false;
     }
+  }
+
+  /**
+   * 使用 LLM 统一提取所有内容的真正正文和插图
+   * SINGLE_URL 模式使用轻量级提取（保留更多原文）
+   */
+  private async performGlobalLlmExtraction(contents: ScrapedContent[], mode?: string): Promise<void> {
+    if (contents.length === 0) return;
+
+    const isSingleUrl = mode === "SINGLE_URL";
+    const extractionMode = isSingleUrl ? "轻量级提取（保留更多原文）" : "标准提取";
+    logger.info(`[LLM预提取] 开始对 ${contents.length} 篇文章进行正文和插图提取 (${extractionMode})...`);
+    
+    const extractionProgress = new SimpleProgress({
+      title: "LLM 提取进度",
+      total: contents.length,
+    });
+    let completed = 0;
+
+    await Promise.all(contents.map(async (content) => {
+      try {
+        const rawMarkdown = content.content;
+        
+        // SINGLE_URL 使用专用的轻量级提取，其他模式使用标准提取
+        const result = isSingleUrl
+          ? await this.summarizer.extractContentForSingleUrl(rawMarkdown)
+          : await this.summarizer.extractArticleContent(rawMarkdown);
+        
+        // 保存原始 Markdown 到元数据，供存储使用
+        content.metadata.rawMarkdown = rawMarkdown;
+        // 更新正文为提取后的内容
+        content.content = result.mainContent;
+        content.metadata.hasLlmExtraction = true;
+
+        // 合并提取出的图片 URL 到 media 数组
+        if (result.imageUrls && result.imageUrls.length > 0) {
+          const existingUrls = new Set(content.media?.map(m => m.url) || []);
+          content.media = content.media || [];
+          
+          for (const url of result.imageUrls) {
+            if (!existingUrls.has(url)) {
+              content.media.push({
+                url: url,
+                type: "image/jpeg", // 默认
+                size: { width: 1200, height: 630 },
+              });
+              existingUrls.add(url);
+            }
+          }
+          content.metadata.imageCount = content.media.length;
+        }
+
+        logger.debug(`[LLM预提取] ✅ 完成: ${content.title?.slice(0, 20)}... (提取到 ${result.imageUrls?.length || 0} 张图)`);
+      } catch (error) {
+        logger.error(`[LLM预提取] ❌ 失败: ${content.title?.slice(0, 20)}... - ${error instanceof Error ? error.message : String(error)}`);
+        // 失败则保留原样，不更新 metadata.rawMarkdown
+      } finally {
+        await extractionProgress.render(++completed);
+      }
+    }));
+
+    logger.info(`[LLM预提取] 所有内容提取处理完成`);
   }
 }

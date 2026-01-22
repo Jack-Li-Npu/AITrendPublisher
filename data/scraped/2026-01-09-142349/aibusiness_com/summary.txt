@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-09T06:23:49.131Z
+文件夹: 2026-01-09-142349
+总数量: 3 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. Nvidia Intros Six New AI Chips and New Open Models
+   来源: https://aibusiness.com/generative-ai/nvidia-intros-new-ai-chips-and-open-models
+   发布时间: 2026/01/09 06:22:14
+   内容长度: 7827 字符
+   图片数量: 5
+
+2. 10 AI Predictions for 2026
+   来源: https://aibusiness.com/generative-ai/10-ai-predictions-2026
+   发布时间: 2026/01/09 06:22:26
+   内容长度: 8003 字符
+   图片数量: 5
+
+3. x402 Aims to Enable Agentic Payments With Digital Dollars
+   来源: https://aibusiness.com/agentic-ai/x402-agentic-payments-digital-dollars
+   发布时间: 2026/01/09 06:22:33
+   内容长度: 5127 字符
+   图片数量: 5
+

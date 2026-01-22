@@ -1,0 +1,46 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-21T07:21:33.680Z
+文件夹: 2026-01-21-152133
+总数量: 6 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. How NVIDIA Became One of the World's Most Valuable Brands | AI Magazine
+   来源: https://aimagazine.com/news/tsmc-surging-ai-chip-demand
+   发布时间: 2026/01/21 07:20:44
+   内容长度: 5444 字符
+   图片数量: 5
+
+2. How NVIDIA Became One of the World's Most Valuable Brands | AI Magazine
+   来源: https://aimagazine.com/news/openai-10-year-plan-to-build-ai-hardware-in-the-us
+   发布时间: 2026/01/21 07:20:55
+   内容长度: 5699 字符
+   图片数量: 5
+
+3. How Accenture is Harnessing AI for Enterprise Reinvention | AI Magazine
+   来源: https://aimagazine.com/news/how-accenture-earned-leader-status-in-gartner-magic-quadrant
+   发布时间: 2026/01/21 07:21:02
+   内容长度: 6052 字符
+   图片数量: 5
+
+4. Google: Why AI is Key to Alleviating Climate Change Impacts | AI Magazine
+   来源: https://aimagazine.com/news/google-alleviating-climate-change-impacts-physics-ai
+   发布时间: 2026/01/21 07:21:08
+   内容长度: 5294 字符
+   图片数量: 5
+
+5. How NVIDIA Became One of the World's Most Valuable Brands | AI Magazine
+   来源: https://aimagazine.com/news/virgin-media-o2-saving-customer-call-hours-with-ai
+   发布时间: 2026/01/21 07:21:14
+   内容长度: 2516 字符
+   图片数量: 5
+
+6. BlackRock: Why AI Investment will Evolve in 2026 | AI Magazine
+   来源: https://aimagazine.com/news/blackrock-investors-will-back-energy-over-big-tech-in-2026
+   发布时间: 2026/01/21 07:21:23
+   内容长度: 5882 字符
+   图片数量: 7
+

@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-16T05:15:51.060Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "eigent-ai / eigent",
+      "url": "https://github.com/eigent-ai/eigent",
+      "title": "GitHub - eigent-ai/eigent: Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity.",
+      "stars": 6515,
+      "description": "Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity. - eigent-ai/eigent",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_eigent-ai_eigent_1768540534972",
+      "imageCount": 36
+    },
+    {
+      "fullName": "blakeblackshear / frigate",
+      "url": "https://github.com/blakeblackshear/frigate",
+      "title": "GitHub - blakeblackshear/frigate: NVR with realtime local object detection for IP cameras",
+      "stars": 29428,
+      "description": "NVR with realtime local object detection for IP cameras - blakeblackshear/frigate",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_blakeblackshear_frigate_1768540537309",
+      "imageCount": 25
+    },
+    {
+      "fullName": "cilium / cilium",
+      "url": "https://github.com/cilium/cilium",
+      "title": "GitHub - cilium/cilium: eBPF-based Networking, Security, and Observability",
+      "stars": 23386,
+      "description": "eBPF-based Networking, Security, and Observability - cilium/cilium",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_cilium_cilium_1768540541000",
+      "imageCount": 38
+    },
+    {
+      "fullName": "wavetermdev / waveterm",
+      "url": "https://github.com/wavetermdev/waveterm",
+      "title": "GitHub - wavetermdev/waveterm: An open-source, cross-platform terminal for seamless workflows",
+      "stars": 16493,
+      "description": "An open-source, cross-platform terminal for seamless workflows - wavetermdev/waveterm",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_wavetermdev_waveterm_1768540546704",
+      "imageCount": 15
+    },
+    {
+      "fullName": "ultralytics / ultralytics",
+      "url": "https://github.com/ultralytics/ultralytics",
+      "title": "GitHub - ultralytics/ultralytics: Ultralytics YOLO 🚀",
+      "stars": 51510,
+      "description": "Ultralytics YOLO 🚀. Contribute to ultralytics/ultralytics development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_ultralytics_ultralytics_1768540550041",
+      "imageCount": 56
+    }
+  ],
+  "indexByFullName": {
+    "eigent-ai / eigent": 0,
+    "blakeblackshear / frigate": 1,
+    "cilium / cilium": 2,
+    "wavetermdev / waveterm": 3,
+    "ultralytics / ultralytics": 4
+  },
+  "indexByUrl": {
+    "https://github.com/eigent-ai/eigent": 0,
+    "https://github.com/blakeblackshear/frigate": 1,
+    "https://github.com/cilium/cilium": 2,
+    "https://github.com/wavetermdev/waveterm": 3,
+    "https://github.com/ultralytics/ultralytics": 4
+  }
+}

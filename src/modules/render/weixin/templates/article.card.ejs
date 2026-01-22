@@ -1,0 +1,135 @@
+<!-- 卡片风格模板 - 每篇文章像独立卡片，适合多篇汇总 -->
+<div style="
+    margin: 0;
+    padding: 16px 12px;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    line-height: 1.7;
+    color: #333;
+    background: #f5f7fa;
+  ">
+
+  <!-- 卡片式目录 -->
+  <div style="
+      margin: 16px 8px 24px;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    ">
+    <div style="
+          color: #ffffff;
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 16px;
+          text-align: center;
+        ">
+      📚 本期内容 (<%= articles.length %>篇)
+    </div>
+    
+    <% for(var i=0; i<articles.length; i++) { var article=articles[i]; %>
+      <div style="
+            margin: 10px 0;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+          ">
+        <span style="
+              display: inline-block;
+              width: 26px;
+              height: 26px;
+              line-height: 26px;
+              text-align: center;
+              background: #ffffff;
+              color: #667eea;
+              font-size: 14px;
+              font-weight: 700;
+              border-radius: 50%;
+              margin-right: 10px;
+            "><%= i + 1 %></span>
+        <span style="color: #ffffff; font-size: 14px; font-weight: 500;"><%= article.title %></span>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- 文章卡片 -->
+  <% for(var j=0; j<articles.length; j++) { var article=articles[j]; %>
+    <div style="
+          margin: 20px 8px;
+          padding: 0;
+          background: #ffffff;
+          border-radius: 12px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+          overflow: hidden;
+        ">
+      
+      <!-- 卡片头部 -->
+      <div style="
+            padding: 20px 20px 16px;
+            background: linear-gradient(135deg, <%= j === 0 ? '#667eea, #764ba2' : (j === 1 ? '#f093fb, #f5576c' : '#4facfe, #00f2fe') %>);
+          ">
+        <!-- 序号标签 -->
+        <div style="margin-bottom: 12px;">
+          <span style="
+                display: inline-block;
+                padding: 6px 14px;
+                background: rgba(255,255,255,0.3);
+                color: #ffffff;
+                font-size: 12px;
+                font-weight: 700;
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
+              ">第 <%= j + 1 %> 篇</span>
+        </div>
+        
+        <!-- 标题 -->
+        <h2 style="
+              margin: 0 0 12px;
+              font-size: 22px;
+              font-weight: 700;
+              color: #ffffff;
+              line-height: 1.4;
+              text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            "><%= article.title %></h2>
+        
+        <!-- 元信息 -->
+        <div style="color: rgba(255,255,255,0.85); font-size: 12px;">
+          <span><%= article.publishDate %></span>
+          <% if(article.keywords && article.keywords.length > 0) { %>
+            <% for(var k=0; k<Math.min(article.keywords.length, 3); k++) { %>
+              <span style="margin-left: 10px;">#<%= article.keywords[k] %></span>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- 卡片内容 -->
+      <div style="padding: 24px 20px;">
+        <div style="
+              font-size: 15px;
+              color: #34495e;
+              line-height: 1.8;
+              text-align: justify;
+            ">
+          <%- article.content %>
+        </div>
+      </div>
+
+      <!-- 卡片底部 -->
+      <div style="
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+          ">
+        <span style="color: #999; font-size: 12px;">来源: <%= article.url %></span>
+      </div>
+    </div>
+
+    <% if (j < articles.length - 1) { %>
+    <!-- 卡片间距 -->
+    <div style="height: 12px;"></div>
+    <% } %>
+  <% } %>
+
+</div>

@@ -88,10 +88,12 @@ deno task build:all
 
 - 🧠 AI 智能处理
 
-  - 使用 DeepseekAI Together 千问 万象 讯飞 进行内容总结
-  - 关键信息提取
-  - 智能标题生成
-  - Text embeddings and reranking via Jina AI
+  - 多模型支持：DeepSeek, OpenAI, Gemini 2.0, 千问, 讯飞等
+  - 智能内容总结与关键信息提取
+  - AI 驱动的标题生成
+  - 内容质量评分与排序
+  - 向量嵌入与语义检索（Jina AI）
+  - 智能缓存机制，减少 API 调用成本
 
 - 📢 自动发布
 
@@ -112,15 +114,21 @@ TrendPublish 提供了多种精美的文章模板。查看
 [模板展示页面](https://openaispace.github.io/ai-trend-publish/templates.html)
 了解更多详情。
 
-## DONE
+## ✨ 最新更新
 
-- [x] 微信公众号文章发布
+### v2.1.0 (2026-01)
+- [x] ✅ **新增 Google Gemini 2.0 支持** - 集成最新的 Gemini 2.0 Flash 和 Gemini 1.5 Pro
+- [x] ✅ **智能缓存系统** - LLM 响应缓存，显著降低 API 调用成本
+- [x] ✅ **性能监控工具** - 实时监控各模块性能，优化执行效率
+- [x] ✅ **模块化 LLM 配置** - 为不同功能模块配置专用模型（如摘要用 Gemini，排序用 DeepSeek）
+
+### 已完成功能
+- [x] 微信公众号文章自动发布
 - [x] 大模型每周排行榜
-- [x] 热门AI相关仓库推荐
-- [x] 添加通义千问（Qwen）支持
-- [x] 支持多模型配置（如 DEEPSEEK_MODEL="deepseek-chat|deepseek-reasoner"）
-- [x] 支持指定特定模型（如
-      AI_CONTENT_RANKER_LLM_PROVIDER="DEEPSEEK:deepseek-reasoner"）
+- [x] 热门 AI 仓库推荐
+- [x] 多 LLM 提供商支持（OpenAI, DeepSeek, Gemini, 千问, 讯飞）
+- [x] 支持多模型配置（如 `DEEPSEEK_MODEL="deepseek-chat|deepseek-reasoner"`）
+- [x] 支持指定特定模型（如 `AI_CONTENT_RANKER_LLM_PROVIDER="DEEPSEEK:deepseek-reasoner"`）
 
 ## Todo
 
@@ -142,16 +150,22 @@ TrendPublish 提供了多种精美的文章模板。查看
 
 ## 🛠 技术栈
 
-- **运行环境**: Deno + TypeScript
-- **AI 服务**: DeepseekAI Together 千问 万象 讯飞 Jina AI (see [Integration Guide](docs/jina_integration_guide.md))
+- **运行环境**: Deno 2.0+ TypeScript
+- **AI 服务**: 
+  - LLM: DeepSeek, OpenAI GPT-4, Google Gemini 2.0, 通义千问, 讯飞星火
+  - 嵌入: Jina AI, OpenAI Embeddings
+  - 搜索: Jina DeepSearch
 - **数据源**:
   - Twitter/X API
-  - FireCrawl
-  - Jina AI (for scraping and search, see [Integration Guide](docs/jina_integration_guide.md))
+  - FireCrawl 网页抓取
+  - RSSHub 订阅源
+  - Jina AI 智能搜索
 - **模板引擎**: EJS
-- **开发工具**:
-  - Deno
-  - TypeScript
+- **数据库**: MySQL + Drizzle ORM
+- **性能优化**: 
+  - 智能缓存系统
+  - 并发限制器
+  - 重试机制
 
 ## 🚀 快速开始
 

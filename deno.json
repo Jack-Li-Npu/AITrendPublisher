@@ -1,8 +1,11 @@
 {
   "nodeModulesDir": "auto",
+  "npmRegistry": "https://registry.npmjs.org/",
   "tasks": {
-    "start": "deno run -A src/index.ts",
-    "test": "deno run -A  src/test.ts",
+    "start": "deno run -A --env-file=.env src/index.ts",
+    "test": "deno run -A --env-file=.env src/test.ts",
+    "test:gemini": "deno run -A --env-file=.env src/providers/llm/tests/gemini-llm.test.ts",
+    "test:firecrawl": "deno run -A --env-file=.env src/modules/scrapers/tests/fireCrawl.scraper.test.ts",
     "build:win": "deno compile -A --target x86_64-pc-windows-msvc --output trendFinder.exe --icon ./docs/images/main.ico --include src/modules/render/templates src/test.ts ",
     "build:mac-x64": "deno compile -A --target x86_64-apple-darwin --output trendFinder-mac-x64 --include src/modules/render/templates src/test.ts ",
     "build:mac-arm64": "deno compile -A --target aarch64-apple-darwin --output trendFinder-mac-arm64 --include src/modules/render/templates src/test.ts ",
@@ -16,11 +19,35 @@
     "@std/assert": "jsr:@std/assert@1",
     "@src/": "./src/",
     "@zilla/logger": "jsr:@zilla/logger@^1.0.1",
-    "@sapling/markdown": "https://deno.land/x/sapling_markdown@v1.0.0/mod.ts",
     "drizzle-kit": "npm:drizzle-kit@^0.30.5",
     "drizzle-orm": "npm:drizzle-orm@^0.40.0",
-    "mysql2": "npm:mysql2@^3.13.0"
+    "mysql2": "npm:mysql2@^3.13.0",
+    "marked": "npm:marked@^17.0.1",
+    "reading-time": "npm:reading-time@^1.5.0",
+    "front-matter": "npm:front-matter@^4.0.2",
+    "highlight.js": "npm:highlight.js@^11.11.1",
+    "isomorphic-dompurify": "npm:isomorphic-dompurify@^2.34.0",
+    "fflate": "npm:fflate@^0.8.2",
+    "es-toolkit": "npm:es-toolkit@^1.42.0",
+    "mermaid": "npm:mermaid@^11.12.2",
+    "postcss": "npm:postcss@^8.5.6",
+    "postcss-calc": "npm:postcss-calc@^10.1.1",
+    "postcss-custom-properties": "npm:postcss-custom-properties@^14.0.6",
+    "node-cron": "npm:node-cron@^3.0.3",
+    "axios": "npm:axios@^1.7.0",
+    "cheerio": "npm:cheerio@^1.0.0",
+    "ejs": "npm:ejs@^3.1.10",
+    "fast-xml-parser": "npm:fast-xml-parser@^4.5.0",
+    "lru-cache": "npm:lru-cache@^11.0.0",
+    "openai": "npm:openai@^4.70.0",
+    "zod": "npm:zod@^3.24.0",
+    "juice": "npm:juice@^11.0.0",
+    "sharp": "npm:sharp@^0.33.0"
   },
+  "compilerOptions": {
+    "allowImportingTsExtensions": true
+  },
+  "unstable": ["sloppy-imports"],
   "exclude": [
     "node_modules",
     "dist",
@@ -38,5 +65,9 @@
         "require-await"
       ]
     }
+  },
+  "allowScripts": {
+    "allow": ["npm:sharp@0.33.5"],
+    "deny": ["npm:esbuild@0.18.20", "npm:esbuild@0.19.12"]
   }
 }

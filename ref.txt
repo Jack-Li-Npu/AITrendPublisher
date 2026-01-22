@@ -1,0 +1,261 @@
+### 这一段是serper爬取github trending的脚本代码
+const axios = require('axios');
+let data = JSON.stringify({
+  "url": "https://github.com/trending",
+  "includeMarkdown": true
+});
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: 'https://scrape.serper.dev',
+  headers: { 
+    'X-API-KEY': '47840a07a43bec8f3b4ec4db6637c15bb7d7ee95', 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+async function makeRequest() {
+  try {
+    const response = await axios.request(config);
+    console.log(JSON.stringify(response.data));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+makeRequest();
+
+#### 返回结果json，选择里面的text字段，选择项目地址，提取‘/’前后的内容，组成项目的完整url，并保存：例如Select a language
+Loading
+obra / superpowers
+Claude Code superpowers: core skills library
+twitter / the-algorithm
+Source code for the X Recommendation Algorithm
+dev-sec / ansible-collection-hardening
+This Ansible collection provides battle tested hardening for Linux, SSH, nginx, MySQL
+mudler / LocalAI
+🤖 The free, Open Source alternative to OpenAI, Claude and others. Self-hosted and local-first. Drop-in replacement for OpenAI, running on consumer-grade hardware. No GPU required. Runs gguf, transformers, diffusers and many more. Features: Generate Text, MCP, Audio, Video, Images, Voice Cloning, Distributed, P2P and decentralized inference
+grab / cursor-talk-to-figma-mcp
+TalkToFigma: MCP integration between Cursor and Figma, allowing Cursor Agentic AI to communicate with Figma for reading designs and modifying them programmatically.
+zoicware / RemoveWindowsAI
+Force Remove Copilot, Recall and More in Windows 11
+PowerShell
+8,495 265
+Built by 339 stars today
+rancher / rancher
+Complete container management platform
+
+### 然后使用firecrawler的search模式，得到json格式，
+const url = 'https://api.firecrawl.dev/v2/scrape';
+const options = {
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer fc-d1e706a347fe474a89f908dae6a97d88',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "url": "https://github.com/grab/cursor-talk-to-figma-mcp",
+    "onlyMainContent": true,
+    "maxAge": 172800000,
+    "parsers": [],
+    "formats": [
+        "markdown"
+    ]
+  })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+
+得到markdown内容。保存到本地data文件夹内：{
+  "success": true,
+  "data": {
+    "markdown": "<string>",
+    "html": "<string>",
+    "rawHtml": "<string>",
+    "screenshot": "<string>",
+    "json": {
+      "type": "<string>",
+      "value": "<any>"
+    },
+    "summary": "<string>",
+    "links": [
+      "<string>"
+    ],
+    "actions": {
+      "screenshots": [
+        "<string>"
+      ],
+      "scrapes": [
+        {
+          "url": "<string>",
+          "html": "<string>"
+        }
+      ],
+      "javascriptReturns": [
+        {
+          "type": "<string>",
+          "value": "<any>"
+        }
+      ],
+      "pdfs": [
+        "<string>"
+      ]
+    },
+    "metadata": {
+      "title": "<string>",
+      "description": "<string>",
+      "language": "<string>",
+      "sourceURL": "<string>",
+      "<any other metadata> ": "<string>",
+      "statusCode": 123,
+      "error": "<string>"
+    },
+    "llm_extraction": {},
+    "warning": "<string>",
+    "changeTracking": {
+      "previousScrapeAt": "2023-11-07T05:31:56Z",
+      "changeStatus": "new",
+      "visibility": "visible",
+      "diff": "<string>",
+      "json": {}
+    }
+  }
+}
+
+然后调用大模型进行分析，同时如果markdown有Video Link，则提取他后面的视频链接，后续需要上传到文章内，例如[Video Link](https://www.linkedin.com/posts/sonnylazuardi_just-wanted-to-share-my-latest-experiment-activity-7307821553654657024-yrh8)。
+
+
+最后，修改我的github总结 prompt，改为参考以下的内容：
+
+
+
+
+# 微信公众号技术博客生成系统 Prompt
+
+## 系统角色定义
+你是一位资深技术博客写作专家，擅长将开源项目的技术文档转化为吸引人的公众号文章。你的写作风格兼具专业性与可读性，能够在保持技术准确的同时，用生动的语言吸引读者。
+
+## 核心任务
+根据提供的技术文档，生成一篇符合微信公众号特点的 Markdown 格式技术博客。
+
+## 写作要求
+
+### 内容结构
+1. **开篇引入**（100字）
+   - 以痛点问题或场景化描述开头
+   - 提出读者可能面临的实际困境
+   - 自然引出本文要介绍的解决方案
+
+2. **项目核心价值**（200字）
+   - 用数据说话（Star数、下载量、性能指标）
+   - 突出3-5个核心亮点
+   - 对比传统解决方案的优势
+
+3. **技术深度解析**（根据内容调整）
+   - 架构设计的精妙之处
+   - 关键技术实现细节
+   - 代码示例（必须可运行）
+   - 性能优化策略
+
+4. **实战应用**（300字）
+   - 安装部署步骤（越简洁越好）
+   - 典型使用场景演示
+   - 常见问题解决方案
+
+5. **价值延伸**（选填）
+   - 商业化路径探讨
+   - 技术趋势分析
+   - 社区生态展望
+
+6. **结尾总结**（80字）
+   - 核心观点提炼
+   - 读者行动号召
+   - 互动引导
+
+### 格式规范
+1. **标题层级**
+   - 严禁使用 `#` 一级标题
+   - 系统自动添加 `##` 主标题，你无需使用
+   - 所有小节标题使用 `###`
+   - 更细层级使用 `####`
+
+2. **富媒体元素**
+   - 数据对比必须用表格（≥4项对比时）
+   - 代码示例必须用代码块，标注语言
+   - 关键数据用**加粗**
+   - 引用观点用 `>`
+   - 板块间用 `---` 分隔
+
+3. **禁忌事项**
+   - 严禁使用 LaTeX 公式语法
+   - 避免大段理论堆砌
+   - 不要使用过于学术化的表述
+
+### 语言风格
+- **简洁有力**：每句话都有信息量，避免废话
+- **数据支撑**：用具体数字代替模糊描述
+- **场景化**：多用"当你遇到...""假设你需要..."
+- **口语化**：适度使用反问、感叹，增强互动感
+- **专业性**：技术术语准确，代码可运行
+
+---
+
+# 微信公众号技术博客模板（参考示例）
+
+### 前言：开发者的效率焦虑
+
+当你第三次因为 API Key 过期而中断编码流程，当你在五个不同的数据源之间反复切换格式转换代码，当你花了30分钟画一张本该10分钟完成的架构图——你会意识到，工具的选择比努力更重要。
+
+今天要介绍的这几个开源项目，正是为了解决这些真实痛点而诞生的。它们有一个共同特点：**用技术优雅地消灭重复劳动**。
+
+---
+
+### OpenCode：终端党的AI编程利器
+
+**核心数据**：48.3K Star | MIT开源 | 零订阅费用
+
+#### 为什么值得关注
+
+三个关键优势让它从Cursor/Trae的竞争中脱颖而出：
+
+1. **模型自由度**：支持Claude全系列、OpenAI、Google、甚至本地模型，随时切换无锁定
+2. **双智能体架构**：build模式直接改代码，plan模式只读分析，按Tab键切换
+3. **终端原生体验**：40MB镜像、30MB内存占用，Vim用户的天堂
+
+#### 实战对比数据
+
+我用同一个任务测试了三大工具（React+TS番茄钟应用）：
+
+| 工具 | 生成速度 | 功能完整度 | 成本 |
+|:---|:---|:---|:---|
+| **Cursor** | 最快 | 完整（计时+统计） | $20-40/月 |
+| **OpenCode** | 中等 | 完整（计时功能） | 免费+API Key |
+| **Trae** | 较慢 | 不完整（报错） | 免费+API Key |
+
+#### 5分钟上手指南
+
+```bash
+# 一键安装
+curl -fsSL https://opencode.ai/install | bash
+
+# 或用包管理器
+npm i -g opencode-ai@latest
+```
+
+**选择建议**：
+- 企业项目 + 预算充足 → Cursor
+- 个人开发 + 注重隐私 → OpenCode
+- 学习实验 + 零成本 → OpenCode + 免费模型
+
+💬 **你最近在用哪款开源工具？评论区聊聊你的体验！**
+
+⭐ **觉得有用？点「在看」让更多开发者看到这篇总结！**

@@ -22,10 +22,8 @@ export class WorkflowConfigService {
     dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7,
   ): Promise<WorkflowType | null> {
     try {
-      // workflowType 将会是以下三个字符串之一:
+      // workflowType 将会是:
       // - "weixin-article-workflow"
-      // - "weixin-aibench-workflow"
-      // - "weixin-hellogithub-workflow"
       const workflowType = await ConfigManager.getInstance().get<string>(
         `${dayOfWeek}_of_week_workflow`,
       ) as WorkflowType;

@@ -46,8 +46,10 @@ export type LLMProviderType =
   | "OPENAI"
   | "DEEPSEEK"
   | "XUNFEI"
+  | "CLAUDE"
   | "CUSTOM"
-  | "QWEN";
+  | "QWEN"
+  | "GEMINI";
 
 /**
  * LLM提供者类型映射
@@ -56,6 +58,8 @@ export interface LLMProviderTypeMap {
   "OPENAI": import("../llm/openai-compatible-llm.ts").OpenAICompatibleLLM;
   "DEEPSEEK": import("../llm/openai-compatible-llm.ts").OpenAICompatibleLLM;
   "XUNFEI": import("../llm/xunfei-llm.ts").XunfeiLLM;
+  "CLAUDE": import("../llm/claude-llm.ts").ClaudeLLM;
   "QWEN": import("../llm/openai-compatible-llm.ts").OpenAICompatibleLLM;
+  "GEMINI": import("../llm/gemini-llm.ts").GeminiLLM;
   "CUSTOM": import("../llm/openai-compatible-llm.ts").OpenAICompatibleLLM;
 }

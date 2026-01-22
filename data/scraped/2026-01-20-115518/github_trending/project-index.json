@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-20T03:55:18.702Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "DavidXanatos / TaskExplorer",
+      "url": "https://github.com/DavidXanatos/TaskExplorer",
+      "title": "GitHub - DavidXanatos/TaskExplorer: Power full Task Manager",
+      "stars": 2516,
+      "description": "Power full Task Manager. Contribute to DavidXanatos/TaskExplorer development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-20",
+      "contentId": "github_DavidXanatos_TaskExplorer_1768881317677",
+      "imageCount": 2
+    }
+  ],
+  "indexByFullName": {
+    "davidxanatos / taskexplorer": 0
+  },
+  "indexByUrl": {
+    "https://github.com/DavidXanatos/TaskExplorer": 0
+  }
+}

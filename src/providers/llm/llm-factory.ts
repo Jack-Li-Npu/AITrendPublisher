@@ -6,6 +6,8 @@ import {
 } from "@src/providers/interfaces/llm.interface.ts";
 import { OpenAICompatibleLLM } from "@src/providers/llm/openai-compatible-llm.ts";
 import { XunfeiLLM } from "@src/providers/llm/xunfei-llm.ts";
+import { GeminiLLM } from "@src/providers/llm/gemini-llm.ts";
+import { ClaudeLLM } from "@src/providers/llm/claude-llm.ts";
 
 /**
  * 解析LLM提供者配置
@@ -119,8 +121,14 @@ export class LLMFactory {
         }
         provider = new XunfeiLLM();
         break;
+      case "CLAUDE":
+        provider = new ClaudeLLM(undefined, config.model);
+        break;
       case "QWEN":
         provider = new OpenAICompatibleLLM("QWEN_", undefined, config.model);
+        break;
+      case "GEMINI":
+        provider = new GeminiLLM(config.model);
         break;
       case "CUSTOM":
         provider = new OpenAICompatibleLLM(

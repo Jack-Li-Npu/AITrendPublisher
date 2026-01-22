@@ -35,28 +35,45 @@ export class WeixinPublisher implements ContentPublisher {
     });
   }
 
-  private async ensureAccessToken(): Promise<string> {
-    // 检查现有token是否有效
+  private async ensureAccessToken(forceRefresh = false): Promise<string> {
+    // 检查现有token是否有效（预留5分钟余量，避免在操作过程中过期）
     if (
+      !forceRefresh &&
       this.accessToken &&
-      this.accessToken.expiresAt > new Date(Date.now() + 60000) // 预留1分钟余量
+      this.accessToken.expiresAt > new Date(Date.now() + 300000)
     ) {
       return this.accessToken.access_token;
     }
 
     try {
       await this.refresh();
-      // 获取新token
+      
+      // 使用稳定版本的 token API（推荐）
       const url =
-        `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
-      const response = await fetch(url).then((res) => res.json());
-      const { access_token, expires_in } = response;
+        `https://api.weixin.qq.com/cgi-bin/stable_token`;
+      
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          grant_type: "client_credential",
+          appid: this.appId,
+          secret: this.appSecret,
+          force_refresh: forceRefresh,
+        }),
+      }).then((res) => res.json());
+
+      const { access_token, expires_in, errcode, errmsg } = response;
+
+      if (errcode && errcode !== 0) {
+        throw new Error(`获取access_token失败: ${errcode} - ${errmsg}`);
+      }
 
       if (!access_token) {
-        throw new Error(
-          "获取access_token失败: " + JSON.stringify(response),
-        );
+        throw new Error("获取access_token失败: " + JSON.stringify(response));
       }
+
+      logger.info(`微信 access_token 获取成功，有效期: ${expires_in}秒`);
 
       this.accessToken = {
         access_token,
@@ -71,11 +88,20 @@ export class WeixinPublisher implements ContentPublisher {
     }
   }
 
+  /**
+   * 强制刷新 access_token
+   */
+  async forceRefreshToken(): Promise<void> {
+    this.accessToken = null;
+    await this.ensureAccessToken(true);
+  }
+
   private async uploadDraft(
     article: string,
     title: string,
     digest: string,
     mediaId: string,
+    retryOnTokenError = true,
   ): Promise<WeixinDraft> {
     const token = await this.ensureAccessToken();
     const url =
@@ -112,6 +138,16 @@ export class WeixinPublisher implements ContentPublisher {
       }).then((res) => res.json());
 
       if (response.errcode) {
+        // 如果是 token 失效错误，强制刷新后重试一次
+        if (
+          retryOnTokenError &&
+          (response.errcode === 40001 || response.errcode === 42001 ||
+            response.errmsg?.includes("access_token"))
+        ) {
+          logger.warn("access_token 失效，强制刷新后重试...");
+          await this.forceRefreshToken();
+          return this.uploadDraft(article, title, digest, mediaId, false);
+        }
         throw new Error(`上传草稿失败: ${response.errmsg}`);
       }
 
@@ -125,15 +161,36 @@ export class WeixinPublisher implements ContentPublisher {
   }
   /**
    * 上传图片到微信
-   * @param imageUrl 图片URL
-   * @returns 图片ID
+   * @param imageUrl 图片URL 或 base64 data URL
+   * @returns 图片ID (media_id)
    */
   async uploadImage(imageUrl: string): Promise<string> {
     if (!imageUrl) {
       // 如果图片URL为空，则返回一个默认的图片ID
       return "SwCSRjrdGJNaWioRQUHzgF68BHFkSlb_f5xlTquvsOSA6Yy0ZRjFo0aW9eS3JJu_";
     }
-    const imageBuffer = await fetch(imageUrl).then((res) => res.arrayBuffer());
+
+    let imageBuffer: ArrayBuffer;
+
+    // 处理 base64 data URL
+    if (imageUrl.startsWith("data:image/")) {
+      logger.info("检测到 base64 图片，正在转换...");
+      const match = imageUrl.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
+      if (!match) {
+        throw new Error("无效的 base64 图片格式");
+      }
+      const base64Data = match[2];
+      const binaryString = atob(base64Data);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      imageBuffer = bytes.buffer;
+      logger.info(`base64 图片大小: ${(bytes.length / 1024).toFixed(2)}KB`);
+    } else {
+      // 普通 URL，下载图片
+      imageBuffer = await fetch(imageUrl).then((res) => res.arrayBuffer());
+    }
 
     const token = await this.ensureAccessToken();
     const url =
@@ -191,19 +248,49 @@ export class WeixinPublisher implements ContentPublisher {
       const formData = new FormData();
 
       if (imageBuffer) {
-        // 如果提供了压缩后的图片buffer，直接使用
+        // 验证图片格式（检查文件头）
+        const isJPEG = imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8;
+        const isPNG = imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50 && 
+                      imageBuffer[2] === 0x4E && imageBuffer[3] === 0x47;
+        
+        if (!isJPEG && !isPNG) {
+          const hex = Array.from(imageBuffer.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join(' ');
+          const hint = (hex.startsWith('3c 3f') || hex.startsWith('3c 21')) ? '（可能为 HTML/XML 错误页，请检查图片 URL 是否有效）' : '';
+          throw new Error(`无效的图片格式，文件头: ${hex}${hint}`);
+        }
+        
+        // 根据格式设置正确的 MIME 类型和文件扩展名
+        const mimeType = isJPEG ? "image/jpeg" : "image/png";
+        const extension = isJPEG ? "jpg" : "png";
+        
         formData.append(
           "media",
-          new Blob([imageBuffer], { type: "image/jpeg" }),
-          `image_${Math.random().toString(36).substring(2, 8)}.jpg`,
+          new Blob([imageBuffer], { type: mimeType }),
+          `image_${Math.random().toString(36).substring(2, 8)}.${extension}`,
         );
       } else {
         // 否则下载原图
         const buffer = await fetch(imageUrl).then((res) => res.arrayBuffer());
+        const bufferArray = new Uint8Array(buffer);
+        
+        // 验证图片格式
+        const isJPEG = bufferArray[0] === 0xFF && bufferArray[1] === 0xD8;
+        const isPNG = bufferArray[0] === 0x89 && bufferArray[1] === 0x50 && 
+                      bufferArray[2] === 0x4E && bufferArray[3] === 0x47;
+        
+        if (!isJPEG && !isPNG) {
+          const hex = Array.from(bufferArray.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join(' ');
+          const hint = (hex.startsWith('3c 3f') || hex.startsWith('3c 21')) ? '（可能为 HTML/XML 错误页，请检查图片 URL 是否有效）' : '';
+          throw new Error(`无效的图片格式，文件头: ${hex}${hint}`);
+        }
+        
+        const mimeType = isJPEG ? "image/jpeg" : "image/png";
+        const extension = isJPEG ? "jpg" : "png";
+        
         formData.append(
           "media",
-          new Blob([buffer], { type: "image/jpeg" }),
-          `image_${Math.random().toString(36).substring(2, 8)}.jpg`,
+          new Blob([bufferArray], { type: mimeType }),
+          `image_${Math.random().toString(36).substring(2, 8)}.${extension}`,
         );
       }
 

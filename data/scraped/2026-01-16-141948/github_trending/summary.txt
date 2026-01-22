@@ -1,0 +1,40 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-16T06:19:48.812Z
+文件夹: 2026-01-16-141948
+总数量: 5 条
+数据源: github.com
+
+文章列表:
+------------------
+1. GitHub - eigent-ai/eigent: Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity.
+   来源: https://github.com/eigent-ai/eigent
+   发布时间: 2026-01-16
+   内容长度: 33879 字符
+   图片数量: 3
+
+2. GitHub - blakeblackshear/frigate: NVR with realtime local object detection for IP cameras
+   来源: https://github.com/blakeblackshear/frigate
+   发布时间: 2026-01-16
+   内容长度: 16313 字符
+   图片数量: 3
+
+3. GitHub - cilium/cilium: eBPF-based Networking, Security, and Observability
+   来源: https://github.com/cilium/cilium
+   发布时间: 2026-01-16
+   内容长度: 23657 字符
+   图片数量: 3
+
+4. GitHub - wavetermdev/waveterm: An open-source, cross-platform terminal for seamless workflows
+   来源: https://github.com/wavetermdev/waveterm
+   发布时间: 2026-01-16
+   内容长度: 10914 字符
+   图片数量: 2
+
+5. GitHub - google-ai-edge/mediapipe: Cross-platform, customizable ML solutions for live and streaming media.
+   来源: https://github.com/google-ai-edge/mediapipe
+   发布时间: 2026-01-16
+   内容长度: 15079 字符
+   图片数量: 1
+

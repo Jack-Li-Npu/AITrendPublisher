@@ -1,13 +1,18 @@
 import { IConfigSource } from "@src/utils/config/interfaces/config-source.interface.ts";
-import dotenv from "npm:dotenv";
-import process from "node:process";
+
+/**
+ * 环境变量配置源
+ * 使用 Deno.env 读取环境变量（配合 deno run --env 自动加载 .env 文件）
+ */
 export class EnvConfigSource implements IConfigSource {
   constructor(public priority: number = 100) {
-    dotenv.config();
+    // Deno 2.0+ 使用 --env 标志自动加载 .env 文件
+    // 无需手动调用 dotenv.config()
   }
 
   async get<T>(key: string): Promise<T | null> {
-    const value = process.env[key];
+    // 使用 Deno.env.get() 读取环境变量
+    const value = Deno.env.get(key);
     if (value === undefined) {
       return null;
     }

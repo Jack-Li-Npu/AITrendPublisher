@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-09T06:33:14.322Z
+文件夹: 2026-01-09-143314
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. PepsiCo: Harnessing the Power of AI to Transform Operations | AI Magazine
+   来源: https://aimagazine.com/news/pepsico-harnessing-the-power-of-ai-to-transform-operations
+   发布时间: 2026/01/09 06:32:32
+   内容长度: 8003 字符
+   图片数量: 5
+
+2. Top 10: AI Applications | AI Magazine
+   来源: https://aimagazine.com/news/spotify-partnering-with-labels-for-ai-music-products
+   发布时间: 2026/01/09 06:32:52
+   内容长度: 8003 字符
+   图片数量: 5
+
+3. Coca-Cola, Nike & Starbucks: Inside Retailers' AI Strategies | AI Magazine
+   来源: https://aimagazine.com/news/coca-cola-nike-starbucks-retailer-ai-strategies
+   发布时间: 2026/01/09 06:32:59
+   内容长度: 8003 字符
+   图片数量: 5
+

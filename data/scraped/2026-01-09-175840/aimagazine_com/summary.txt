@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-09T09:58:40.899Z
+文件夹: 2026-01-09-175840
+总数量: 1 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. PepsiCo: Harnessing the Power of AI to Transform Operations | AI Magazine
+   来源: https://aimagazine.com/news/top-10-ai-applications
+   发布时间: 2026/01/09 09:58:28
+   内容长度: 8003 字符
+   图片数量: 5
+

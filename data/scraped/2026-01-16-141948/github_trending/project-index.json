@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-16T06:19:48.813Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "eigent-ai / eigent",
+      "url": "https://github.com/eigent-ai/eigent",
+      "title": "GitHub - eigent-ai/eigent: Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity.",
+      "stars": 6649,
+      "description": "Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity. - eigent-ai/eigent",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_eigent-ai_eigent_1768544378150",
+      "imageCount": 3
+    },
+    {
+      "fullName": "blakeblackshear / frigate",
+      "url": "https://github.com/blakeblackshear/frigate",
+      "title": "GitHub - blakeblackshear/frigate: NVR with realtime local object detection for IP cameras",
+      "stars": 29443,
+      "description": "NVR with realtime local object detection for IP cameras - blakeblackshear/frigate",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_blakeblackshear_frigate_1768544380580",
+      "imageCount": 3
+    },
+    {
+      "fullName": "cilium / cilium",
+      "url": "https://github.com/cilium/cilium",
+      "title": "GitHub - cilium/cilium: eBPF-based Networking, Security, and Observability",
+      "stars": 23395,
+      "description": "eBPF-based Networking, Security, and Observability - cilium/cilium",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_cilium_cilium_1768544382878",
+      "imageCount": 3
+    },
+    {
+      "fullName": "wavetermdev / waveterm",
+      "url": "https://github.com/wavetermdev/waveterm",
+      "title": "GitHub - wavetermdev/waveterm: An open-source, cross-platform terminal for seamless workflows",
+      "stars": 16502,
+      "description": "An open-source, cross-platform terminal for seamless workflows - wavetermdev/waveterm",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_wavetermdev_waveterm_1768544385305",
+      "imageCount": 2
+    },
+    {
+      "fullName": "google-ai-edge / mediapipe",
+      "url": "https://github.com/google-ai-edge/mediapipe",
+      "title": "GitHub - google-ai-edge/mediapipe: Cross-platform, customizable ML solutions for live and streaming media.",
+      "stars": 33255,
+      "description": "Cross-platform, customizable ML solutions for live and streaming media. - google-ai-edge/mediapipe",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_google-ai-edge_mediapipe_1768544387788",
+      "imageCount": 1
+    }
+  ],
+  "indexByFullName": {
+    "eigent-ai / eigent": 0,
+    "blakeblackshear / frigate": 1,
+    "cilium / cilium": 2,
+    "wavetermdev / waveterm": 3,
+    "google-ai-edge / mediapipe": 4
+  },
+  "indexByUrl": {
+    "https://github.com/eigent-ai/eigent": 0,
+    "https://github.com/blakeblackshear/frigate": 1,
+    "https://github.com/cilium/cilium": 2,
+    "https://github.com/wavetermdev/waveterm": 3,
+    "https://github.com/google-ai-edge/mediapipe": 4
+  }
+}

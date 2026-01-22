@@ -1,0 +1,34 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-20T08:15:09.846Z
+文件夹: 2026-01-20-161509
+总数量: 4 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Why Agentic Operations Make or Break Enterprise AI Success | AI Magazine
+   来源: https://aimagazine.com/news/why-agentic-operations-make-or-break-enterprise-ai-success
+   发布时间: 2026/01/20 08:14:44
+   内容长度: 8003 字符
+   图片数量: 5
+
+2. Inside OpenAI's 10-Year Plan to Build AI Hardware in the US | AI Magazine
+   来源: https://aimagazine.com/news/openai-chatgpt-health-launch
+   发布时间: 2026/01/20 08:14:57
+   内容长度: 8003 字符
+   图片数量: 5
+
+3. How Mustafa Suleyman is Shaping Microsoft’s AI Strategy | AI Magazine
+   来源: https://aimagazine.com/news/how-mustafa-suleyman-is-shaping-microsofts-ai-strategy
+   发布时间: 2026/01/20 08:15:03
+   内容长度: 7457 字符
+   图片数量: 5
+
+4. Caterpillar & NVIDIA: Powering Physical AI for Manufacturing | AI Magazine
+   来源: https://aimagazine.com/news/how-caterpillar-is-deploying-physical-ai-in-industry
+   发布时间: 2026/01/20 08:15:09
+   内容长度: 8003 字符
+   图片数量: 5
+

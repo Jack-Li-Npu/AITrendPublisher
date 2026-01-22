@@ -1,0 +1,40 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-17T02:56:58.492Z
+文件夹: 2026-01-17-105658
+总数量: 5 条
+数据源: github.com
+
+文章列表:
+------------------
+1. GitHub - Gentleman-Programming/Gentleman.Dots: My personal configuration for LazyVim !
+   来源: https://github.com/Gentleman-Programming/Gentleman.Dots
+   发布时间: 2026-01-17
+   内容长度: 18581 字符
+   图片数量: 0
+
+2. GitHub - google/langextract: A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
+   来源: https://github.com/google/langextract
+   发布时间: 2026-01-17
+   内容长度: 27713 字符
+   图片数量: 3
+
+3. GitHub - cjpais/Handy: A free, open source, and extensible speech-to-text application that works completely offline.
+   来源: https://github.com/cjpais/Handy
+   发布时间: 2026-01-17
+   内容长度: 19740 字符
+   图片数量: 3
+
+4. GitHub - puckeditor/puck: The visual editor for React
+   来源: https://github.com/puckeditor/puck
+   发布时间: 2026-01-17
+   内容长度: 10824 字符
+   图片数量: 1
+
+5. GitHub - iOfficeAI/AionUi: Free, local, open-source Cowork for Gemini CLI, Claude Code, Codex, Opencode, Qwen Code, Goose Cli, Auggie, and more | 🌟 Star if you like it!
+   来源: https://github.com/iOfficeAI/AionUi
+   发布时间: 2026-01-17
+   内容长度: 28421 字符
+   图片数量: 3
+

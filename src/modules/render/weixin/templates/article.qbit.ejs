@@ -1,0 +1,210 @@
+<!-- 
+  量子位/机器之心风格专业科技模板（微信兼容版）
+  特点：
+  - 只使用微信支持的CSS
+  - 用 table 代替 flexbox
+  - 用纯色代替渐变
+  - 清晰的章节结构
+  - 图文混排
+-->
+<div style="margin: 0; padding: 0; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.8; color: #2c3e50; background: #ffffff;">
+  
+  <!-- 头部装饰条 -->
+  <div style="height: 4px; background: #667eea;"></div>
+
+  <!-- 目录导航 -->
+  <div style="margin: 20px 12px; padding: 16px; background: #1a1a2e; border: 1px solid #333;">
+    <!-- 标题栏 -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #333;">
+      <tr>
+        <td style="width: 4px; background: #667eea;"></td>
+        <td style="padding-left: 10px;">
+          <span style="color: #ffffff; font-size: 16px; font-weight: 600;">今日精选</span>
+        </td>
+        <td style="text-align: right;">
+          <span style="color: #666; font-size: 12px;"><%= new Date().toLocaleDateString('zh-CN') %></span>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 目录列表 -->
+    <% for(var i=0; i<articles.length; i++) { var article=articles[i]; %>
+      <div style="margin: 10px 0; padding: 12px; background: #252a3d; border-left: 3px solid <%= i === 0 ? '#f56565' : (i === 1 ? '#667eea' : '#48bb78') %>;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="width: 28px; vertical-align: top;">
+              <span style="display: inline-block; min-width: 24px; height: 24px; line-height: 24px; text-align: center; background: <%= i === 0 ? '#f56565' : (i === 1 ? '#667eea' : '#48bb78') %>; color: #ffffff; font-size: 12px; font-weight: bold;"><%= (i + 1).toString().padStart(2, '0') %></span>
+            </td>
+            <td style="padding-left: 8px;">
+              <div style="color: #ffffff; font-size: 14px; font-weight: 500; line-height: 1.5;"><%= article.title %></div>
+              <% if(article.subtitle) { %>
+                <div style="color: #999; font-size: 12px; margin-top: 4px;"><%= article.subtitle %></div>
+              <% } %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- 文章内容 -->
+  <% for(var j=0; j<articles.length; j++) { var article=articles[j]; %>
+    <div style="margin: 24px 12px; background: #ffffff; border: 1px solid #e9ecef; overflow: hidden;">
+      
+      <!-- 文章头部 -->
+      <div style="padding: 20px; background: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+        <!-- 标签 -->
+        <div style="margin-bottom: 12px;">
+          <span style="display: inline-block; padding: 4px 12px; background: <%= j === 0 ? '#f56565' : (j === 1 ? '#667eea' : '#48bb78') %>; color: #ffffff; font-size: 11px; font-weight: 600;">NO.<%= (j + 1).toString().padStart(2, '0') %></span>
+          <% if(article.keywords && article.keywords.length > 0) { %>
+            <% for(var k=0; k<Math.min(article.keywords.length, 3); k++) { %>
+              <span style="display: inline-block; padding: 4px 10px; background: #e8eeff; color: #667eea; font-size: 11px; margin-left: 6px;"><%= article.keywords[k] %></span>
+            <% } %>
+          <% } %>
+        </div>
+
+        <!-- 标题 -->
+        <h2 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 700; color: #1a202c; line-height: 1.4;"><%= article.title %></h2>
+
+        <% if(article.subtitle) { %>
+          <p style="margin: 0 0 12px 0; color: #718096; font-size: 14px; line-height: 1.6;"><%= article.subtitle %></p>
+        <% } %>
+
+        <!-- 元信息 -->
+        <div style="color: #a0aec0; font-size: 12px;">
+          <span><%= article.publishDate %></span>
+          <span style="margin: 0 8px;">·</span>
+          <span>阅读约 <%= article.readTime || Math.ceil((article.content || '').length / 500) %> 分钟</span>
+          <% if(article.metadata && article.metadata.source) { %>
+            <span style="margin: 0 8px;">·</span>
+            <span>来源: <%= article.metadata.source %></span>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- 文章正文 -->
+      <div style="padding: 20px;">
+        <% 
+          var content = article.content || "";
+          
+          // 处理 section 标签
+          var sectionRegex = /<section\s+title="([^"]+)">([\s\S]*?)<\/section>/gi;
+          var sections = [];
+          var match;
+          var lastIndex = 0;
+          
+          while ((match = sectionRegex.exec(content)) !== null) {
+            if (match.index > lastIndex) {
+              sections.push({ type: 'content', text: content.substring(lastIndex, match.index) });
+            }
+            sections.push({ type: 'section', title: match[1], text: match[2] });
+            lastIndex = match.index + match[0].length;
+          }
+          if (lastIndex < content.length) {
+            sections.push({ type: 'content', text: content.substring(lastIndex) });
+          }
+          
+          // 如果没有 section，按段落处理
+          if (sections.length === 0) {
+            sections.push({ type: 'content', text: content });
+          }
+        %>
+
+        <% for(var s=0; s<sections.length; s++) { 
+          var section = sections[s];
+        %>
+          <% if(section.type === 'section') { %>
+            <!-- 章节标题 -->
+            <div style="margin: 24px 0 12px 0; padding: 10px 14px; background: #667eea; color: #ffffff;">
+              <h3 style="margin: 0; font-size: 16px; font-weight: 600;"><%= section.title %></h3>
+            </div>
+          <% } %>
+
+          <% 
+            var text = section.text || '';
+            var paragraphs = text.split(/<next_paragraph\s*\/?>/i);
+          %>
+          
+          <% for(var p=0; p<paragraphs.length; p++) { 
+            var para = paragraphs[p].trim();
+            if(para.length === 0) continue;
+            
+            // 处理引用块
+            if(para.indexOf('<blockquote>') !== -1) {
+              para = para.replace(/<blockquote>([\s\S]*?)<\/blockquote>/gi, function(match, quote) {
+                return '<div style="margin: 16px 0; padding: 14px 16px; background: #f7fafc; border-left: 4px solid #667eea; color: #4a5568; font-style: italic;">' + quote + '</div>';
+              });
+            }
+            
+            // 处理强调
+            para = para.replace(/<strong>([\s\S]*?)<\/strong>/gi, function(match, text) {
+              return '<strong style="color: #667eea; font-weight: 600;">' + text + '</strong>';
+            });
+            
+            // 处理代码
+            if(para.indexOf('<code>') !== -1) {
+              para = para.replace(/<code>([\s\S]*?)<\/code>/gi, function(match, code) {
+                return '<code style="display: inline-block; padding: 2px 8px; background: #f0f0f0; color: #d63384; font-family: Monaco, Consolas, monospace; font-size: 13px;">' + code + '</code>';
+              });
+            }
+            
+            // 处理列表
+            para = para.replace(/<ul>([\s\S]*?)<\/ul>/gi, function(match, list) {
+              return '<ul style="margin: 14px 0; padding-left: 20px; color: #4a5568;">' + list.replace(/<li>/gi, '<li style="margin: 6px 0; line-height: 1.7;">') + '</ul>';
+            });
+            
+            para = para.replace(/<ol>([\s\S]*?)<\/ol>/gi, function(match, list) {
+              return '<ol style="margin: 14px 0; padding-left: 20px; color: #4a5568;">' + list.replace(/<li>/gi, '<li style="margin: 6px 0; line-height: 1.7;">') + '</ol>';
+            });
+            
+            // 检查是否是图片
+            if(para.indexOf('<img') !== -1) {
+          %>
+            <div style="margin: 16px 0; text-align: center;">
+              <%- para.replace(/<img([^>]*)>/gi, function(match, attrs) {
+                return '<img' + attrs + ' style="max-width: 100%; height: auto;">';
+              }) %>
+            </div>
+          <% } else if(para.indexOf('<div') !== -1 || para.indexOf('<ul') !== -1 || para.indexOf('<ol') !== -1) { %>
+            <%- para %>
+          <% } else { %>
+            <p style="margin: 14px 0; color: #2d3748; font-size: 15px; line-height: 1.8; text-align: justify;"><%- para %></p>
+          <% } %>
+        <% } %>
+        <% } %>
+
+        <!-- 原文链接 -->
+        <% if(article.url && article.url !== '#') { %>
+          <div style="margin-top: 20px; padding: 14px; background: #f7fafc; text-align: center; border: 1px solid #e9ecef;">
+            <div style="color: #718096; font-size: 13px; margin-bottom: 6px;">📎 原文链接</div>
+            <div style="color: #667eea; font-size: 12px; word-break: break-all;"><%= article.url %></div>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- 文章底部 -->
+      <div style="padding: 12px 20px; background: #f8f9fa; border-top: 1px solid #e9ecef;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="color: #a0aec0; font-size: 12px;">📖 感谢阅读</td>
+            <td style="text-align: right; color: #a0aec0; font-size: 12px;">#<%= (j + 1) %>/<%= articles.length %></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 分隔线 -->
+    <% if(j < articles.length - 1) { %>
+      <div style="margin: 20px auto; width: 60px; height: 2px; background: #e2e8f0;"></div>
+    <% } %>
+  <% } %>
+
+  <!-- 页脚 -->
+  <div style="margin: 24px 12px; padding: 20px; background: #1a1a2e; text-align: center; border: 1px solid #333;">
+    <div style="color: #ffffff; font-size: 14px; font-weight: 500; margin-bottom: 8px;">感谢您的阅读 ✨</div>
+    <div style="color: #999; font-size: 12px;">如果觉得有价值，欢迎分享给更多朋友</div>
+  </div>
+
+  <!-- 底部装饰条 -->
+  <div style="height: 4px; background: #667eea;"></div>
+</div>

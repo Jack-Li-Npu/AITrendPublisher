@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-20T03:49:54.900Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "OpenBMB / VoxCPM",
+      "url": "https://github.com/OpenBMB/VoxCPM",
+      "title": "GitHub - OpenBMB/VoxCPM: VoxCPM: Tokenizer-Free TTS for Context-Aware Speech Generation and True-to-Life Voice Cloning",
+      "stars": 4981,
+      "description": "VoxCPM: Tokenizer-Free TTS for Context-Aware Speech Generation and True-to-Life Voice Cloning - OpenBMB/VoxCPM",
+      "scrapedAt": "2026-01-20",
+      "contentId": "github_OpenBMB_VoxCPM_1768880981284",
+      "imageCount": 3
+    },
+    {
+      "fullName": "czlonkowski / n8n-mcp",
+      "url": "https://github.com/czlonkowski/n8n-mcp",
+      "title": "GitHub - czlonkowski/n8n-mcp: A MCP for Claude Desktop / Claude Code / Windsurf / Cursor to build n8n workflows for you",
+      "stars": 12238,
+      "description": "A MCP for Claude Desktop / Claude Code / Windsurf / Cursor to build n8n workflows for you  - GitHub - czlonkowski/n8n-mcp: A MCP for Claude Desktop / Claude Code / Windsurf / Cursor to build n8n workflows for you",
+      "scrapedAt": "2026-01-20",
+      "contentId": "github_czlonkowski_n8n-mcp_1768880983939",
+      "imageCount": 3
+    },
+    {
+      "fullName": "nautechsystems / nautilus_trader",
+      "url": "https://github.com/nautechsystems/nautilus_trader",
+      "title": "GitHub - nautechsystems/nautilus_trader: A high-performance algorithmic trading platform and event-driven backtester",
+      "stars": 18102,
+      "description": "A high-performance algorithmic trading platform and event-driven backtester - nautechsystems/nautilus_trader",
+      "scrapedAt": "2026-01-20",
+      "contentId": "github_nautechsystems_nautilus_trader_1768880987039",
+      "imageCount": 3
+    },
+    {
+      "fullName": "ahujasid / blender-mcp",
+      "url": "https://github.com/ahujasid/blender-mcp",
+      "title": "GitHub - ahujasid/blender-mcp",
+      "stars": 15980,
+      "description": "Contribute to ahujasid/blender-mcp development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-20",
+      "contentId": "github_ahujasid_blender-mcp_1768880991151",
+      "imageCount": 3
+    },
+    {
+      "fullName": "yichuan-w / LEANN",
+      "url": "https://github.com/yichuan-w/LEANN",
+      "title": "GitHub - yichuan-w/LEANN: RAG on Everything with LEANN. Enjoy 97% storage savings while running a fast, accurate, and 100% private RAG application on your personal device.",
+      "stars": 9357,
+      "description": "RAG on Everything with LEANN. Enjoy 97% storage savings while running a fast, accurate, and 100% private RAG application on your personal device. - yichuan-w/LEANN",
+      "scrapedAt": "2026-01-20",
+      "contentId": "github_yichuan-w_LEANN_1768880993868",
+      "imageCount": 3
+    }
+  ],
+  "indexByFullName": {
+    "openbmb / voxcpm": 0,
+    "czlonkowski / n8n-mcp": 1,
+    "nautechsystems / nautilus_trader": 2,
+    "ahujasid / blender-mcp": 3,
+    "yichuan-w / leann": 4
+  },
+  "indexByUrl": {
+    "https://github.com/OpenBMB/VoxCPM": 0,
+    "https://github.com/czlonkowski/n8n-mcp": 1,
+    "https://github.com/nautechsystems/nautilus_trader": 2,
+    "https://github.com/ahujasid/blender-mcp": 3,
+    "https://github.com/yichuan-w/LEANN": 4
+  }
+}

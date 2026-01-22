@@ -1,0 +1,173 @@
+[
+  {
+    "id": "fc_1767943008778_8821_1085447508",
+    "title": "Nvidia Intros Six New AI Chips and New Open Models",
+    "content": "- [Generative AI](https://aibusiness.com/generative-ai)\n- [Foundation Models](https://aibusiness.com/generative-ai/foundation-models)\n- [Agentic AI](https://aibusiness.com/generative-ai/agentic-ai)\n- [Nvidia](https://aibusiness.com/companies/nvidia)\n- [News](https://aibusiness.com/latest-news)\n# Nvidia Intros Six New AI Chips and New Open Models\nBoth the new chips and models demonstrate how Nvidia is innovating within the AI market, while also highlighting for customers the challenge of avoiding dependency on the vendor.\n[Esther Shittu](https://aibusiness.com/author/esther-shittu), News Writer, AI Business\nJanuary 5, 2026\n![Photo of Nvidia logo](https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt28731b0aa5c59190/695c51ce5a9f963ae4902d2f/Nvidialogo.jpg?width=1280&auto=webp&quality=80&format=jpg&disable=upscale)\nGetty Images\nAs its market dominance is being challenged by a host of competitors on a scale not seen before, Nvidia on Monday rolled out six new AI chips and new open models, which appear to show the AI giant is determined to stay ahead of the field.\nAt the CES consumer electronics show in Las Vegas, the AI hardware and software provider released the Nvidia Rubin platform, a system comprising the six new chips that collectively form an [AI supercomputer](https://www.techtarget.com/whatis/definition/supercomputer). The new open generative AI models include more agent-building models in the Nemotron family and new [World Foundation Models](https://aibusiness.com/robotics/nvidia-pushes-humanoids-physical-ai-new-tools) in the Cosmos model suite, designed for use with humanoid robots and other physical AI applications, as well as for generating synthetic data.\nNvidia also showcased a model that powers autonomous vehicles, Nvidia Alpamayo, which the vendor previously released, in early December.\n### A Full-Stack Approach\nThe slew of releases demonstrates how Nvidia is not only pursuing a full-stack approach from chips to software but also looking to enable third parties to develop their own full-stack products, said Chirag Dekate, an analyst at Gartner.\n\"What they're trying to highlight here is that AI is no longer just a GPU game,\" Dekate said, referring to the ubiquitous graphics processing unit chips that power training and inference for generative AI models. \"It is no longer about the GPU chip; it is actually an AI supercomputer.\nRelated: [10 AI Predictions for 2026](https://aibusiness.com/generative-ai/10-ai-predictions-2026)\nOne way Nvidia is showing that it is not solely a GPU vendor is by combining diverse types of AI chips within the Rubin platform. The components include the Nvidia Vera CPU, Nvidia Rubin GPU, Nvidia NVLink 6 Switch, Nvidia ConnectX-9 SuperNIC, Nvidia BlueField-4 DPU, and Nvidia Spectrum 6 Ethernet Switch.\nThe Rubin platform is the successor to the widely used Nvidia Blackwell platform. The Rubin platform uses Nvidia's NVLink interconnect technology and various transformer technologies to accelerate agentic AI, advanced reasoning, and the scale of mixture-of-experts models, compared to Blackwell.\nWith the platform, Nvidia is trying to inspire its customers and audience to look beyond just GPUs and see the whole underlying infrastructure component as more of an [AI factory](https://aibusiness.com/data-centers/the-difference-between-an-ai-factory-and-a-data-center-explained), Dekate said.\nRelated: [The Shift Toward AI Data Quality as a Core Product](https://aibusiness.com/generative-ai/the-shift-towards-ai-data-quality)\n\"AI is no longer just a small, simple device issue; it is actually multifaceted and multi-form factor,\" Dekate continued.\nThis focus on AI as more than just a GPU is part of what differentiates Nvidia from its competitors, he added. Competitors include AMD, Intel and Qualcomm.\n\"Many of the competitors struggle to meet them,\" he said. \"They're starting to get there, but they're not there yet.\"\n### New Open Models\nThe new models arrive less than a month after the release of the [Nemotron 3 family of open models](https://aibusiness.com/foundation-models/nvidia-nemotron-3-open-models), designed to build and implement multi-agent systems. They include Nemotron speech, which includes a new automatic speech recognition model that provides real-time, low-latency speech recognition for live caption and speech AI applications, Nvidia said. Also, Nemotron RAG technology has new embed and rerank vision language models. Nvidia also released datasets, training resources and blueprints for the models.\nIn addition to Nemotron, Nvidia expanded the World Foundation Model line with Cosmos Reason 2, Cosmos Transfer 2.5, and Cosmos Predict. Cosmos Reason 2 is a vision language model that enables robots and AI agents to interact with and understand the physical world. Transfer 2.5 and Predict 2.5 generate synthetic videos across different environments and conditions.\nRelated: [AI Coding Startup Lovable Now Valued at $6.6B](https://aibusiness.com/generative-ai/ai-coding-startup-lovable-series-b)\nThe [Alpamayo 1 model](https://aibusiness.com/automation/nvidia-open-reasoning-ai-self-driving-vehicles) is a reasoning vision language model for autonomous vehicles.\nWhile Nvidia is not the first vendor to release open models, the way it specifies what each model is for is unique, said Mark Beccue, an analyst at Omdia, a division of Informa TechTarget.\n\"This is a little different,\" Beccue said, specialized open models are not a common approach. However, specializing open models makes sense because it enables customers with open models to start using them faster, Beccue said.\n\"You can see that in what Nvidia is rolling out,\" Shimmin said. \"They're tackling particular problems.\"\n\"They're applying those models within specific domains like healthcare, autonomous vehicles and very specific use cases in the enterprises,\" Shimmin added. \"What they're doing is not just trying to be the best frontier model maker, but to be the best applied intelligence maker.\"\nHowever, despite these models being open and Nvidia releasing the weights and recipes for them, enterprise adoption is still a challenge, Beccue said.\n\"Companies are still using proprietary models more than they are using open source right now,\" he said.\n## About the Author\nNews Writer, AI Business\nEsther Shittu brings four years of expertise covering artificial intelligence technologies and industry trends. As co-host of the \"Targeting AI\" podcast, she talks to thought leaders and practitioners exploring critical AI developments. Previous to AI Business, she wrote for several publications including the New York Daily News, Bklyner and the Brooklyn Daily Eagle. When she's not diving deep into the world of AI, she spends her time on passion projects and raising her three daughters.\nThe most up-to-date AI news and insights delivered right to your inbox!\n### Latest News\nby [Scarlett Evans](https://aibusiness.com/author/scarlett-evans)\nJan 7, 2026\nThe most up-to-date AI news and insights delivered right to your inbox!\n### Trending articles\nJan 7, 2026\nLatest podcasts\n- [The Shift Toward AI Data Quality as a Core Product](https://aibusiness.com/generative-ai/the-shift-towards-ai-data-quality) Jan 5, 2026\n- [Vertical AI Systems and Open Source Flexibility](https://aibusiness.com/generative-ai/vertical-ai-systems-and-open-source-flexibility) Dec 16, 2025\n- [States Expected to Fight Back Against AI Executive Order](https://aibusiness.com/ai-policy/states-to-fight-back-against-ai-executive-order-podcast) Dec 15, 2025\n- [The Growing Need for Cybersecurity in Agentic AI](https://aibusiness.com/agentic-ai/the-growing-need-for-cybersecurity-in-agentic-ai) Dec 10, 2025\nSponsored Content\nSponsored by Google Cloud\nTo get started with generative AI, first focus on areas that can improve human experiences with information.",
+    "url": "https://aibusiness.com/generative-ai/nvidia-intros-new-ai-chips-and-open-models",
+    "publishDate": "2026/01/09 07:16:48",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt2e01cbbcb9f52271/68c05e1981955ea418bc98ae/shittu_esther.png?width=100&auto=webp&quality=80&disable=upscale",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt28731b0aa5c59190/695c51ce5a9f963ae4902d2f/Nvidialogo.jpg?width=1280&auto=webp&quality=80&format=jpg&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt2e01cbbcb9f52271/68c05e1981955ea418bc98ae/shittu_esther.png?width=400&auto=webp&quality=80&disable=upscale",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt85ff78e2bab80dc8/695ee161b2c10b12e2a76690/atlas-announcement.jpg?width=1280&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt85ff78e2bab80dc8/695ee161b2c10b12e2a76690/atlas-announcement.jpg?width=300&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aibusiness.com/generative-ai/nvidia-intros-new-ai-chips-and-open-models",
+      "datePosted": "2026-01-09 07:16:48",
+      "sourceId": "https://aibusiness.com/",
+      "imageCount": 12
+    }
+  },
+  {
+    "id": "fc_1767943015789_5551_225593289",
+    "title": "10 AI Predictions for 2026",
+    "content": "- [Generative AI](https://aibusiness.com/generative-ai)\n- [Intelligent automation](https://aibusiness.com/automation/intelligent-automation)\n- [Agentic AI](https://aibusiness.com/generative-ai/agentic-ai)\n- [News](https://aibusiness.com/latest-news)\n# 10 AI Predictions for 2026\nAI Business spoke to industry experts about their AI and robotics predictions for the next year.\n[Scarlett Evans](https://aibusiness.com/author/scarlett-evans), Contributing Writer\nJanuary 5, 2026\n![ Fiber optic cables transmitting data](https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt35543e8b831bd964/695c1c01b6c82d6be3e515bf/ai_predictions.jpg?width=1280&auto=webp&quality=80&format=jpg&disable=upscale)\nFloriana via Getty Images\nAI and robotics are heading into a pivotal year. After rapid advances in agentic systems, embodied intelligence and enterprise automation, 2026 will be defined less by experimentation and more by proving what works in the real world.\nWe spoke with industry leaders across AI, robotics, software and cloud to find out what trends will shape the next 12 months, from purpose-built agents and autonomous workflows to the integration of robots into the real world, and the growing demand for governance and trust.\n### 1. This will be the year of assimilation, not innovation\nMark Roberts, head of  AI Future Labs, Capgemini: \"2026 is a moment of truth for AI. After years of headlines, investment and experimentation, the mood is shifting: innovation theatre is giving way to a more mature focus on real, practical deployment. This year will be defined by integration rather than invention, weaving AI into the fabric of organizations and delivering measurable value.\n\"We're also moving beyond the idea that scale alone guarantees progress. Yes, large models matter, but the future is hybrid: combining foundation models with classical AI, simulations, engineering models and world models to keep systems grounded in reality.\n\"Ethics needs the same treatment. It can't remain a philosophical sidenote; in 2026 it becomes an engineering topic. We need to embed ethical principles directly into systems, not only because customers demand it, but also because ethics is a specific instance of a general problem, which is how do we make our AI models do the right thing in the absence of specific training data? Solving that is foundational for deploying AI that makes important decisions.\"\nRelated: [Nvidia Intros Six New AI Chips and New Open Models](https://aibusiness.com/generative-ai/nvidia-intros-new-ai-chips-and-open-models)\n### 2\\. Energy demand will be a major bottleneck for AI deployment\nVamsi Duvvuri, technology, media and communications and technology AI Leader, EY Americas: \"The single most critical constraint on the entire digital build-out in 2026 hinges upon energy scarcity. The massive compute demand for training frontier models is running headlong into the reality of power and water supply. This forces a painful reckoning between boundless tech ambition and energy policy.\n\"We expect this dynamic to elevate sustainability conversations to the C-suite and fundamentally reshape which providers and regions can actually sustain the AI growth the market expects.\"\n### 3\\. Everyone will become managers of AI agents\nRichard Socher, CEO and co-founder, You.com:\"The majority of people right now are individual contributors learning, 'The harder I work, the more output I have.' But AI will require everyone to learn management skills: delegating tasks with clear language, building trust, understanding when the AI hallucinates and can't be trusted yet. This is a transition from treating AI as a copilot toward treating it as an autonomous machine that requires instruction and oversight.\"\nRelated: [The Shift Toward AI Data Quality as a Core Product](https://aibusiness.com/generative-ai/the-shift-towards-ai-data-quality)\n### 4\\. Embodied AI will leave the lab and enter the real world\nMaryna Bautina, senior AI consultant, SoftServe:\"As companies push for automation that adapts, not just behaves, AI will move off the screen and into machines that learn through motion rather than code. Until now, AI and robots have only worked in perfect, controlled or virtual environments — 2026 is the first year they \\[will\\] learn the way humans do: by trying, failing and adjusting in real time.\n\"Logistics will be one of the first places where embodied and agentic AI scale significantly. We can expect to see more autonomous loading and sorting robots, inspection drones and AI systems quietly rerouting shipments and managing inventory without needing a human in the loop.\"\n### 5\\. The era of specialized agents will begin\nKeith Zubchevich, president and CEO, Conviva: \"Next year, organizations will stop focusing on what AI could do and start prioritizing what individual agents should achieve. The winners will be the companies that align their AI architecture to the desired outcome: building dozens of small, specialized agents that each automate an aspect of their business efficiently and accurately. Those still chasing generalization will fall behind fast.\"\nRelated: [AI Coding Startup Lovable Now Valued at $6.6B](https://aibusiness.com/generative-ai/ai-coding-startup-lovable-series-b)\n### 6\\. Agentic AI will make direct purchasing decisions for consumers\nKevin Green, co-founder and chief marketing officer, Hapax: \"In 2026, you're going to be able to use natural language to ask questions of your data, and the speed of the consumer is going to be so fast that every functional area has to be empowered to act on data. Agentic AI becomes critical here.\n\"This isn't just a tech innovation, it's a cultural movement enabled by technology. You can see the positive or the negative depending on your lens. When elevators were created, a bellhop wasn't there to operate the elevator, he was there to create trust: If he can ride this thing all day, so can I. But people still took the stairs for years. Today is an elevator moment. Some people will stay on the stairs, which is slower, harder and less efficient. Others will step into the elevator and trust that it’s going to take them to the top floor.\"\n### 7\\. Enterprises will shift from building AI agents to licensing them\nSurojit Chatterjee, CEO and founder, Ema: \"This will be the year enterprises stop trying to build their own AI agents and start licensing them instead. The economics are impossible to ignore: Companies that spent millions and 18 months on custom builds are watching competitors deploy white-labeled solutions in weeks. Even more importantly, enterprises are realizing that a single agent can't deliver a real change. What they need is a mesh of agents orchestrated across an end-to-end workflow, which is far harder to build and maintain in-house; 2026 is about license, orchestration and monetization.\"\n### 8\\. AI Agents will become team members, not personal assistants\nMatt Martin, CEO and co-founder, Clockwise:\"In 2026, the workplace agents that gain the most traction will be the ones that can work alongside multiple people as a team. Most AI tools today are single-player, and collaborative workflows remain underdeveloped. But most work happens in group settings: in Slack channels, in Google Docs with comments, across multiple people working on problems over time. The agents that succeed will be built for that reality, functioning more like teammates than personal assistants.\"\n### 9\\. Human culture will make or break the agentic future\nAditya Ganjam, co-founder and chief product officer, Conviva: \"In 2026, the success of the agentic era will hinge not only on advances in AI, but also on the human culture that surrounds it. As organizations accelerate toward increasingly autonomous systems, it will become clear that technology alone isn't the differentiator, people are. The companies that thrive will be those that invest in teams as much as in tools, fostering cultures of experimentation, curiosity and resilience through trial and error.\"\n###...",
+    "url": "https://aibusiness.com/generative-ai/10-ai-predictions-2026",
+    "publishDate": "2026/01/09 07:16:55",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/bltd985cb856ccba3af/636bdd0c5a16b70f5be55916/headshot.jpg?width=100&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt35543e8b831bd964/695c1c01b6c82d6be3e515bf/ai_predictions.jpg?width=1280&auto=webp&quality=80&format=jpg&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/bltd985cb856ccba3af/636bdd0c5a16b70f5be55916/headshot.jpg?width=400&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt85ff78e2bab80dc8/695ee161b2c10b12e2a76690/atlas-announcement.jpg?width=1280&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt85ff78e2bab80dc8/695ee161b2c10b12e2a76690/atlas-announcement.jpg?width=300&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aibusiness.com/generative-ai/10-ai-predictions-2026",
+      "datePosted": "2026-01-09 07:16:55",
+      "sourceId": "https://aibusiness.com/",
+      "imageCount": 12
+    }
+  },
+  {
+    "id": "fc_1767943023626_4349_1219794389",
+    "title": "x402 Aims to Enable Agentic Payments With Digital Dollars",
+    "content": "- [Agentic AI](https://aibusiness.com/generative-ai/agentic-ai)\n- [Intelligent automation](https://aibusiness.com/automation/intelligent-automation)\n- [News](https://aibusiness.com/latest-news)\n# x402 Aims to Enable Agentic Payments With Digital Dollars\nThe x402 protocol allows digital agents to use stablecoins so that they can pay for data and products autonomously, moving beyond traditional payment methods.\n[Esther Shittu](https://aibusiness.com/author/esther-shittu), News Writer, AI Business\nDecember 22, 2025\n![Golden USDC coins in stacks](https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blteb833caa4a45376c/69498d1656f4c12809d2b3f3/stablecoin.jpg?width=1280&auto=webp&quality=80&format=jpg&disable=upscale)\njroballo via Getty Images\nAs AI agents continue to grow in popularity, one question everybody is wondering: When will they reach full autonomy? A recently launched foundation is betting on soon.\nIn September, Cloudflare and Coinbase introduced the x402 Foundation, which supports the open payment standard x402. The protocol, named after the HTTP 402 payment required status code, is a payment standard for online-based exchanges, paving a path for digital dollars to become a viable currency and opening up the possibility for agents to be outfitted with wallets so that they can make autonomous payments.\nThe open standard also enables individuals or organizations with online-based services such as API developers or content creators, where the revenue paradigm has been turned upside down by large language models and features such as AI Overview, an opportunity to charge for their products.\n\"Businesses are now starting to adopt x402 because \\[agents are\\] scraping ... contents,\" said Dan Kim, vice president of digital asset listings and services at Coinbase. He added that having the agent as part of the standard is a benefit to content creators, but it also allows users to purchase products online without having to expose their credit card number.\nOptions currently exist that enable generative AI systems to make purchases on behalf of users such as ChatGPT Shopping or ChatGPT Instant Checkout, but Kim pointed out that a human has to be in the loop and that these systems are built around credit cards, which can be compromised.\nRelated: [Salesforce Buys Qualified in Agentic Marketing Push](https://aibusiness.com/agentic-ai/salesforce-buys-qualified-in-agentic-marketing-push)\nDigital dollars or stablecoins, on the other hand, introduce a payment form that currently circumvents payment fees and chargebacks.\nKim pointed to an example of trip planning. If he interfaces with a large language model to develop an itinerary, he then has to take the extra steps to book the flight or the hotel and might miss out on whatever deal AI surfaced. The experience would be wholly different if Kim could instruct an agent to make payments on his behalf, he said.\nHowever, even without credit cards, the risks of having agents work on human behalf are high, which is why there's a need for a trusted agent registry and platforms such as AWS where developers are building agents they can trust, Kim said.\n\"What's needed in order for this agentic economy to really flourish is not just the technology that exists, but the idea of this AI registry, where as an operator or owner operator of a site or owner of content, you, say, 'Look, I'll serve agents, either selling my goods or my data, but they need to be trusted,'\" he said. \"It's growing, but does that exist today? No, not yet. But it's happening.\"\n## About the Author\nNews Writer, AI Business\nEsther Shittu brings four years of expertise covering artificial intelligence technologies and industry trends. As co-host of the \"Targeting AI\" podcast, she talks to thought leaders and practitioners exploring critical AI developments. Previous to AI Business, she wrote for several publications including the New York Daily News, Bklyner and the Brooklyn Daily Eagle. When she's not diving deep into the world of AI, she spends her time on passion projects and raising her three daughters.\nThe most up-to-date AI news and insights delivered right to your inbox!\n### Latest News\nby [Scarlett Evans](https://aibusiness.com/author/scarlett-evans)\nJan 7, 2026\nThe most up-to-date AI news and insights delivered right to your inbox!\n### Trending articles\nJan 7, 2026\nLatest podcasts\n- [The Shift Toward AI Data Quality as a Core Product](https://aibusiness.com/generative-ai/the-shift-towards-ai-data-quality) Jan 5, 2026\n- [Vertical AI Systems and Open Source Flexibility](https://aibusiness.com/generative-ai/vertical-ai-systems-and-open-source-flexibility) Dec 16, 2025\n- [States Expected to Fight Back Against AI Executive Order](https://aibusiness.com/ai-policy/states-to-fight-back-against-ai-executive-order-podcast) Dec 15, 2025\n- [The Growing Need for Cybersecurity in Agentic AI](https://aibusiness.com/agentic-ai/the-growing-need-for-cybersecurity-in-agentic-ai) Dec 10, 2025\nSponsored Content\nSponsored by Google Cloud\nTo get started with generative AI, first focus on areas that can improve human experiences with information.",
+    "url": "https://aibusiness.com/agentic-ai/x402-agentic-payments-digital-dollars",
+    "publishDate": "2026/01/09 07:17:03",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt2e01cbbcb9f52271/68c05e1981955ea418bc98ae/shittu_esther.png?width=100&auto=webp&quality=80&disable=upscale",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blteb833caa4a45376c/69498d1656f4c12809d2b3f3/stablecoin.jpg?width=1280&auto=webp&quality=80&format=jpg&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt2e01cbbcb9f52271/68c05e1981955ea418bc98ae/shittu_esther.png?width=400&auto=webp&quality=80&disable=upscale",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt85ff78e2bab80dc8/695ee161b2c10b12e2a76690/atlas-announcement.jpg?width=1280&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt85ff78e2bab80dc8/695ee161b2c10b12e2a76690/atlas-announcement.jpg?width=300&auto=webp&quality=80&disable=upscale",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aibusiness.com/agentic-ai/x402-agentic-payments-digital-dollars",
+      "datePosted": "2026-01-09 07:17:03",
+      "sourceId": "https://aibusiness.com/",
+      "imageCount": 12
+    }
+  }
+]

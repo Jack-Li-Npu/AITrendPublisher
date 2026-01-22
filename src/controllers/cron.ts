@@ -1,7 +1,5 @@
 import cron from "npm:node-cron";
 import { WeixinArticleWorkflow } from "@src/services/weixin-article.workflow.ts";
-import { WeixinAIBenchWorkflow } from "@src/services/weixin-aibench.workflow.ts";
-import { WeixinHelloGithubWorkflow } from "@src/services/weixin-hellogithub.workflow.ts";
 import { BarkNotifier } from "@src/modules/notify/bark.notify.ts";
 import { WorkflowEntrypoint } from "@src/works/workflow.ts";
 import { WorkflowConfigService } from "@src/services/workflow-config.service.ts";
@@ -9,8 +7,6 @@ import { Logger } from "@zilla/logger";
 const logger = new Logger("cron");
 export enum WorkflowType {
   WeixinArticle = "weixin-article-workflow",
-  WeixinAIBench = "weixin-aibench-workflow",
-  WeixinHelloGithub = "weixin-hellogithub-workflow",
 }
 
 export function getWorkflow(type: WorkflowType): WorkflowEntrypoint {
@@ -20,20 +16,6 @@ export function getWorkflow(type: WorkflowType): WorkflowEntrypoint {
         id: "weixin-article-workflow",
         env: {
           name: "weixin-article-workflow",
-        },
-      });
-    case WorkflowType.WeixinAIBench:
-      return new WeixinAIBenchWorkflow({
-        id: "weixin-aibench-workflow",
-        env: {
-          name: "weixin-aibench-workflow",
-        },
-      });
-    case WorkflowType.WeixinHelloGithub:
-      return new WeixinHelloGithubWorkflow({
-        id: "weixin-hellogithub-workflow",
-        env: {
-          name: "weixin-hellogithub-workflow",
         },
       });
     default:

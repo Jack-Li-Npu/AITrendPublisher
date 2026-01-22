@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-09T09:24:54.268Z
+文件夹: 2026-01-09-172454
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. PepsiCo: Harnessing the Power of AI to Transform Operations | AI Magazine
+   来源: https://aimagazine.com/news/top-10-ai-applications
+   发布时间: 2026/01/09 09:24:33
+   内容长度: 8003 字符
+   图片数量: 5
+
+2. Top 10: Ethical AI Tools | AI Magazine
+   来源: https://aimagazine.com/news/top-10-ethical-ai-tools
+   发布时间: 2026/01/09 09:24:42
+   内容长度: 8003 字符
+   图片数量: 5
+
+3. Top 10: AI Data Integration Platforms | AI Magazine
+   来源: https://aimagazine.com/news/top-10-ai-data-integration-platforms
+   发布时间: 2026/01/09 09:24:46
+   内容长度: 8003 字符
+   图片数量: 5
+

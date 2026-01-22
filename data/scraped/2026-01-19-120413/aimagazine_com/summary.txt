@@ -1,0 +1,34 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-19T04:04:13.228Z
+文件夹: 2026-01-19-120413
+总数量: 4 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. How SAP Business AI Enabled This French City to Thrive | AI Magazine
+   来源: https://aimagazine.com/news/opentext-cognizant-webinar-reshape-qa-devops-with-ai
+   发布时间: 2026/01/19 04:03:36
+   内容长度: 8003 字符
+   图片数量: 5
+
+2. How SAP Business AI Enabled This French City to Thrive | AI Magazine
+   来源: https://aimagazine.com/news/rio-tinto-and-glencore-talks-driven-by-ai-demand
+   发布时间: 2026/01/19 04:03:52
+   内容长度: 8003 字符
+   图片数量: 5
+
+3. How SAP Business AI Enabled This French City to Thrive | AI Magazine
+   来源: https://aimagazine.com/news/musks-grok-ai-must-block-misuse-after-undressing-backlash
+   发布时间: 2026/01/19 04:04:03
+   内容长度: 8003 字符
+   图片数量: 5
+
+4. How SAP Business AI Enabled This French City to Thrive | AI Magazine
+   来源: https://aimagazine.com/news/anthropic-unveils-claude-for-healthcare-ai
+   发布时间: 2026/01/19 04:04:12
+   内容长度: 8003 字符
+   图片数量: 5
+

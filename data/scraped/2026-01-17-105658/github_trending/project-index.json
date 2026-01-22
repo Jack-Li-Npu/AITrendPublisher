@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-17T02:56:58.493Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "Gentleman-Programming / Gentleman.Dots",
+      "url": "https://github.com/Gentleman-Programming/Gentleman.Dots",
+      "title": "GitHub - Gentleman-Programming/Gentleman.Dots: My personal configuration for LazyVim !",
+      "stars": 1164,
+      "description": "My personal configuration for LazyVim ! Contribute to Gentleman-Programming/Gentleman.Dots development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-17",
+      "contentId": "github_Gentleman-Programming_Gentleman.Dots_1768618603983",
+      "imageCount": 0
+    },
+    {
+      "fullName": "google / langextract",
+      "url": "https://github.com/google/langextract",
+      "title": "GitHub - google/langextract: A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.",
+      "stars": 21208,
+      "description": "A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization. - google/langextract",
+      "scrapedAt": "2026-01-17",
+      "contentId": "github_google_langextract_1768618606414",
+      "imageCount": 3
+    },
+    {
+      "fullName": "cjpais / Handy",
+      "url": "https://github.com/cjpais/Handy",
+      "title": "GitHub - cjpais/Handy: A free, open source, and extensible speech-to-text application that works completely offline.",
+      "stars": 11865,
+      "description": "A free, open source, and extensible speech-to-text application that works completely offline. - cjpais/Handy",
+      "scrapedAt": "2026-01-17",
+      "contentId": "github_cjpais_Handy_1768618608863",
+      "imageCount": 3
+    },
+    {
+      "fullName": "puckeditor / puck",
+      "url": "https://github.com/puckeditor/puck",
+      "title": "GitHub - puckeditor/puck: The visual editor for React",
+      "stars": 11078,
+      "description": "The visual editor for React. Contribute to puckeditor/puck development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-17",
+      "contentId": "github_puckeditor_puck_1768618611082",
+      "imageCount": 1
+    },
+    {
+      "fullName": "iOfficeAI / AionUi",
+      "url": "https://github.com/iOfficeAI/AionUi",
+      "title": "GitHub - iOfficeAI/AionUi: Free, local, open-source Cowork for Gemini CLI, Claude Code, Codex, Opencode, Qwen Code, Goose Cli, Auggie, and more | 🌟 Star if you like it!",
+      "stars": 4332,
+      "description": "Free, local, open-source Cowork for Gemini CLI, Claude Code, Codex, Opencode, Qwen Code, Goose Cli, Auggie, and more | 🌟 Star if you like it! - iOfficeAI/AionUi",
+      "scrapedAt": "2026-01-17",
+      "contentId": "github_iOfficeAI_AionUi_1768618617466",
+      "imageCount": 3
+    }
+  ],
+  "indexByFullName": {
+    "gentleman-programming / gentleman.dots": 0,
+    "google / langextract": 1,
+    "cjpais / handy": 2,
+    "puckeditor / puck": 3,
+    "iofficeai / aionui": 4
+  },
+  "indexByUrl": {
+    "https://github.com/Gentleman-Programming/Gentleman.Dots": 0,
+    "https://github.com/google/langextract": 1,
+    "https://github.com/cjpais/Handy": 2,
+    "https://github.com/puckeditor/puck": 3,
+    "https://github.com/iOfficeAI/AionUi": 4
+  }
+}

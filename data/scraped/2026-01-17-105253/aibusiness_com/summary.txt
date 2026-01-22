@@ -1,0 +1,40 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-17T02:52:53.198Z
+文件夹: 2026-01-17-105253
+总数量: 5 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. AI Business Informs, educates and connects the global AI community
+   来源: https://aibusiness.com/
+   发布时间: 2026/01/17 02:52:04
+   内容长度: 1994 字符
+   图片数量: 5
+
+2. news
+   来源: https://aibusiness.com/latest-news
+   发布时间: 2026/01/17 02:52:17
+   内容长度: 5499 字符
+   图片数量: 5
+
+3. Cerebras Poses an Alternative to Nvidia With $10B OpenAI Deal
+   来源: https://aibusiness.com/generative-ai/cerebras-poses-an-alternative-to-nvidia
+   发布时间: 2026/01/17 02:52:29
+   内容长度: 8003 字符
+   图片数量: 5
+
+4. Generative AI recent news | AI Business
+   来源: https://aibusiness.com/generative-ai
+   发布时间: 2026/01/17 02:52:38
+   内容长度: 3926 字符
+   图片数量: 5
+
+5. Esther Shittu
+   来源: https://aibusiness.com/author/esther-shittu
+   发布时间: 2026/01/17 02:52:52
+   内容长度: 6170 字符
+   图片数量: 5
+

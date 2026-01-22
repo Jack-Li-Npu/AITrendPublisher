@@ -1,0 +1,100 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-20T04:03:05.992Z
+文件夹: 2026-01-20-120305
+总数量: 15 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. SAP and Fresenius to build sovereign AI backbone for healthcare
+   来源: https://www.artificialintelligence-news.com/news/sap-and-fresenius-build-sovereign-ai-backbone-for-healthcare/
+   发布时间: 2026/01/20 12:02:24
+   内容长度: 37162 字符
+   图片数量: 0
+
+2. Scaling AI value beyond pilot phase purgatory
+   来源: https://www.artificialintelligence-news.com/news/scaling-ai-value-beyond-pilot-phase-purgatory/
+   发布时间: 2026/01/20 12:02:27
+   内容长度: 38596 字符
+   图片数量: 0
+
+3. Credit unions, fintech and the AI inflection of financial services
+   来源: https://www.artificialintelligence-news.com/news/credit-union-ai-in-operational-settings-learnings-from-the-fintech-sector/
+   发布时间: 2026/01/20 12:02:29
+   内容长度: 38924 字符
+   图片数量: 0
+
+4. JPMorgan Chase treats AI spending as core infrastructure
+   来源: https://www.artificialintelligence-news.com/news/jpmorgan-chase-treats-ai-spending-as-core-infrastructure/
+   发布时间: 2026/01/20 12:02:32
+   内容长度: 38301 字符
+   图片数量: 1
+
+5. Retailers bring conversational AI and analytics closer to the user
+   来源: https://www.artificialintelligence-news.com/news/retailers-bring-conversational-ai-and-analytics-closer-to-the-user/
+   发布时间: 2026/01/20 12:02:34
+   内容长度: 43257 字符
+   图片数量: 1
+
+6. Banks operationalise as Plumery AI launches standardised integration
+   来源: https://www.artificialintelligence-news.com/news/banks-operationalise-ai-as-plumery-ai-launches-standardised-integration/
+   发布时间: 2026/01/20 12:02:39
+   内容长度: 39074 字符
+   图片数量: 1
+
+7. AI dominated the conversation in 2025, CIOs shift gears in 2026
+   来源: https://www.artificialintelligence-news.com/news/ai-predictions-dominated-the-conversation-in-2025-cios-shift-gears-in-2026/
+   发布时间: 2026/01/20 12:02:41
+   内容长度: 39824 字符
+   图片数量: 1
+
+8. Meeting the new ETSI standard for AI security
+   来源: https://www.artificialintelligence-news.com/news/meeting-the-new-etsi-standard-for-ai-security/
+   发布时间: 2026/01/20 12:02:43
+   内容长度: 45110 字符
+   图片数量: 1
+
+9. McKinsey tests AI chatbot in early stages of graduate recruitment
+   来源: https://www.artificialintelligence-news.com/news/mckinsey-tests-ai-chatbot-in-early-stages-of-graduate-recruitment/
+   发布时间: 2026/01/20 12:02:45
+   内容长度: 43072 字符
+   图片数量: 1
+
+10. AI medical diagnostics race intensifies as OpenAI, Google, and Anthropic launch competing healthcare tools
+   来源: https://www.artificialintelligence-news.com/news/medical-ai-diagnostics-openai-google-anthropic/
+   发布时间: 2026/01/20 12:02:48
+   内容长度: 39922 字符
+   图片数量: 1
+
+11. AstraZeneca bets on in-house AI to speed up oncology research
+   来源: https://www.artificialintelligence-news.com/news/astrazeneca-bets-on-in-house-ai-to-speed-up-oncology-research/
+   发布时间: 2026/01/20 12:02:50
+   内容长度: 39046 字符
+   图片数量: 1
+
+12. Research shows UK young adults would use AI for financial guidance
+   来源: https://www.artificialintelligence-news.com/news/financial-advice-ai-powered-uk-fintech-market-possibilities/
+   发布时间: 2026/01/20 12:02:52
+   内容长度: 36769 字符
+   图片数量: 1
+
+13. Allister Frost: Tackling workforce anxiety for AI integration success
+   来源: https://www.artificialintelligence-news.com/news/allister-frost-tackling-workforce-anxiety-for-ai-integration-success/
+   发布时间: 2026/01/20 12:02:54
+   内容长度: 40886 字符
+   图片数量: 1
+
+14. The latency trap: Smart warehouses abandon cloud for edge
+   来源: https://www.artificialintelligence-news.com/news/the-latency-trap-smart-warehouses-abandon-cloud-for-edge/
+   发布时间: 2026/01/20 12:02:59
+   内容长度: 40552 字符
+   图片数量: 1
+
+15. Why Apple chose Google over OpenAI: What enterprise AI buyers can learn from the Gemini deal
+   来源: https://www.artificialintelligence-news.com/news/apple-gemini-siri-enterprise-foundation-models/
+   发布时间: 2026/01/20 12:03:04
+   内容长度: 39843 字符
+   图片数量: 1
+

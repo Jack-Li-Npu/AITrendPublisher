@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-15T08:32:39.369Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "obra / superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "title": "GitHub - obra/superpowers: Claude Code superpowers: core skills library",
+      "stars": 23066,
+      "description": "Claude Code superpowers: core skills library. Contribute to obra/superpowers development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-15",
+      "contentId": "github_obra_superpowers_1768465949608",
+      "imageCount": 14
+    },
+    {
+      "fullName": "twitter / the-algorithm",
+      "url": "https://github.com/twitter/the-algorithm",
+      "title": "GitHub - twitter/the-algorithm: Source code for the X Recommendation Algorithm",
+      "stars": 70031,
+      "description": "Source code for the X Recommendation Algorithm. Contribute to twitter/the-algorithm development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-15",
+      "contentId": "github_twitter_the-algorithm_1768465951719",
+      "imageCount": 5
+    },
+    {
+      "fullName": "dev-sec / ansible-collection-hardening",
+      "url": "https://github.com/dev-sec/ansible-collection-hardening",
+      "title": "GitHub - dev-sec/ansible-collection-hardening: This Ansible collection provides battle tested hardening for Linux, SSH, nginx, MySQL",
+      "stars": 5072,
+      "description": "This Ansible collection provides battle tested hardening for Linux, SSH, nginx, MySQL - dev-sec/ansible-collection-hardening",
+      "scrapedAt": "2026-01-15",
+      "contentId": "github_dev-sec_ansible-collection-hardening_1768465953819",
+      "imageCount": 14
+    },
+    {
+      "fullName": "mudler / LocalAI",
+      "url": "https://github.com/mudler/LocalAI",
+      "title": "GitHub - mudler/LocalAI: :robot: The free, Open Source alternative to OpenAI, Claude and others. Self-hosted and local-first. Drop-in replacement for OpenAI,  running on consumer-grade hardware. No GPU required. Runs gguf, transformers, diffusers and many more. Features: Generate Text, MCP, Audio, Video, Images, Voice Cloning, Distributed, P2P and decentralized inference",
+      "stars": 41708,
+      "description": ":robot: The free, Open Source alternative to OpenAI, Claude and others. Self-hosted and local-first. Drop-in replacement for OpenAI,  running on consumer-grade hardware. No GPU required. Runs gguf, transformers, diffusers and many more. Features: Generate Text, MCP, Audio, Video, Images, Voice Cloning, Distributed, P2P and decentralized inference - mudler/LocalAI",
+      "scrapedAt": "2026-01-15",
+      "contentId": "github_mudler_LocalAI_1768465956101",
+      "imageCount": 42
+    },
+    {
+      "fullName": "grab / cursor-talk-to-figma-mcp",
+      "url": "https://github.com/grab/cursor-talk-to-figma-mcp",
+      "title": "GitHub - grab/cursor-talk-to-figma-mcp: TalkToFigma: MCP integration between Cursor and Figma, allowing Cursor Agentic AI to communicate with Figma for reading designs and modifying them programmatically.",
+      "stars": 6082,
+      "description": "TalkToFigma: MCP integration between Cursor and Figma, allowing Cursor Agentic AI to communicate with Figma for reading designs and modifying them programmatically. - grab/cursor-talk-to-figma-mcp",
+      "scrapedAt": "2026-01-15",
+      "contentId": "github_grab_cursor-talk-to-figma-mcp_1768465958342",
+      "imageCount": 6
+    }
+  ],
+  "indexByFullName": {
+    "obra / superpowers": 0,
+    "twitter / the-algorithm": 1,
+    "dev-sec / ansible-collection-hardening": 2,
+    "mudler / localai": 3,
+    "grab / cursor-talk-to-figma-mcp": 4
+  },
+  "indexByUrl": {
+    "https://github.com/obra/superpowers": 0,
+    "https://github.com/twitter/the-algorithm": 1,
+    "https://github.com/dev-sec/ansible-collection-hardening": 2,
+    "https://github.com/mudler/LocalAI": 3,
+    "https://github.com/grab/cursor-talk-to-figma-mcp": 4
+  }
+}

@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-09T06:23:49.138Z
+文件夹: 2026-01-09-142349
+总数量: 3 条
+数据源: news.mit.edu
+
+文章列表:
+------------------
+1. Artificial intelligence | MIT News | Massachusetts Institute of Technology
+   来源: https://news.mit.edu/topic/artificial-intelligence2#main
+   发布时间: 2026/01/09 06:23:39
+   内容长度: 7757 字符
+   图片数量: 5
+
+2. Topics | MIT News | Massachusetts Institute of Technology
+   来源: https://news.mit.edu/topics
+   发布时间: 2026/01/09 06:23:42
+   内容长度: 3951 字符
+   图片数量: 0
+
+3. Machine learning | MIT News | Massachusetts Institute of Technology
+   来源: https://news.mit.edu/topic/machine-learning
+   发布时间: 2026/01/09 06:23:48
+   内容长度: 7889 字符
+   图片数量: 5
+

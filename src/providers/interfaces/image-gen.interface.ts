@@ -36,6 +36,8 @@ export enum ImageGeneratorType {
   PDD920_LOGO = "PDD920_LOGO",
   ALIWANX21 = "ALIWANX21",
   ALIWANX_POSTER = "ALIWANX_POSTER",
+  GEMINI = "GEMINI",
+  GEMINI_PRO = "GEMINI_PRO",
 }
 
 /**
@@ -50,4 +52,8 @@ export interface ImageGeneratorTypeMap {
     import("@src/providers/image-gen/aliyun/aliwanx2.1.image.ts").AliWanX21ImageGenerator;
   [ImageGeneratorType.ALIWANX_POSTER]:
     import("@src/providers/image-gen/aliyun/aliwanx-poster.image-generator.ts").AliyunWanxPosterGenerator;
+  [ImageGeneratorType.GEMINI]:
+    import("@src/providers/image-gen/gemini/gemini-image-generator.ts").GeminiImageGenerator;
+  [ImageGeneratorType.GEMINI_PRO]:
+    import("@src/providers/image-gen/gemini/gemini-image-generator.ts").GeminiImageGenerator;
 }

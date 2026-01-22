@@ -1,0 +1,34 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-20T02:31:05.126Z
+文件夹: 2026-01-20-103105
+总数量: 4 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. How SAP Business AI Enabled This French City to Thrive | AI Magazine
+   来源: https://aimagazine.com/news/opentext-cognizant-webinar-reshape-qa-devops-with-ai
+   发布时间: 2026/01/20 02:30:40
+   内容长度: 8003 字符
+   图片数量: 5
+
+2. How SAP Business AI Enabled This French City to Thrive | AI Magazine
+   来源: https://aimagazine.com/news/rio-tinto-and-glencore-talks-driven-by-ai-demand
+   发布时间: 2026/01/20 02:30:49
+   内容长度: 8003 字符
+   图片数量: 5
+
+3. Can Intel Pounce as TSMC Struggles with Surging Chip Demand? | AI Magazine
+   来源: https://aimagazine.com/news/musks-grok-ai-must-block-misuse-after-undressing-backlash
+   发布时间: 2026/01/20 02:31:00
+   内容长度: 8003 字符
+   图片数量: 5
+
+4. Anthropic Unveils Claude for Healthcare AI | AI Magazine
+   来源: https://aimagazine.com/news/anthropic-unveils-claude-for-healthcare-ai
+   发布时间: 2026/01/20 02:31:04
+   内容长度: 7586 字符
+   图片数量: 5
+

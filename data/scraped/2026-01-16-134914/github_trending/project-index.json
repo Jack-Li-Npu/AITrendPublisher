@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-16T05:49:14.497Z",
+  "totalCount": 2,
+  "projects": [
+    {
+      "fullName": "google-ai-edge / mediapipe",
+      "url": "https://github.com/google-ai-edge/mediapipe",
+      "title": "GitHub - google-ai-edge/mediapipe: Cross-platform, customizable ML solutions for live and streaming media.",
+      "stars": 33249,
+      "description": "Cross-platform, customizable ML solutions for live and streaming media. - google-ai-edge/mediapipe",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_google-ai-edge_mediapipe_1768542550886",
+      "imageCount": 0
+    },
+    {
+      "fullName": "puckeditor / puck",
+      "url": "https://github.com/puckeditor/puck",
+      "title": "GitHub - puckeditor/puck: The visual editor for React",
+      "stars": 10748,
+      "description": "The visual editor for React. Contribute to puckeditor/puck development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-16",
+      "contentId": "github_puckeditor_puck_1768542553477",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "google-ai-edge / mediapipe": 0,
+    "puckeditor / puck": 1
+  },
+  "indexByUrl": {
+    "https://github.com/google-ai-edge/mediapipe": 0,
+    "https://github.com/puckeditor/puck": 1
+  }
+}

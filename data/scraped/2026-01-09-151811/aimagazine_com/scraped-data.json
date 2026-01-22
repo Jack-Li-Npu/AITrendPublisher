@@ -1,0 +1,173 @@
+[
+  {
+    "id": "fc_1767943049526_2944_832070900",
+    "title": "PepsiCo: Harnessing the Power of AI to Transform Operations | AI Magazine",
+    "content": "AI Applications\n# PepsiCo: Harnessing the Power of AI to Transform Operations\nBy [Tom Chapman](https://aimagazine.com/author/tom-chapman)\nJanuary 08, 2026\n![](https://assets.bizclikmedia.net/138/daea40f0771f2b40e885c77844956269:f827fe3f1c1f86dd935981a0942d225b/pepsico-x-siemens-x-nvidia-6.webp)\nJensen Huang (left), CEO at Nvidia, with Athina Kanioura, Global Chief Strategy & Transformation Officer at PepsiCo, and Roland Busch, CEO at Siemens, at CES 2026. Picture: Rob Mathis/LinkedIn\nPepsiCo is joining forces with Siemens and Nvidia in a bid to transform plant and supply chain operations through AI and advanced digital twin technology\n[PepsiCo](https://aimagazine.com/company/pepsico) is setting out a new chapter in its operational strategy, partnering with Siemens and Nvidia in a multi-year collaboration aimed at digitising supply chain and manufacturing systems using artificial intelligence (AI) and digital twin technology.\nAnnounced at CES 2026 in Las Vegas, the partnership introduces the first application of its kind by a global consumer packaged goods (CPG) company, marking a shift in how facilities are designed, simulated and managed.\n![Youtube Placeholder](https://i.ytimg.com/vi/y-QnSvT3bzw/hqdefault.jpg)\nAs demand grows and the need for faster and more adaptable production rises, PepsiCo is taking steps to digitally overhaul its plants and warehouses in the US.\nThe process involves piloting digital twins – digital replicas of real-world facilities – before making any changes to physical infrastructure.\nThese virtual models allow the company to simulate, test and validate new setups with speed and precision.\nRamon Laguarta, Chairman and CEO at PepsiCo, explains: \"The scale and complexity of PepsiCo's business, from farm to shelf, is massive – and we are embedding AI throughout our operations to better meet the increasing demands of our consumers and customers.\n\"Our work with [Siemens](https://aimagazine.com/company/siemens) and Nvidia will help accelerate our continued journey of becoming a future-fit company, operating with agility and foresight.\"\n![](https://assets.bizclikmedia.net/668/6b670825730ee7b17e41140d78853306:e79db4f0108f944d366a21b5a03dae94/ramon-laguarta.jpg)\nRamon Laguarta, Chairman and CEO at PepsiCo\n## Using digital twins to model, test and build smarter\nPepsiCo is now adopting a digital-first strategy for facility planning.\nUsing physics-based digital twin simulations, the company is able to co-design operations with AI agents that help to test and refine layout choices before making any on-site changes.\nThese simulations are powered by Siemens’ Digital Twin Composer software, which is built using Nvidia’s Omniverse platform – a set of tools that creates real-time 3D simulations with physically accurate behaviour.\nThe technology enables PepsiCo to digitally reconstruct all machines, conveyor systems, operator paths and pallet flows with a high level of detail.\nThis helps the company identify system flaws and performance improvements virtually, eliminating the need to build or modify physical infrastructure until every variable has been tested.\nAccording to early trial outcomes, PepsiCo improves throughput by 20% while achieving almost full design validation and reducing capital expenditure by 10% to 15%.\n[Nvidia](https://aimagazine.com/company/nvidia) Founder and CEO Jensen Huang sees digital twins as the foundation of AI adoption across physical industries: \"Physical industries are entering the age of AI. For companies with real-world assets, digital twins are the foundation of their AI journey.\"\n![](https://assets.bizclikmedia.net/668/cc7475ab7350cdc89ae8ad77b331bfcd:f8f1157a5d5ccc5aa18d995efc5e87ef/nvidia-s-ceo-jensen-huang.jpg)\nNvidia Founder and CEO Jensen Huang\n\"Working with Nvidia and Siemens, PepsiCo is re-architecting its operations – using physically-accurate digital twins and AI to reinvent how it designs, optimises and runs its global operations,\" he adds.\nThe new approach will allow PepsiCo to spot up to 90% of operational issues in simulation before changes are made in the real world.\nThat efficiency is already visible in initial pilot sites, where PepsiCo uses AI and computer vision to optimise the end-to-end supply chain.\n## Building a global, intelligent supply chain\nAt the heart of the transformation is Siemens’ new software solution, which supports large-scale [industrial metaverse environments](https://aimagazine.com/top10/top-10-companies-using-ai-in-the-metaverse).\nThese environments merge 2D and 3D data from digital twins with real-time physical information – all within a managed, high-fidelity 3D interface.\nThe system enables manufacturers to view and test every aspect of a facility – both virtual and physical – throughout its operational lifecycle.\nRoland Busch, CEO at Siemens, says: \"We are proud to partner with PepsiCo and Nvidia to digitally transform their manufacturing facilities using physics-based digital twins and AI from design to engineering to operations.\n\"The Digital Twin Composer is a cornerstone in enabling PepsiCo to transform manufacturing and warehousing.\n![](https://assets.bizclikmedia.net/668/dc9ac3fb530588ea00921566a1cd782a:627822d70de9db7e20bcb0c04f6e5844/siemens.png)\nRoland Busch, CEO at Siemens (Credit: Siemens)\n\"Siemens is powering the industrial AI revolution – with an unmatched industrial AI technology stack, deep domain knowhow and world-class partners.\n\"This collaboration sets a new standard for all industries. Customers can turn ideas into real-world impact with greater speed, quality, and efficiency.\"\nWith a clear strategy in place, PepsiCo is [embarking on its digital transformation](https://aimagazine.com/news/cgi-execs-on-ai-building-trust-and-digital-resilience) in select US locations, but has confirmed it aims to scale the approach across its global operations.\nThe digital twins simulate not only machinery and facility layouts but also the end-to-end supply chain, helping to establish a performance benchmark for each site.\nUsing AI tools, PepsiCo teams can test new layouts and system changes to refine operations and boost capacity without costly physical upgrades.\n## Designing plants that anticipate and adapt\nIn addition to creating flexible and responsive facilities, PepsiCo wants to design a new type of intelligent supply chain that predicts and adapts to changes automatically.\nAthina Kanioura, CEO for Latin America and Global Chief Strategy & Transformation Officer at PepsiCo, adds: \"We are deploying the first digital blueprint that reimagines how the supply chain is designed, built, and scaled, a first for the industry.\n![](https://assets.bizclikmedia.net/668/fd7a41d9506389d612a328b50ac17e4c:9a578aad4041e24b4f0ea2fddb864685/athina.jpg)\nAthina Kanioura, CEO for Latin America and Global Chief Strategy & Transformation Officer at PepsiCo. Credit: PepsiCo\n\"With a unified, AI-powered digital foundation, PepsiCo is building toward a world where every plant and warehouse operates as part of a single, intelligent ecosystem.\n\"In this future, our facilities don't just respond to demand; they anticipate and then adapt to it.\"\nPepsiCo is setting out to create a unified, AI-powered model for its global operations where decisions happen in real time and every facility forms part of a connected digital network.\nBy applying simulation, AI and real-time data, the multinational aims to make production more agile, efficient and scalable for a changing global marketplace.\n## Company portals\n- ![](https://assets.bizclikmedia.net/127/a11710064c1e2265b2d1ade083e843e7:6d6cd287fd62c9f6821daa0fd4a6d7ed/picture)\n### [NVIDIA](https://aimagazine.com/company/nvidia)\n- ![](https://assets.bizclikmedia.net/127/76498fca0e6b614d539103344c13d711:63c4051cb3f5df867a2311ed9eed081c/pepsico-logo-footer.jpg)\n### [PepsiCo](https://aimagazine.com/company/pepsico)\n- ![](https://assets.bizclikmedia.net/127/48737371ac32d3e62864d0d78352a37c:a89e2a3ed6ab15e7647be961f28e3a0a/picture)\n### [Siemens](https://aimaga...",
+    "url": "https://aimagazine.com/news/pepsico-harnessing-the-power-of-ai-to-transform-operations",
+    "publishDate": "2026/01/09 07:17:29",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://assets.bizclikmedia.net/138/daea40f0771f2b40e885c77844956269:f827fe3f1c1f86dd935981a0942d225b/pepsico-x-siemens-x-nvidia-6.webp",
+        "type": "image/webp",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://i.ytimg.com/vi/y-QnSvT3bzw/hqdefault.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/6b670825730ee7b17e41140d78853306:e79db4f0108f944d366a21b5a03dae94/ramon-laguarta.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/cc7475ab7350cdc89ae8ad77b331bfcd:f8f1157a5d5ccc5aa18d995efc5e87ef/nvidia-s-ceo-jensen-huang.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/dc9ac3fb530588ea00921566a1cd782a:627822d70de9db7e20bcb0c04f6e5844/siemens.png",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aimagazine.com/news/pepsico-harnessing-the-power-of-ai-to-transform-operations",
+      "datePosted": "2026-01-09 07:17:29",
+      "sourceId": "https://aimagazine.com/",
+      "imageCount": 16
+    }
+  },
+  {
+    "id": "fc_1767943074319_1492_1021807183",
+    "title": "Top 10: AI Applications | AI Magazine",
+    "content": "AI Strategy\n# Why Spotify is Partnering With Labels for AI Music Products\nBy [Tom Chapman](https://aimagazine.com/author/tom-chapman)\nJanuary 08, 2026\n![](https://assets.bizclikmedia.net/138/0ce691932e8c7bd3a882aad6123e8eec:f6f2dfed20775ba295f7ce136139f01f/gettyimages-2184619107-credit-phillip-faraone.webp)\nGustav Söderström, Co-President and Chief Product and Technology Officer at Spotify. Credit: Getty\nSpotify has struck licensing agreements with Sony Music, Universal Music Group and Warner Music to develop AI music creation tools with artist compensation\nToday, you can listen to a 50’s rock version of Eminem and Rihanna’s song Love The Way You Lie, to Phil Collins’ songs as Jazz music – but none of it is really them.\nThe music industry has spent the past two years wrestling with AI, watching as tech companies hoover up copyrighted recordings to train their systems without asking permission.\nNow [Spotify](https://aimagazine.com/news/why-high-profile-musicians-are-starting-to-boycott-spotify), the Swedish streaming giant with more than 600 million users, is taking a different approach by striking deals directly with the three major record labels, saying it wants to make AI tools which “put artists and songwriters first” and be transparent about respecting their copyright.\nBruce Springsteen and Jeremy Allen White \\| Spotify Conversations - YouTube\nWatch later\nTap to unmute\nIf playback doesn't begin shortly, try restarting your device.\nMore videos\n## More videos\nYou're signed out\nVideos you watch may be added to the TV's watch history and influence TV recommendations. To avoid this, cancel and sign in to YouTube on your computer.\nCancelConfirm\nInclude playlist\nAn error occurred while retrieving sharing information. Please try again later.\n0:00 / 41:29\n![Youtube Placeholder](https://i.ytimg.com/vi/AGunhTqxHHA/hqdefault.jpg)\nThe partnerships with Sony Music Entertainment, Universal Music Group and Warner Music Group will see Spotify license music to build these products.\nMusic rights organisation Merlin and digital distributor Believe have also joined the arrangement, bringing together companies that represent the lion’s share of commercially released music worldwide.\n[Spotify](https://aimagazine.com/news/is-velvet-sundown-ai-hoax-a-canary-in-the-mine-for-music) has already started building its first products, saying that it recognises there is a “wide range of views on use of generative music tools within the artistic community” and plans to allow artists to choose whether they want to participate.\n## The labels partnering with Spotify\nMusicians from Dua Lipa to Sir Elton John and Sir Paul McCartney have been increasingly vocal about AI firms training Gen AI models on their work without payment or permission.\n![](https://assets.bizclikmedia.net/668/86e571b8c7c2c3ee7ac15c58718f925c:598d17315cee13b27cbeb74418d38b07/gettyimages-1981806351.jpg)\nSir Paul McCartney has been vocal about AI firms training Gen AI models on their work without payment or permission. Picture: Getty Images\nSpotify says it will make sure artists, songwriters and rights holders are “properly compensated for uses of their work and transparently credited for their contributions”.\nThese arrangements will come through “upfront agreements” and not “asking for forgiveness later”.\n“Technology should always serve artists, not the other way around,” says Alex Norstrom, Co-President at Spotify.\n“Our focus at Spotify is making sure innovation supports artists by protecting their rights, respecting their creative choices – and creating new ways for fans to discover and enjoy the music they love.\"\n![](https://assets.bizclikmedia.net/668/fd8e70e0c1ce78d82e7ea33880925252:5ab3dec097d8090f51c7b5d089a45a09/gettyimages-2184690055-alex-norstrom-co-president-at-spotify-photo-by-presley-ann-getty-images-for-spotify.jpg)\nAlex Norstrom, Co-President at Spotify. Picture: Getty Images\nBut not everyone is convinced this marks progress.\nFor example, earlier this year, a band called Velvet Sundown was revealed to be completely AI. Not only had this band convinced many people that they were listening to real people producing music, but the band’s creators are yet to be revealed.\nMax Bonanno, Managing Partner at New Orleans artist management firm MidCitizen Entertainment, told the BBC that AI has “polluted the creative ecosystem\".\nHe says AI-generated songs have “diluted the already limited share of revenue that artists receive from streaming royalties”.\n## The future of the permission-based model\nEd Newton-Rex sees things differently. The founder of Fairly Trained, which pushes for [ethical AI development](https://aimagazine.com/news/why-high-profile-musicians-are-starting-to-boycott-spotify), says: “Lots of the AI industry is exploitative – AI built on people’s work without permission, served up to users who get no say in the matter,” he tells the BBC.\n“This is different – AI features built fairly, with artists’ permission, presented to fans as a voluntary add-on rather than an inescapable funnel of AI slop.\n![](https://assets.bizclikmedia.net/668/841af395a2ef0163a327c26a7e911cdf:41ec232be6438dd4b5ce1bdbbc45e11f/gettyimages-2204654751-ed-newton-rex-founder-of-fairly-trained-photo-by-tibrina-hobson-getty-images.jpg)\nEd Newton-Rex, Founder of Fairly Trained. Picture: Getty Images\n“The devil will be in the detail, but it looks like a move towards a more ethical AI industry, which is sorely needed.”\nSo far, [Spotify](https://technologymagazine.com/news/spotify-ceo-daniel-ek-to-step-back-following-controversies) has always maintained it does not create music itself, using AI or otherwise.\nThe platform does however use the technology to build personalised playlists and run features like its AI DJ.\nIt hosts music created with AI tools but recently announced it was cracking down on artists who did not disclose the use of AI or who used it to impersonate real artists.\nThe company also points out that AI is now used in many stages of the songwriting process, including autotune, mixing and mastering.\n“We’ve been consistently focused on making sure AI works for artists and songwriters, not against them,” says Robert Kyncl, CEO at Warner Music Group.\n![](https://assets.bizclikmedia.net/668/44677137da3ff9ff57d001ced58532a9:79caf752ba4ac6cdee1e822c3eab519c/robert-kyncl-ceo-at-warner-music-group-credit-warner-music-group.jpg)\nRobert Kyncl, CEO at Warner Music Group. Picture: Warner Music Group\n“That means collaborating with partners who understand the necessity for new AI licensing deals that protect and compensate rightsholders and the creative community.”\n“At Spotify, we want to build this future hand in hand with the music industry, guided by clear principles and deep respect for creators, just as we did in the days of piracy.”\n## Company portals\n- ![](https://assets.bizclikmedia.net/127/709ead3c8567f2ea7135b603261f53c3:58e9a6382bd115a78d09b6b59a414f87/spotify-technology-600.png)\n### [Spotify Technology](https://aimagazine.com/company/spotify)\n## Executives\n- ![](https://assets.bizclikmedia.net/220/63cd86d2343db1fa92cc62e12ea30eaa:a584ff2795243df7236ef0da4489a337/1614031984564-e-1762387200-v-beta-t-r7k497zw0y8rutsnpokw3fvihk4jmtv5nus3zdh7jha)![](https://assets.bizclikmedia.net/220/63cd86d2343db1fa92cc62e12ea30eaa:a584ff2795243df7236ef0da4489a337/1614031984564-e-1762387200-v-beta-t-r7k497zw0y8rutsnpokw3fvihk4jmtv5nus3zdh7jha)\n### [Alex Norström](https://aimagazine.com/executive/alex-norstrom)\nCo-President, Chief Business Officer\n- ![](https://assets.bizclikmedia.net/220/e0decf0d8526cd0f58da254e06219788:47666b90018b55ba35376980fa881c4b/gustav.jpg)![](https://assets.bizclikmedia.net/220/e0decf0d8526cd0f58da254e06219788:47666b90018b55ba35376980fa881c4b/gustav.jpg)\n### [Gustav Söderström](https://aimagazine.com/executive/gustav-soderstrom)\nCo-President, CPO & CTO\n## Tags\nCompany Portals\n- ![](https://assets.bizclikmedia.net/127/709ead3c8567f2ea7135b603261f53c3:58e9a6382bd115a78d09b6b59a414f87/spotify-technology-600.png)\n### [Sp...",
+    "url": "https://aimagazine.com/news/spotify-partnering-with-labels-for-ai-music-products",
+    "publishDate": "2026/01/09 07:17:54",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://assets.bizclikmedia.net/138/0ce691932e8c7bd3a882aad6123e8eec:f6f2dfed20775ba295f7ce136139f01f/gettyimages-2184619107-credit-phillip-faraone.webp",
+        "type": "image/webp",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://i.ytimg.com/vi/AGunhTqxHHA/hqdefault.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/86e571b8c7c2c3ee7ac15c58718f925c:598d17315cee13b27cbeb74418d38b07/gettyimages-1981806351.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/fd8e70e0c1ce78d82e7ea33880925252:5ab3dec097d8090f51c7b5d089a45a09/gettyimages-2184690055-alex-norstrom-co-president-at-spotify-photo-by-presley-ann-getty-images-for-spotify.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/841af395a2ef0163a327c26a7e911cdf:41ec232be6438dd4b5ce1bdbbc45e11f/gettyimages-2204654751-ed-newton-rex-founder-of-fairly-trained-photo-by-tibrina-hobson-getty-images.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aimagazine.com/news/spotify-partnering-with-labels-for-ai-music-products",
+      "datePosted": "2026-01-09 07:17:54",
+      "sourceId": "https://aimagazine.com/",
+      "imageCount": 97
+    }
+  },
+  {
+    "id": "fc_1767943078016_3457_1035977380",
+    "title": "Coca-Cola, Nike & Starbucks: Inside Retailers' AI Strategies | AI Magazine",
+    "content": "AI Strategy\n# Coca-Cola, Nike & Starbucks: Inside Retailers' AI Strategies\nBy [Tom Chapman](https://aimagazine.com/author/tom-chapman)\nJanuary 08, 2026\n![](https://assets.bizclikmedia.net/138/765bb3b8548755b61018e0b26693d66f:5fa05e712cfe2d0350ae364172c96b76/gettyimages-2231124157.webp)\nNike is among the major global retailers harnessing the power of AI. Picture: Getty Images\nTop global retailers Coca-Cola, Nike and Starbucks are harnessing AI to drive revenue growth and personalise the customer experience\nFrom personalised product recommendations to [supply chain optimisation](https://aimagazine.com/news/top-10-ai-platforms-for-supply-chain), AI technologies are projected to generate a cumulative economic impact of US$22.3tn by 2030, according to IDC’s April 2025 analysis – and that transformation is now unfolding in the world’s most popular stores and shops.\nThe numbers tell the story, but they do not quite capture the scale of what’s happening.\nSome 88% of organisations now report regular AI use in at least one business function, up from 78% a year earlier, according to McKinsey’s State of AI 2025 survey.\nBut beneath these adoption rates lies something more profound: enterprises are moving from discrete pilots to integrated systems that personalise experiences at scale.\nBuilt exclusively for Coca‑Cola by OpenAI and Bain & Company, “Create Real Magic” combined the capabilities of GPT-4 and DALL-E. Picture: The Coca-Cola Company\n## When Santa speaks 26 languages\n[The Coca-Cola Company](https://aimagazine.com/company/the-coca-cola-company) exemplifies this AI movement in style.\nIn just 60 days – that’s two months from concept to global deployment – the beverage giant launched its “Create Real Magic” holiday campaign using Azure AI, enabling conversational interactions with a digital Santa across 43 markets and 26 languages.\nOver a million users engaged with the experience in three weeks.\nThe campaign is part of a US$1.1bn commitment to cloud-based and Gen AI capabilities through an expanded partnership with Microsoft announced in April 2024.\n“It all started with an iconic asset and a magical idea,” says Pratik Thakar, Vice President (VP) and Global Head of Generative AI at Coca-Cola.\nPratik Thakar, Vice President (VP) and Global Head of Generative AI at Coca-Cola\n“We wanted to create a first-of-its-kind holiday campaign by bringing to life the famous Sundblom Santa popularised by Coca-Cola back in 1931.”\nThe fact that a 133-year-old beverage company can launch a multilingual AI experience faster than most startups says everything about how quickly the ground is shifting beneath retail’s feet.\n## How AI can find the perfect shoes\n[Nike](https://aimagazine.com/company/nike)’s defining moment came in the 1980s with the launch of Air Jordan, sparked by the signing of Michael Jordan, which transformed basketball footwear and culture.\nNow, the company demonstrates AI’s impact – and it does it differently – through physical retail and product innovation that solves problems for customers.\nThe athletic brand’s House of Innovation flagship stores use RFID technology to identify customers as they enter, offering personalised shopping suggestions based on their Nike profile.\n![Youtube Placeholder](https://i.ytimg.com/vi/jDJCavBaBHs/hqdefault.jpg)\nThat means that more than half of us are walking around in the wrong size shoes.\nDigital Commerce 360 projects Nike’s online sales will reach US$8.15bn in 2025, supported by AI-driven personalisation that helps ensure you’re not part of that 60%.\n## The coffee shop that knows you\nThen there’s [Starbucks](https://aimagazine.com/company/starbucks), which has quietly built what may be the most comprehensive AI deployment in retail hospitality.\nThe company’s Deep Brew platform, launched in 2019, analyses data from 17 million app users to deliver personalised recommendations, optimise labour scheduling and manage inventory across 38,000 stores worldwide.\nThe AI Tool Report notes that Deep Brew has driven a 30% increase in return on investment and 15% growth in customer engagement.\nMobile orders now account for over 30% of US transactions. That is a fundamental rewiring of how millions of people buy coffee.\nStarbucks has built one of the most comprehensive AI deployments in retail hospitality. Picture: Starbucks\nNike’s 100 million Nike Run Club users, Coca-Cola’s billion-dollar AI investment and Starbucks’ seamless mobile ordering demonstrate that AI has moved from infrastructure to interface, from cost centre to competitive advantage.\n## Real Magic: Coca-Cola’s AI-powered customer engagement\nCoca-Cola’s US$1.1bn investment with [Microsoft](https://aimagazine.com/company/microsoft), expanded from an initial US$250m agreement in 2020, positions AI at the centre of its digital transformation.\nThe “Create Real Magic” holiday campaign exemplifies this change.\nUsing Azure AI Foundry and global speech services, Coca-Cola created a custom Santa model that conversed in real-time with over a million people in 26 languages across 43 markets – all launched within 60 days.\n“We wanted to create something never seen before while staying authentic to our heritage,” Pratik explains. “With Microsoft’s support, we co-created tools to solve complex technical challenges like multilingual lip sync for Santa’s avatar.”\nCoca-Cola has invested heavily in AI. Picture: Getty Images\nThe campaign allowed users to create personalised snow globes based on holiday memories they shared with Santa, demonstrating how AI can create emotional connections at scale.\nBeyond marketing campaigns, Coca-Cola employs AI across operations in surprising ways.\nThe Freestyle touchscreen fountain – those machines that let you mix your own soft drink combinations – is now AI-enabled, collecting customer preference data that informs product innovation and marketing strategies.\nEvery flavour combination someone creates feeds into the system.\nThe company analyses weather patterns, [purchase history](https://aimagazine.com/data-and-analytics/top-10-uses-of-ai-in-e-commerce) and social media engagement to deliver hyper-personalised campaigns.\n## Just Do It: Nike’s AI revolution in retail and product design\nNike’s using RFID technology to recognise customers and deliver personalised recommendations based on app data including colour preferences, favourite sports and foot measurements.\nThe Nike Fit feature tackles the problem of incorrectly sized footwear. Picture: Getty Images\nWalk in, get recognised, receive suggestions tailored to your actual preferences rather than generic promotions.\nThe Nike Fit feature tackles a persistent retail problem that’s plagued footwear for generations: 60% of people wear incorrectly sized shoes, with over 500,000 purchasing the wrong size annually.\n“It’s a meaningful shift in how we connect our athletes with products that fit their needs, moments and goals,” says Muge Erdirik Dogan, Executive Vice President (EVP) and Chief Technology Officer (CTO) at Nike.\nMuge Erdirik Dogan, Executive Vice President (EVP) and Chief Technology Officer (CTO) at Nike\nIn March 2025, Nike introduced Nike Adapt Link – the first AI-designed sneaker with embedded machine learning algorithms that adjust to the wearer’s foot in real-time using biometric sensors.\nIt learns as you move.\n## Deep Brew: Starbucks’ AI-powered personalisation engine\nStarbucks has built AI platforms through Deep Brew and powered by [Microsoft Azure](https://aimagazine.com/news/how-microsoft-azure-will-transform-checkout-com-payments).\nThe system analyses data from 17 million mobile app users and the broader Starbucks Rewards programme to deliver personalised recommendations, optimise store operations and predict inventory needs across 38,000 locations worldwide.\n![Youtube Placeholder](https://i.ytimg.com/vi/7_GpgSpaKTg/hqdefault.jpg)\nDeep Brew examines purchase history, location data, weather conditions and local events to craft tailored product suggestions.\nThe AI Tool Report notes that the platf...",
+    "url": "https://aimagazine.com/news/coca-cola-nike-starbucks-retailer-ai-strategies",
+    "publishDate": "2026/01/09 07:17:58",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://assets.bizclikmedia.net/138/765bb3b8548755b61018e0b26693d66f:5fa05e712cfe2d0350ae364172c96b76/gettyimages-2231124157.webp",
+        "type": "image/webp",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://i.ytimg.com/vi/jDJCavBaBHs/hqdefault.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://i.ytimg.com/vi/7_GpgSpaKTg/hqdefault.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/127/cb5e8da51175dff59dbb679d595545a7:36b6ee8067c1fb144fd8f2af1e7a1a18/picture",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/127/9e2c919356f2a0a7600ffdf84e469784:833715646667c18e11491740d0c8ef6d/screenshot-2023-11-23-at-10-26-23.png",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aimagazine.com/news/coca-cola-nike-starbucks-retailer-ai-strategies",
+      "datePosted": "2026-01-09 07:17:58",
+      "sourceId": "https://aimagazine.com/",
+      "imageCount": 20
+    }
+  }
+]

@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-13T04:09:05.739Z
+文件夹: 2026-01-13-120905
+总数量: 1 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. AI Business Informs, educates and connects the global AI community
+   来源: https://aibusiness.com/
+   发布时间: 2026/01/13 04:08:46
+   内容长度: 1750 字符
+   图片数量: 5
+

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "fc_1768551034073_1535_1977551307",
+    "title": "Top 10: Synthetic Data Tools | AI Magazine",
+    "content": "Data & Analytics\n# Top 10: Synthetic Data Tools\nBy [Tom Chapman](https://aimagazine.com/author/tom-chapman)\nJanuary 14, 2026\n![](https://assets.bizclikmedia.net/138/2bba2a93f676eb1a4683b501682e6922:72149f6b8f42519c6ceb681a900d8e06/ai-top10-synthetic-data-tools-jan2026.webp)\nAI Magazine has taken a look at the Top 10 synthetic data tools\nAI Magazine has taken a look at the leading synthetic data tools available on the market, including the likes of Delphix, K2view and Nvidia NeMo\nSynthetic data tools are increasingly important, allowing organisations to develop, test and train AI systems without relying on sensitive or scarce real-world data.\nHere, [AI Magazine](https://aimagazine.com/) takes a look at the leading synthetic data tools available on the market.\n## 10\\. SDV\n**Headquarters:** Open source, global community\n**CEO:** Kalyan Veeramachaneni​​​​​​​\n**Year Founded:** 2019\n**Number of Employees:** N/A\n![](https://assets.bizclikmedia.net/668/5bdc61f317105005f554547208471661:870a21ee6ce79aecf2e55b3d3ed6e7c6/blog-header-1.png)\nCredit: Synthetic Data Vault\n## 9\\. Duality AI\n**Headquarters:** US\n**CEO:** Michael Taylor\n**Year Founded:** 2020\n**Number of Employees:** ~50\n![](https://assets.bizclikmedia.net/668/0a245b65dc662fdb9127ab16b779da20:c99ee1b035f62b9f445437fed349f5cb/673e106d954a0a42a400c752-673e103fef7f22967ca1b141-falconeditor-scenarios-2.png)\nCredit: Duality AI\nDuality AI focuses on synthetic data generation through digital twins, enabling realistic simulation of physical environments. Its platform allows organisations to model complex systems and generate sensor-rich datasets for AI training and validation. The tool is particularly relevant for robotics, defence and industrial AI use cases where real-world data is limited or costly to collect.\n## 8\\. DataGen\n**Headquarters:** Tel Aviv, Israel\n**CEO:** Ofir Chakon\n**Year Founded:** 2018\n**Number of Employees:** ~100\n![](https://assets.bizclikmedia.net/668/0ae72e4aa3c7c76a2bf2d3b02dcb1578:8b707c8f28cf578704fa3a249fa601fc/untitled.webp)\nCredit: DataGen\nDataGen specialises in high-fidelity synthetic data for computer vision and multimodal AI [models](https://aimagazine.com/news/how-vogues-ai-model-adds-to-the-ai-ethics-debate). Its platform generates diverse, annotated datasets at scale, supporting use cases across retail, robotics and autonomous systems. By reducing reliance on real-world data collection, DataGen helps teams accelerate model development while improving dataset diversity and robustness.\n## 7\\. Parallel Domain\n**Headquarters:** Palo Alto, US\n**CEO:** Kevin McNamara\n**Year Founded:** 2017\n**Number of Employees:** ~70\n![Youtube Placeholder](https://i.ytimg.com/vi/eVqQ556SjOc/hqdefault.jpg)\nParallel Domain provides simulation-based synthetic data for training and validating perception models. Its platform generates labelled camera, lidar and radar data for autonomous driving and robotics applications. By enabling edge-case scenario creation and sensor customisation, Parallel Domain helps AI teams improve model safety, accuracy and performance without extensive real-world testing.\n## 6\\. Delphix\n**Headquarters:** Lehi, Utah, US\n**CEO:** Jed Ayres\n**Year Founded:** 2007\n**Number of Employees:** ~600\nUnleashing Continuous Innovation, Compliance \\| Data Company Summit 2023 \\| Delphix - YouTube\nPerforce Delphix\nPerforce Delphix\nWatch later\nTap to unmute\nIf playback doesn't begin shortly, try restarting your device.\nInclude playlist\nAn error occurred while retrieving sharing information. Please try again later.\n0:00 / 15:44\n![Youtube Placeholder](https://i.ytimg.com/vi/8sWSGz-nKCs/hqdefault.jpg)\n## 5\\. Gretel.ai\n**Headquarters:** San Diego, US\n**CEO:** Ali Golshan\n**Year Founded:** 2019\n**Number of Employees:** ~80\n![](https://assets.bizclikmedia.net/668/ef74b7525191c94fd66815d9f98475cb:2235861d6fef589da450bd45f5625fbe/5f4002dfc8d802e5ec6829b6-og-blog.jpg)\nCredit: Gretel.ai\n## 4\\. K2view\n**Headquarters:** Yokneam, Israel\n**CEO:** Ronen Schwartz\n**Year Founded:** 2009\n**Number of Employees:** ~150\n![](https://assets.bizclikmedia.net/668/c0fb94e4e4a9eae941789a78fc3726fc:0eb495c19e6c68d12d74405b29a7135b/mobile-3.webp)\nCredit: K2view\nK2view delivers enterprise-grade synthetic data through a business-entity-driven platform that preserves complex relationships across systems. Its approach supports large-scale test data management, data masking and AI training use cases. K2view is particularly effective in complex IT environments such as banking, telecoms and healthcare.\n## 3\\. MOSTLY AI\n**Headquarters:** Vienna, Austria\n**CEO:** Lukas Andre-Folgmann\n**Year Founded:** 2017\n**Number of Employees:** ~70\nWatch later\nTap to unmute\nIf playback doesn't begin shortly, try restarting your device.\nMore videos\n## More videos\nInclude playlist\nAn error occurred while retrieving sharing information. Please try again later.\n0:00 / 0:39\n![Youtube Placeholder](https://i.ytimg.com/vi/ax9jr5zFNQU/hqdefault.jpg)\n## 2\\. Tonic.ai\n**Headquarters:** San Francisco, US\n**CEO:** Ian Coe\n**Year Founded:** 2018\n**Number of Employees:** ~120\nTonic.ai — The Fake Data Company - YouTube\nWatch later\nTap to unmute\nIf playback doesn't begin shortly, try restarting your device.\nMore videos\n## More videos\nYou're signed out\nVideos you watch may be added to the TV's watch history and influence TV recommendations. To avoid this, cancel and sign in to YouTube on your computer.\nCancelConfirm\nInclude playlist\nAn error occurred while retrieving sharing information. Please try again later.\n0:00 / 1:06\n![Youtube Placeholder](https://i.ytimg.com/vi/bBajt_f10y4/hqdefault.jpg)\n## 1\\. Nvidia NeMo\n**Headquarters:** Santa Clara, US\n**CEO:** Jensen Huang\n**Year Founded:** 1993\n**Number of Employees:** ~26,000\nCreate Your Own AI Agent with NVIDIA NeMo Agent Open Source Toolkit - YouTube\nNVIDIA Developer\nNVIDIA Developer\nWatch later\nTap to unmute\nIf playback doesn't begin shortly, try restarting your device.\nMore videos\n## More videos\nYou're signed out\nVideos you watch may be added to the TV's watch history and influence TV recommendations. To avoid this, cancel and sign in to YouTube on your computer.\nCancelConfirm\nInclude playlist\nAn error occurred while retrieving sharing information. Please try again later.\n0:00 / 18:32\n![Youtube Placeholder](https://i.ytimg.com/vi/NsogD7UhZ4Q/hqdefault.jpg)\nNvidia NeMo sits at the top of the list due to its ability to combine synthetic data generation with large-scale AI model development. As part of Nvidia’s enterprise AI stack, NeMo supports the creation of synthetic datasets for conversational, multimodal and agentic AI systems. Its tight integration with Nvidia’s infrastructure makes it a powerful tool for organisations deploying AI at scale.\n## Company portals\n- ![](https://assets.bizclikmedia.net/127/0218b25c5ba9a84af72ba26cd8b68f95:f58625fb98a233ac6d31df226edf3b43/datacebo.jpg)\n### [DataCebo](https://aimagazine.com/company/DataCebo)\n- ![](https://assets.bizclikmedia.net/127/0ae72e4aa3c7c76a2bf2d3b02dcb1578:4f7875e9e57d25739279953d9efd12f0/untitled.webp)\n### [DataGen](https://aimagazine.com/company/datagen)\n- ![](https://assets.bizclikmedia.net/127/d6883fb95608cd09798f8ebf23519667:fa9778a3ffd7f0ca94c94f2c859fcc4e/picture)\n### [Duality AI](https://aimagazine.com/company/duality-ai)\n- ![](https://assets.bizclikmedia.net/127/e8d85660923c7e67d2a252e501bbf8fa:7e09a8e37235d9c59c53cb36c8044e28/picture)\n### [K2 View](https://aimagazine.com/company/k2-view)\n- ![](https://assets.bizclikmedia.net/127/177424258497e763837dd5216710f0bc:97b6375f8c453a55aab35129680f3854/picture)\n### [Mostly AI](https://aimagazine.com/company/mostly-ai)\n- ![](https://assets.bizclikmedia.net/127/a11710064c1e2265b2d1ade083e843e7:6d6cd287fd62c9f6821daa0fd4a6d7ed/picture)\n### [NVIDIA](https://aimagazine.com/company/nvidia)\n- ![](https://assets.bizclikmedia.net/127/b949dc024236c3814de166b40371c4c1:c632aa917aa7a23891249623ff27171c/picture)\n### [Parallel Domain](https://aimagazine.com/company/parallel-domain)\n- ![](https://assets.bizclikmedia...",
+    "url": "https://aimagazine.com/news/top-10-synthetic-data-tools",
+    "publishDate": "2026/01/16 08:10:34",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://assets.bizclikmedia.net/138/2bba2a93f676eb1a4683b501682e6922:72149f6b8f42519c6ceb681a900d8e06/ai-top10-synthetic-data-tools-jan2026.webp",
+        "type": "image/webp",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/5bdc61f317105005f554547208471661:870a21ee6ce79aecf2e55b3d3ed6e7c6/blog-header-1.png",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/0a245b65dc662fdb9127ab16b779da20:c99ee1b035f62b9f445437fed349f5cb/673e106d954a0a42a400c752-673e103fef7f22967ca1b141-falconeditor-scenarios-2.png",
+        "type": "image/png",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/668/0ae72e4aa3c7c76a2bf2d3b02dcb1578:8b707c8f28cf578704fa3a249fa601fc/untitled.webp",
+        "type": "image/webp",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://i.ytimg.com/vi/eVqQ556SjOc/hqdefault.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aimagazine.com/news/top-10-synthetic-data-tools",
+      "datePosted": "2026-01-16 08:10:34",
+      "sourceId": "https://aimagazine.com/top10",
+      "imageCount": 31
+    }
+  }
+]

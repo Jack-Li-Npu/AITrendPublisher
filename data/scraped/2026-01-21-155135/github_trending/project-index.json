@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-21T07:51:35.883Z",
+  "totalCount": 4,
+  "projects": [
+    {
+      "fullName": "microsoft / agent-lightning",
+      "url": "https://github.com/microsoft/agent-lightning",
+      "title": "GitHub - microsoft/agent-lightning: The absolute trainer to light up AI agents.",
+      "stars": 10968,
+      "description": "The absolute trainer to light up AI agents. Contribute to microsoft/agent-lightning development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-21",
+      "contentId": "github_microsoft_agent-lightning_1768981858493",
+      "imageCount": 28
+    },
+    {
+      "fullName": "AlexxIT / go2rtc",
+      "url": "https://github.com/AlexxIT/go2rtc",
+      "title": "GitHub - AlexxIT/go2rtc: Ultimate camera streaming application with support RTSP, RTMP, HTTP-FLV, WebRTC, MSE, HLS, MP4, MJPEG, HomeKit, FFmpeg, etc.",
+      "stars": 11672,
+      "description": "Ultimate camera streaming application with support RTSP, RTMP, HTTP-FLV, WebRTC, MSE, HLS, MP4, MJPEG, HomeKit, FFmpeg, etc. - AlexxIT/go2rtc",
+      "scrapedAt": "2026-01-21",
+      "contentId": "github_AlexxIT_go2rtc_1768981861214",
+      "imageCount": 22
+    },
+    {
+      "fullName": "lukasz-madon / awesome-remote-job",
+      "url": "https://github.com/lukasz-madon/awesome-remote-job",
+      "title": "GitHub - lukasz-madon/awesome-remote-job: A curated list of awesome remote jobs and resources. Inspired by https://github.com/vinta/awesome-python",
+      "stars": 42752,
+      "description": "A curated list of awesome remote jobs and resources. Inspired by https://github.com/vinta/awesome-python - lukasz-madon/awesome-remote-job",
+      "scrapedAt": "2026-01-21",
+      "contentId": "github_lukasz-madon_awesome-remote-job_1768981863628",
+      "imageCount": 17
+    },
+    {
+      "fullName": "tobi / try",
+      "url": "https://github.com/tobi/try",
+      "title": "GitHub - tobi/try: fresh directories for every vibe",
+      "stars": 2988,
+      "description": "fresh directories for every vibe. Contribute to tobi/try development by creating an account on GitHub.",
+      "scrapedAt": "2026-01-21",
+      "contentId": "github_tobi_try_1768981866050",
+      "imageCount": 15
+    }
+  ],
+  "indexByFullName": {
+    "microsoft / agent-lightning": 0,
+    "alexxit / go2rtc": 1,
+    "lukasz-madon / awesome-remote-job": 2,
+    "tobi / try": 3
+  },
+  "indexByUrl": {
+    "https://github.com/microsoft/agent-lightning": 0,
+    "https://github.com/AlexxIT/go2rtc": 1,
+    "https://github.com/lukasz-madon/awesome-remote-job": 2,
+    "https://github.com/tobi/try": 3
+  }
+}
