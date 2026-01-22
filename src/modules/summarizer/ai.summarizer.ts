@@ -286,8 +286,9 @@ export class AISummarizer implements ContentSummarizer {
       
       // 动态计算 max_tokens：输入内容越长，需要的输出 tokens 越多
       // 估算：中文翻译后长度约为英文的 1.2-1.5 倍（考虑 JSON 格式开销）
+      // 使用 3 倍输入 tokens 以确保有足够空间完成翻译
       const estimatedInputTokens = Math.ceil(content.length / 3);
-      const safeMaxTokens = Math.max(16384, Math.min(estimatedInputTokens * 2, 32768));
+      const safeMaxTokens = Math.max(16384, Math.min(estimatedInputTokens * 3, 65536));
       
       logger.info(`[SINGLE_URL 翻译] 输入长度: ${content.length} 字符, 预估 tokens: ${estimatedInputTokens}, 设置 max_tokens: ${safeMaxTokens}`);
       
