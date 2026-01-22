@@ -500,15 +500,18 @@ export const getSingleUrlRepostSystemPrompt = (): string => {
  * SINGLE_URL 转载 - 用户提示词
  */
 export const getSingleUrlRepostUserPrompt = (content: string, maxLength: number = 1000): string => {
-  return `请将下文**翻译为中文**并进行处理。
+  // 强制截断输入内容，避免翻译过长文章
+  const truncatedContent = content.substring(0, 10000);
+  
+  return `请将下文**翻译为中文**并大幅精简。
 
 ## 任务参数
 - **目标语言**：中文
-- **最大字数**：严格限制在 ${maxLength} 字以内
-- **执行动作**：翻译 + 极简精辟扩充
+- **严格字数限制**：翻译后必须控制在 **${maxLength} 字以内**（绝对不能超过）
+- **执行动作**：翻译核心内容，删除次要细节
 
-## 正文
-${content}
+## 正文（已截取前 10000 字符，只翻译这部分）
+${truncatedContent}
 
 ## 输出格式 (JSON)
 \`\`\`json
@@ -608,16 +611,19 @@ ${content}
  * SINGLE_URL 专用：轻量级正文提取 - 用户提示词
  */
 export const getSingleUrlLightExtractionUserPrompt = (content: string): string => {
-  return `请从以下原始 Markdown 中提取核心正文并适度精简。
+  // 强制截断到 15000 字符，避免输入过长
+  const truncatedContent = content.substring(0, 15000);
+  
+  return `请从以下原始 Markdown 中提取核心正文并大幅精简。
 
-**字数要求**：精简后的内容必须控制在 **3000-5000 字**，确保后续能完整翻译成中文。
+**严格字数要求**：精简后的内容必须控制在 **2000-3000 字**（不超过 3000 字），只保留最核心的内容。
 
 **提取策略**：
-- 保留：核心观点、关键论述、重要数据、代码示例、图片
-- 删除：广告、导航、页脚、冗余示例、重复内容、次要细节
+- 保留：核心观点（2-3 个）、关键论述、重要数据
+- 删除：广告、导航、页脚、所有示例、重复内容、次要细节、冗长案例
 
-## 原始文本
-${content.substring(0, 20000)}
+## 原始文本（已截取前 15000 字符）
+${truncatedContent}
 
-请直接输出 JSON 结果。`;
+请直接输出 JSON 结果，确保 mainContent 不超过 3000 字。`;
 };

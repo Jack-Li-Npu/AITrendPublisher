@@ -285,11 +285,10 @@ export class AISummarizer implements ContentSummarizer {
       // 使用 "PROVIDER:MODEL" 格式传递完整配置
       const llm = await this.llmFactory.getLLMProvider(`${provider}:${model}`);
       
-      // 动态计算 max_tokens：输入内容越长，需要的输出 tokens 越多
-      // 估算：中文翻译后长度约为英文的 1.2-1.5 倍（考虑 JSON 格式开销）
-      // 使用 4 倍输入 tokens，最大 100k，确保超长文章也能完整翻译
-      const estimatedInputTokens = Math.ceil(content.length / 3);
-      const safeMaxTokens = Math.max(32768, Math.min(estimatedInputTokens * 4, 100000));
+      // 动态计算 max_tokens：由于输入已在 Prompt 中被截断到 10000 字符
+      // 输出应该更短（目标 1000-1200 字），所以大幅降低 max_tokens
+      const estimatedInputTokens = Math.ceil(Math.min(content.length, 10000) / 3);
+      const safeMaxTokens = Math.max(4096, Math.min(estimatedInputTokens * 1.5, 8192));
       
       logger.info(`[SINGLE_URL 翻译] 输入长度: ${content.length} 字符, 预估 tokens: ${estimatedInputTokens}, 设置 max_tokens: ${safeMaxTokens}`);
       
