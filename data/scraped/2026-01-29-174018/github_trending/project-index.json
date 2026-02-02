@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-29T09:40:18.360Z",
+  "totalCount": 3,
+  "projects": [
+    {
+      "fullName": "moltbot/moltbot",
+      "url": "https://github.com/moltbot/moltbot",
+      "title": "moltbot/moltbot",
+      "stars": 96436,
+      "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞",
+      "scrapedAt": "2026-01-29",
+      "contentId": "github_moltbot_moltbot_1769679594931",
+      "imageCount": 0
+    },
+    {
+      "fullName": "asgeirtj/system_prompts_leaks",
+      "url": "https://github.com/asgeirtj/system_prompts_leaks",
+      "title": "asgeirtj/system_prompts_leaks",
+      "stars": 27008,
+      "description": "Collection of extracted System Prompts from popular chatbots like ChatGPT, Claude & Gemini",
+      "scrapedAt": "2026-01-29",
+      "contentId": "github_asgeirtj_system_prompts_leaks_1769679596029",
+      "imageCount": 1
+    },
+    {
+      "fullName": "NevaMind-AI/memU",
+      "url": "https://github.com/NevaMind-AI/memU",
+      "title": "NevaMind-AI/memU",
+      "stars": 5794,
+      "description": "Memory for 24/7 proactive agents like moltbot (clawdbot).",
+      "scrapedAt": "2026-01-29",
+      "contentId": "github_NevaMind-AI_memU_1769679597154",
+      "imageCount": 1
+    }
+  ],
+  "indexByFullName": {
+    "moltbot/moltbot": 0,
+    "asgeirtj/system_prompts_leaks": 1,
+    "nevamind-ai/memu": 2
+  },
+  "indexByUrl": {
+    "https://github.com/moltbot/moltbot": 0,
+    "https://github.com/asgeirtj/system_prompts_leaks": 1,
+    "https://github.com/NevaMind-AI/memU": 2
+  }
+}

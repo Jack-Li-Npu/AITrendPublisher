@@ -39,14 +39,33 @@ export class GeminiImageGenerator extends BaseImageGenerator {
    * 刷新配置
    */
   async refresh(): Promise<void> {
-    const apiKey = await this.configManager.get<string>("GEMINI_API_KEY");
-    if (!apiKey) {
-      throw new Error("GEMINI_API_KEY environment variable is not set");
-    }
-    this.apiKey = apiKey;
+    // 检查是否启用中转模式
+    const apiSourceType = await this.configManager.get<string>("API_SOURCE_TYPE");
+    const isProxy = apiSourceType === "proxy";
 
-    this.baseURL = await this.configManager.get<string>("GEMINI_BASE_URL") ||
-      "https://generativelanguage.googleapis.com/v1beta";
+    if (isProxy) {
+      // 【中转模式】使用 PROXY_ 配置
+      let proxyBaseUrl = (await this.configManager.get<string>("PROXY_BASE_URL")) || 
+                         "https://api.jacklihome.com";
+      
+      // 确保包含 /v1beta 路径（Gemini 原生协议需要）
+      if (!proxyBaseUrl.includes('/v1beta')) {
+        proxyBaseUrl = proxyBaseUrl.replace(/\/$/, '') + '/v1beta';
+      }
+      
+      this.baseURL = proxyBaseUrl;
+      this.apiKey = await this.configManager.get<string>("PROXY_API_KEY") || "";
+      logger.info(`[GeminiImage] 🔄 中转模式: 使用 ${this.baseURL}`);
+    } else {
+      // 【官方模式】使用 GEMINI_ 配置
+      this.apiKey = await this.configManager.get<string>("GEMINI_API_KEY") || "";
+      this.baseURL = await this.configManager.get<string>("GEMINI_BASE_URL") ||
+        "https://generativelanguage.googleapis.com/v1beta";
+    }
+
+    if (!this.apiKey) {
+      throw new Error("Gemini API Key 未设置，请在配置中心设置");
+    }
   }
 
   /**

@@ -19,117 +19,78 @@ if (typeof window === "undefined" && typeof globalThis !== "undefined") {
   globalThis.window = globalThis;
 }
 
-// 为 Deno 环境提供 MathJax 模拟（MDKatex 扩展需要）
-// 
-// md 项目中的 LaTeX 渲染机制：
-// 1. 浏览器环境：通过 <script> 标签加载 MathJax 库
-// 2. katex.ts 扩展调用 window.MathJax.tex2svg() 将 LaTeX 转换为 SVG
-// 3. Deno 环境：我们提供一个模拟实现，LaTeX 公式将显示为格式化文本
-//
-// 注意：这是一个简化实现，不进行真正的数学公式渲染
-// 对于微信公众号，LaTeX 公式通常以纯文本形式显示已足够
+// 为 Deno 环境提供 MathJax 模拟（由真正的 MathJax 驱动）
+// 我们使用 mathjax-full 实现后端渲染为 SVG
 if (typeof window !== "undefined" && !window.MathJax) {
-  // @ts-ignore - 提供 MathJax 模拟实现
+  // 动态导入 MathJax 组件
+  const { TeX } = await import("npm:mathjax-full/js/input/tex.js");
+  const { SVG } = await import("npm:mathjax-full/js/output/svg.js");
+  const { liteAdaptor } = await import("npm:mathjax-full/js/adaptors/liteAdaptor.js");
+  const { RegisterHTMLHandler } = await import("npm:mathjax-full/js/handlers/html.js");
+  const { mathjax } = await import("npm:mathjax-full/js/mathjax.js");
+  const { AllPackages } = await import("npm:mathjax-full/js/input/tex/AllPackages.js");
+
+  const adaptor = liteAdaptor();
+  RegisterHTMLHandler(adaptor);
+
+  const tex = new TeX({ packages: AllPackages });
+  const svg = new SVG({ fontCache: 'none' });
+  const html = mathjax.document('', { InputJax: tex, OutputJax: svg });
+
+  // @ts-ignore
   window.MathJax = {
-    // 重置 MathJax 状态（空实现）
-    texReset: () => {
-      // MathJax 会维护内部状态，这里不需要实现
-    },
-    // 将 LaTeX 文本转换为 SVG
-    // 原始实现：返回包含 SVG DOM 节点的容器对象
+    texReset: () => {},
     tex2svg: (text: string, options: { display?: boolean }) => {
-      // 转义 HTML 特殊字符
-      const escapedText = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-      
-      // 创建一个格式化的 SVG，显示原始 LaTeX 文本
-      // 注意：这不是真正的数学公式渲染，只是格式化显示
-      const displayMode = options?.display ?? false;
-      const svgHtml = displayMode
-        ? `<svg xmlns="http://www.w3.org/2000/svg" width="100%" style="display: block; margin: 1em 0;">
-            <text x="0" y="20" font-family="monospace" font-size="14px" fill="currentColor">
-              ${escapedText}
-            </text>
-          </svg>`
-        : `<svg xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" style="display: inline-block; vertical-align: middle;">
-            <text x="0" y="15" font-family="monospace" font-size="14px" fill="currentColor">
-              ${escapedText}
-            </text>
-          </svg>`;
-      
-      // 模拟 MathJax 返回的容器对象结构
-      // katex.ts 中的代码会访问：
-      // - container.firstChild (svg 元素)
-      // - svg.style
-      // - svg.getAttribute('width')
-      // - svg.removeAttribute('width')
-      // - svg.outerHTML
-      
-      const styleObj: any = {
-        display: displayMode ? "initial" : "inline-block",
-        "min-width": displayMode ? "100%" : "auto",
-        width: displayMode ? "100%" : "auto",
-        setProperty: function(key: string, value: string, priority?: string) {
-          this[key] = value;
-        },
-      };
-      
-      // 创建 svg 对象（firstChild），模拟真实的 DOM 元素
-      const svgObj: any = {
-        outerHTML: svgHtml,
-        style: styleObj,
-        getAttribute: function(attr: string) {
-          // 返回属性值，如果不存在返回 null
-          if (attr === "width") {
-            return displayMode ? "100%" : "auto";
-          }
-          // 从 outerHTML 中提取属性值（简化实现）
-          const match = svgHtml.match(new RegExp(`${attr}=["']([^"']+)["']`));
-          return match ? match[1] : null;
-        },
-        removeAttribute: function(attr: string) {
-          // 空实现，只是为了避免报错
-          // 在实际的 DOM 中，这会移除属性，但我们的模拟对象不需要真正移除
-        },
-      };
+      const node = html.convert(text, {
+        display: options?.display ?? false,
+        em: 16,
+        ex: 8,
+        containerWidth: 80 * 16
+      });
+      // 获取 SVG 元素
+      const svgNode = adaptor.firstChild(node);
+      // 为 SVG 添加基础样式以便内联
+      adaptor.setStyle(svgNode, "vertical-align", "middle");
+      if (options?.display) {
+        adaptor.setStyle(svgNode, "display", "block");
+        adaptor.setStyle(svgNode, "margin", "1em auto");
+      }
       
       return {
-        firstChild: svgObj,
+        firstChild: {
+          outerHTML: adaptor.outerHTML(svgNode),
+          style: {
+            setProperty: (k: string, v: string) => adaptor.setStyle(svgNode, k, v)
+          },
+          getAttribute: (a: string) => adaptor.getAttribute(svgNode, a),
+          removeAttribute: (a: string) => adaptor.removeAttribute(svgNode, a)
+        }
       };
-    },
+    }
   };
 }
 
-// 使用相对路径导入 md 项目的模块（从当前文件位置计算）
-// 当前文件: src/modules/render/weixin/doocs-md.renderer.ts
-// 目标文件: md/packages/core/src/renderer/renderer-impl.ts
-// 相对路径: ../../../../md/packages/core/src/renderer/renderer-impl.ts
-const { initRenderer } = await import("../../../../md/packages/core/src/renderer/renderer-impl.ts");
+// 使用本地提取的 Doocs 渲染逻辑
+const { initRenderer } = await import("../doocs/core/index.ts");
 
 // marked 需要从 npm 包直接导入
-import { marked } from "marked";
+import { marked } from "npm:marked";
 // juice 用于将 CSS 内联到 HTML 元素中（微信公众号只支持内联样式）
-import juice from "juice";
+import juice from "npm:juice";
 
-// 导入主题 CSS 文件（使用相对路径）
-const projectRoot = new URL("../../../../", import.meta.url).pathname;
+// 导入主题加载逻辑
+import { getThemeCSS } from "../doocs/shared/index.ts";
+
 const DEFAULT_THEME_CSS = await Deno.readTextFile(
-  `${projectRoot}md/packages/shared/src/configs/theme-css/default.css`,
-);
-const BASE_THEME_CSS = await Deno.readTextFile(
-  `${projectRoot}md/packages/shared/src/configs/theme-css/base.css`,
+  new URL("../doocs/shared/configs/theme-css/default.css", import.meta.url).pathname
 );
 
 /**
  * DoocsMd 渲染器配置
  */
 export interface DoocsMdRendererOptions {
-  /** 主题名称：default（经典）、grace（优雅）、simple（简约） */
-  theme?: "default" | "grace" | "simple";
+  /** 主题名称：default（经典）、grace（优雅）、simple（简约）、elegant（细腻） */
+  theme?: "default" | "grace" | "simple" | "elegant";
   /** 主题色（默认：#3f9cf5） */
   primaryColor?: string;
   /** 字体大小（默认：16px） */
@@ -200,81 +161,43 @@ export class DoocsMdRenderer {
   }
 
   /**
-   * 生成文章图片的 Markdown
-   * 将 media 数组中的图片转换为 Markdown 图片语法
-   */
-  private generateImagesMarkdown(media: WeixinTemplate["media"]): string {
-    if (!media || media.length === 0) {
-      return "";
-    }
-
-    let imagesMarkdown = "";
-    
-    // 最多显示 3 张图片
-    const imagesToShow = media.slice(0, 3);
-    
-    imagesToShow.forEach((m, i) => {
-      if (m.url) {
-        // 使用 Markdown 图片语法
-        imagesMarkdown += `![配图${i + 1}](${m.url})\n\n`;
-      }
-    });
-
-    return imagesMarkdown;
-  }
-
-  /**
    * 将文章数组转换为 Markdown 格式
    * 如果 LLM 已经输出 Markdown 格式，则直接使用
    * 否则进行格式转换
-   * 同时将 media 数组中的图片嵌入到内容中
+   * 注意：不再额外插入 media 数组中的图片，图片应由 LLM 提取时直接保留在正文中
    */
   private articlesToMarkdown(
     articles: WeixinTemplate[],
     options?: {
       introduction?: string;
-      overviewImageUrl?: string;
+      contentMode?: "TECH_NEWS" | "GITHUB_TRENDING" | "SINGLE_URL" | "TOPIC_SEARCH" | "AI_NEWS_SITE";
+      footer?: string;
     }
   ): string {
     let markdown = "";
 
-    // 在文章开头插入引入内容和整体介绍图
-    if (options?.introduction || options?.overviewImageUrl) {
-      // 先插入引入内容
+    // 在文章开头插入引入内容
+    if (options?.introduction) {
       if (options.introduction) {
         markdown += `${options.introduction}\n\n`;
         console.log(`[DoocsMdRenderer] 在开头插入引入内容，长度: ${options.introduction.length} 字符`);
       }
-      
-      // 再插入整体介绍图
-      if (options.overviewImageUrl) {
-        markdown += `![文章概览](${options.overviewImageUrl})\n\n`;
-        console.log(`[DoocsMdRenderer] 在开头插入整体介绍图`);
-      }
-      
+
       // 添加分隔线
       markdown += `---\n\n`;
     }
 
     articles.forEach((article, index) => {
       const content = article.content || "";
-      const media = article.media;
-
-      // 检测内容中是否已经包含图片（Markdown 格式 或 HTML 格式）
-      const hasImagesInContent = /!\[.*?\]\(.*?\)|<img.*?>/i.test(content);
       
       // 检测内容是否已经是 Markdown 格式
       if (this.isMarkdownContent(content)) {
         // LLM 已经输出 Markdown 格式，直接使用
-        console.log(`[DoocsMdRenderer] 文章 ${index + 1} 已是 Markdown 格式，直接使用 (正文已有图片: ${hasImagesInContent})`);
+        console.log(`[DoocsMdRenderer] 文章 ${index + 1} 已是 Markdown 格式，直接使用`);
         
-        // 添加文章序号和标题
-        markdown += `## ${String(index + 1).padStart(2, "0")}. ${article.title}\n\n`;
-        
-        // 在标题后插入第一张图片（仅当内容中完全没有图片且 media 中有图片时）
-        if (media && media.length > 0 && !hasImagesInContent) {
-          markdown += `![${article.title}](${media[0].url})\n\n`;
-          console.log(`[DoocsMdRenderer] 文章 ${index + 1} 插入首图: ${media[0].url.substring(0, 50)}...`);
+        // 仅在多篇文章模式下添加序号标题
+        if (articles.length > 1) {
+          markdown += `## ${String(index + 1).padStart(2, "0")}. ${article.title}\n\n`;
         }
         
         // 检测结语部分（以 ## 结语 开头）
@@ -290,22 +213,13 @@ export class DoocsMdRenderer {
         // 确保内容中的 ** 符号正确（移除可能的转义）
         const cleanedMainContent = mainContent.replace(/\\\*\*/g, '**');
         
-        // 先添加正文内容
+        // 添加正文内容
         markdown += cleanedMainContent + "\n\n";
-
-        // 在正文内容后插入剩余图片（仅当内容中完全没有图片且 media 中有剩余图片，且不在结语部分）
-        if (media && media.length > 1 && !hasImagesInContent && !footerContent) {
-          const remainingImages = media.slice(1, 3);
-          remainingImages.forEach((m, i) => {
-            markdown += `![配图${i + 2}](${m.url})\n\n`;
-          });
-          console.log(`[DoocsMdRenderer] 文章 ${index + 1} 插入 ${remainingImages.length} 张额外图片`);
-        }
         
-        // 添加来源（放在结语之前）
-        // SINGLE_URL 模式不添加项目地址链接
+        // 添加来源链接（SINGLE_URL 模式不添加）
         if (article.url && options?.contentMode !== "SINGLE_URL") {
-          markdown += `> 🔗 **项目地址**：[${article.url}](${article.url})\n\n`;
+          const linkLabel = (options?.contentMode === "GITHUB_TRENDING") ? "项目地址" : "文章链接";
+          markdown += `> 🔗 **${linkLabel}**：[${article.url}](${article.url})\n\n`;
         }
         
         // 最后添加结语部分
@@ -314,15 +228,11 @@ export class DoocsMdRenderer {
         }
       } else {
         // 旧格式（HTML 标签），进行转换
-        console.log(`[DoocsMdRenderer] 文章 ${index + 1} 是旧格式，进行转换 (正文已有图片: ${hasImagesInContent})`);
+        console.log(`[DoocsMdRenderer] 文章 ${index + 1} 是旧格式，进行转换`);
         
-        // 添加文章序号和标题
-        markdown += `## ${String(index + 1).padStart(2, "0")}. ${article.title}\n\n`;
-
-        // 在标题后插入第一张图片（仅当内容中没有图片时）
-        if (media && media.length > 0 && !hasImagesInContent) {
-          markdown += `![${article.title}](${media[0].url})\n\n`;
-          console.log(`[DoocsMdRenderer] 文章 ${index + 1} 插入首图: ${media[0].url.substring(0, 50)}...`);
+        // 仅在多篇文章模式下添加序号标题
+        if (articles.length > 1) {
+          markdown += `## ${String(index + 1).padStart(2, "0")}. ${article.title}\n\n`;
         }
 
         // 检测结语部分
@@ -346,33 +256,24 @@ export class DoocsMdRenderer {
         
         // 处理正文部分
         const paragraphs = mainContent.split("<next_paragraph />");
-        paragraphs.forEach((para, paraIndex) => {
+        paragraphs.forEach((para) => {
           let cleanPara = para
             .trim()
             .replace(/<strong>([^<]+)<\/strong>/gi, "**$1**")
             .replace(/<em>([^<]+)<\/em>/gi, "*$1*")
             .replace(/<code>([^<]+)<\/code>/gi, "`$1`")
             .replace(/blockquote>([^<]+)<\/blockquote>/gi, "> $1")
-            .replace(/<(?!\/?(a|img)\b)[^>]*>/gi, "");
+            .replace(/<(?!\/?(a|img|div|span|p|br)\b)[^>]*>/gi, "");
 
           if (cleanPara.length > 0) {
             markdown += `${cleanPara}\n\n`;
-            
-            // 在第二段后插入第二张图片（仅当正文没有图片时）
-            if (paraIndex === 1 && media && media.length > 1 && !hasImagesInContent && !footerContent) {
-              markdown += `![配图2](${media[1].url})\n\n`;
-            }
           }
         });
-
-        // 在正文内容末尾插入第三张图片（仅当正文没有图片时）
-        if (media && media.length > 2 && !hasImagesInContent && !footerContent) {
-          markdown += `![配图3](${media[2].url})\n\n`;
-        }
         
-        // SINGLE_URL 模式不添加项目地址链接
+        // 添加来源链接（SINGLE_URL 模式不添加）
         if (article.url && options?.contentMode !== "SINGLE_URL") {
-          markdown += `> 🔗 **项目地址**：[${article.url}](${article.url})\n\n`;
+          const linkLabel = (options?.contentMode === "GITHUB_TRENDING") ? "项目地址" : "文章链接";
+          markdown += `> 🔗 **${linkLabel}**：[${article.url}](${article.url})\n\n`;
         }
         
         if (footerContent) {
@@ -384,7 +285,7 @@ export class DoocsMdRenderer {
               .replace(/<em>([^<]+)<\/em>/gi, "*$1*")
               .replace(/<code>([^<]+)<\/code>/gi, "`$1`")
               .replace(/blockquote>([^<]+)<\/blockquote>/gi, "> $1")
-              .replace(/<(?!\/?(a|img)\b)[^>]*>/gi, "");
+              .replace(/<(?!\/?(a|img|div|span|p|br)\b)[^>]*>/gi, "");
             cleanPara = cleanPara.replace(/\\\*\*/g, '**');
             if (cleanPara.length > 0) {
               markdown += `${cleanPara}\n\n`;
@@ -398,6 +299,17 @@ export class DoocsMdRenderer {
         markdown += `---\n\n`;
       }
     });
+
+    // 添加结语（如果有）
+    // 注意：仅当文章内容中没有检测到结语时才添加 options.footer
+    // 避免重复添加结语
+    const hasFooterInContent = markdown.includes("\n## 结语");
+    if (options?.footer && !hasFooterInContent) {
+      markdown += `\n---\n\n${options.footer}\n\n`;
+      console.log(`[DoocsMdRenderer] 在末尾添加结语，长度: ${options.footer.length} 字符`);
+    } else if (hasFooterInContent) {
+      console.log(`[DoocsMdRenderer] 文章内容中已有结语，跳过 footer 参数`);
+    }
 
     // 最后统一修复标题层级：确保除了文章主标题（带编号的 ##）和结语标题（## 结语）外，
     // 所有其他内容中的 ## 都被转换为 ###，以保持正确的层级结构
@@ -414,34 +326,29 @@ export class DoocsMdRenderer {
    * 加载主题 CSS
    */
   private async loadThemeCSS(): Promise<string> {
-    let themeCSS = "";
-
-    // 根据选择的主题加载对应的 CSS 文件
-    if (this.options.theme !== "default") {
-      try {
-        const projectRoot = new URL("../../../../", import.meta.url).pathname;
-        const themePath = `${projectRoot}md/packages/shared/src/configs/theme-css/${this.options.theme}.css`;
-        themeCSS = await Deno.readTextFile(themePath);
-      } catch (error) {
-        console.warn(
-          `无法加载主题 ${this.options.theme}，回退到默认主题`,
-          error,
-        );
-        themeCSS = DEFAULT_THEME_CSS;
-      }
-    } else {
-      themeCSS = DEFAULT_THEME_CSS;
+    if (this.options.theme === "default") {
+      return DEFAULT_THEME_CSS;
     }
-
-    return themeCSS;
+    
+    try {
+      return await getThemeCSS(this.options.theme as any);
+    } catch (error) {
+      console.warn(
+        `无法加载主题 ${this.options.theme}，回退到默认主题`,
+        error,
+      );
+      return DEFAULT_THEME_CSS;
+    }
   }
 
   /**
    * 将 CSS 变量替换为实际值（微信不支持 CSS 变量）
    */
   private processCSSVariables(css: string): string {
+    let processed = css;
+
     // 替换主题色变量
-    let processed = css.replace(
+    processed = processed.replace(
       /var\(--md-primary-color\)/g,
       this.options.primaryColor,
     );
@@ -549,19 +456,20 @@ export class DoocsMdRenderer {
   /**
    * 渲染文章数组为微信公众号 HTML
    * @param articles 文章列表
-   * @param options 可选参数：引入内容、整体介绍图和内容模式
+   * @param options 可选参数：引入内容、内容模式、结语
    */
   async render(
     articles: WeixinTemplate[],
     options?: {
       introduction?: string;
-      overviewImageUrl?: string;
-      contentMode?: string; // 新增：内容模式（用于控制项目地址链接等）
+      contentMode?: "TECH_NEWS" | "GITHUB_TRENDING" | "SINGLE_URL" | "TOPIC_SEARCH" | "AI_NEWS_SITE";
+      skipImageProcessing?: boolean;
+      footer?: string;
     }
   ): Promise<string> {
     console.log(`[DoocsMdRenderer] 开始渲染 ${articles.length} 篇文章`);
 
-    // 1. 转换为 Markdown（包含引入内容和整体介绍图）
+    // 1. 转换为 Markdown（包含引入内容）
     const markdown = this.articlesToMarkdown(articles, options);
     console.log(`[DoocsMdRenderer] 生成 Markdown，长度：${markdown.length} 字符`);
 
@@ -573,54 +481,55 @@ export class DoocsMdRenderer {
       legend: "", // 图片描述模式
     });
 
-    // 3. 配置 marked 选项（确保正确解析粗体等格式）
+    // 3. 配置 marked 选项
     marked.setOptions({
-      gfm: true, // GitHub Flavored Markdown
-      breaks: false, // 不将单个换行符转换为 <br>
-      pedantic: false, // 不使用原始 Markdown.pl 行为
-      silent: false, // 不在解析错误时抛出异常
-      mangle: false, // 不混淆邮箱地址
+      gfm: true,
+      breaks: false,
+      pedantic: false,
+      silent: false,
     });
 
     // 4. 解析 front-matter 并渲染
     const { markdownContent } = renderer.parseFrontMatterAndContent(markdown);
 
-    // 5. 预处理 Markdown：确保 ** 符号正确（移除可能的转义）
-    // 将转义的 \*\* 还原为 **
+    // 5. 渲染 Markdown (核心库会自动调用 window.MathJax 处理公式)
     const cleanedMarkdown = markdownContent.replace(/\\\*\*/g, '**');
+    let htmlBody = marked.parse(cleanedMarkdown) as string;
 
-    // 6. 使用 @doocs/md 内置的 marked 渲染 Markdown 为 HTML
-    const htmlBody = marked.parse(cleanedMarkdown) as string;
-
-    // 5. 添加脚注（如果有）
     const footnotes = renderer.buildFootnotes();
-
-    // 6. 创建容器
     const container = renderer.createContainer(htmlBody + footnotes);
 
-    // 7. 加载并处理主题 CSS
-    const themeCSS = await this.loadThemeCSS();
+    // 5. 加载 CSS 
+    // 始终加载默认主题作为基础
+    const defaultCSS = DEFAULT_THEME_CSS;
+    // 如果选择了其他主题，则加载并追加
+    let themeCSS = "";
+    if (this.options.theme !== "default") {
+      themeCSS = await this.loadThemeCSS();
+    }
     
-    // 添加代码块样式规则（确保代码块应用深色主题）
+    // 代码块样式
     const codeBlockCSS = `
-      /* 代码块深色主题样式 */
-      pre.code__pre,
-      .hljs.code__pre {
+      pre.code__pre, .hljs.code__pre {
         background-color: ${this.options.codeBackgroundColor} !important;
         color: ${this.options.codeTextColor} !important;
       }
-      pre.code__pre > code,
-      .hljs.code__pre > code {
+      pre.code__pre > code, .hljs.code__pre > code {
         background-color: transparent !important;
         color: ${this.options.codeTextColor} !important;
       }
     `;
     
-    const processedCSS = this.processCSSVariables(
-      BASE_THEME_CSS + "\n" + themeCSS + "\n" + codeBlockCSS,
-    );
+    // 组合 CSS：默认基础 + 主题覆盖 + 代码块
+    const combinedCSS = `
+      /* KaTeX 基础样式 */
+      @import url("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css");
+      .katex-block { margin: 1em 0; overflow-x: auto; text-align: center; }
+      .katex { font-size: 1.1em; line-height: 1.2; }
+    ` + defaultCSS + "\n" + themeCSS + "\n" + codeBlockCSS;
+    const processedCSS = this.processCSSVariables(combinedCSS);
 
-    // 8. 将样式和内容组合（使用 juice 内联 CSS）
+    // 6. 内联样式并返回
     console.log(`[DoocsMdRenderer] 使用 juice 内联 CSS 样式...`);
     let renderedHtml = this.inlineStyles(container, processedCSS);
 
@@ -628,6 +537,10 @@ export class DoocsMdRenderer {
     console.log(`[DoocsMdRenderer] ✅ CSS 已内联到 HTML 元素中（微信兼容）`);
 
     // 9. 处理图片：上传到微信服务器（动态导入以避免启动时加载依赖）
+    if (options?.skipImageProcessing) {
+      console.log(`[DoocsMdRenderer] 跳过图片处理（预览模式）`);
+      return renderedHtml;
+    }
     try {
       console.log(`[DoocsMdRenderer] 开始处理图片...`);
       const { WeixinImageProcessor } = await import("@src/utils/image/image-processor.ts");
@@ -641,7 +554,7 @@ export class DoocsMdRenderer {
       console.log(`[DoocsMdRenderer] 图片处理完成`);
       return processedHtml;
     } catch (error) {
-      console.warn(`[DoocsMdRenderer] 图片处理失败，返回原始 HTML:`, error.message);
+      console.warn(`[DoocsMdRenderer] 图片处理失败，返回原始 HTML:`, error instanceof Error ? error.message : String(error));
       return renderedHtml;
     }
   }
@@ -653,7 +566,9 @@ export class DoocsMdRenderer {
     articles: WeixinTemplate[],
     options?: {
       introduction?: string;
-      overviewImageUrl?: string;
+      contentMode?: "TECH_NEWS" | "GITHUB_TRENDING" | "SINGLE_URL" | "TOPIC_SEARCH" | "AI_NEWS_SITE";
+      skipImageProcessing?: boolean;
+      footer?: string;
     }
   ): Promise<string> {
     const renderer = new DoocsMdRenderer();

@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-23T03:52:02.456Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "remotion-dev/remotion",
+      "url": "https://github.com/remotion-dev/remotion",
+      "title": "remotion-dev/remotion",
+      "stars": 27258,
+      "description": "🎥 Make videos programmatically with React",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_remotion-dev_remotion_1769140308093",
+      "imageCount": 2
+    },
+    {
+      "fullName": "block/goose",
+      "url": "https://github.com/block/goose",
+      "title": "block/goose",
+      "stars": 27215,
+      "description": "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_block_goose_1769140309171",
+      "imageCount": 1
+    },
+    {
+      "fullName": "deepseek-ai/FlashMLA",
+      "url": "https://github.com/deepseek-ai/FlashMLA",
+      "title": "deepseek-ai/FlashMLA",
+      "stars": 12184,
+      "description": "FlashMLA: Efficient Multi-head Latent Attention Kernels",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_deepseek-ai_FlashMLA_1769140310316",
+      "imageCount": 0
+    },
+    {
+      "fullName": "iOfficeAI/AionUi",
+      "url": "https://github.com/iOfficeAI/AionUi",
+      "title": "iOfficeAI/AionUi",
+      "stars": 9347,
+      "description": "Free, local, open-source Cowork for Gemini CLI, Claude Code, Codex, Opencode, Qwen Code, Goose Cli, Auggie, and more | 🌟 Star if you like it!",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_iOfficeAI_AionUi_1769140311616",
+      "imageCount": 11
+    },
+    {
+      "fullName": "mastra-ai/mastra",
+      "url": "https://github.com/mastra-ai/mastra",
+      "title": "mastra-ai/mastra",
+      "stars": 20212,
+      "description": "From the team behind Gatsby, Mastra is a framework for building AI-powered applications and agents with a modern TypeScript stack.",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_mastra-ai_mastra_1769140312709",
+      "imageCount": 7
+    }
+  ],
+  "indexByFullName": {
+    "remotion-dev/remotion": 0,
+    "block/goose": 1,
+    "deepseek-ai/flashmla": 2,
+    "iofficeai/aionui": 3,
+    "mastra-ai/mastra": 4
+  },
+  "indexByUrl": {
+    "https://github.com/remotion-dev/remotion": 0,
+    "https://github.com/block/goose": 1,
+    "https://github.com/deepseek-ai/FlashMLA": 2,
+    "https://github.com/iOfficeAI/AionUi": 3,
+    "https://github.com/mastra-ai/mastra": 4
+  }
+}

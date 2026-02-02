@@ -6,11 +6,11 @@
     "test": "deno run -A --env-file=.env src/test.ts",
     "test:gemini": "deno run -A --env-file=.env src/providers/llm/tests/gemini-llm.test.ts",
     "test:firecrawl": "deno run -A --env-file=.env src/modules/scrapers/tests/fireCrawl.scraper.test.ts",
-    "build:win": "deno compile -A --target x86_64-pc-windows-msvc --output trendFinder.exe --icon ./docs/images/main.ico --include src/modules/render/templates src/test.ts ",
-    "build:mac-x64": "deno compile -A --target x86_64-apple-darwin --output trendFinder-mac-x64 --include src/modules/render/templates src/test.ts ",
-    "build:mac-arm64": "deno compile -A --target aarch64-apple-darwin --output trendFinder-mac-arm64 --include src/modules/render/templates src/test.ts ",
-    "build:linux-x64": "deno compile -A --target x86_64-unknown-linux-gnu --output trendFinder-linux-x64 --include src/modules/render/templates src/test.ts ",
-    "build:linux-arm64": "deno compile -A --target aarch64-unknown-linux-gnu --output trendFinder-linux-arm64 --include src/modules/render/templates src/test.ts ",
+    "build:win": "deno compile -A --target x86_64-pc-windows-msvc --output TrendPublish.exe --icon ./docs/images/main.ico --include public src/index.ts",
+    "build:mac-x64": "deno compile -A --target x86_64-apple-darwin --output TrendPublish-mac-x64 --include public src/index.ts",
+    "build:mac-arm64": "deno compile -A --target aarch64-apple-darwin --output TrendPublish-mac-arm64 --include public src/index.ts",
+    "build:linux-x64": "deno compile -A --target x86_64-unknown-linux-gnu --output TrendPublish-linux-x64 --include public src/index.ts",
+    "build:linux-arm64": "deno compile -A --target aarch64-unknown-linux-gnu --output TrendPublish-linux-arm64 --include public src/index.ts",
     "build:all": "deno task build:win && deno task build:mac-x64 && deno task build:mac-arm64 && deno task build:linux-x64 && deno task build:linux-arm64",
     "build:docs": "deno run --allow-all scripts/md2html.ts"
   },
@@ -36,7 +36,6 @@
     "node-cron": "npm:node-cron@^3.0.3",
     "axios": "npm:axios@^1.7.0",
     "cheerio": "npm:cheerio@^1.0.0",
-    "ejs": "npm:ejs@^3.1.10",
     "fast-xml-parser": "npm:fast-xml-parser@^4.5.0",
     "lru-cache": "npm:lru-cache@^11.0.0",
     "openai": "npm:openai@^4.70.0",
@@ -52,12 +51,10 @@
     "node_modules",
     "dist",
     "build",
-    "public",
-    "**/*.ejs"
+    "public"
   ],
   "lint": {
     "exclude": [
-      "src/templates"
     ],
     "rules": {
       "exclude": [

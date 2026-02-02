@@ -90,8 +90,25 @@ export class HttpClient {
         const response = await this.fetchWithTimeout(url, fetchOptions);
 
         if (!response.ok) {
+          // 读取错误响应体
+          const errorBody = await response.text();
+          let parsedError = errorBody;
+          try {
+            parsedError = JSON.stringify(JSON.parse(errorBody), null, 2);
+          } catch { /* 保持原文本 */ }
+
+          const errorMessage = `HTTP ${response.status} - ${response.statusText}`;
+          
+          // 只有在非最后一次尝试时才记录警告，或者对于关键错误直接记录
+          logger.warn(`请求返回错误状态: ${errorMessage}`, {
+            url,
+            method: fetchOptions.method || "GET",
+            status: response.status,
+            responseBody: parsedError
+          });
+
           throw new HttpError(
-            `HTTP ${response.status} - ${response.statusText}`,
+            errorMessage,
             response.status,
             response,
             url,
@@ -156,11 +173,11 @@ export class HttpClient {
     try {
       await this.fetchWithTimeout(url, {
         method: "HEAD",
-        timeout: 5000,
+        timeout: 15000, // 增加到 15 秒，适应网络波动
       });
       return true;
     } catch (error) {
-      logger.error(`健康检查失败: ${url}`, {
+      logger.warn(`健康检查失败（可忽略）: ${url}`, {
         error: error instanceof HttpError
           ? error
           : new HttpError((error as Error).message),

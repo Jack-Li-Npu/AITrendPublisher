@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-28T03:16:33.639Z",
+  "totalCount": 3,
+  "projects": [
+    {
+      "fullName": "badlogic/pi-mono",
+      "url": "https://github.com/badlogic/pi-mono",
+      "title": "badlogic/pi-mono",
+      "stars": 2773,
+      "description": "AI agent toolkit: coding agent CLI, unified LLM API, TUI & web UI libraries, Slack bot, vLLM pods",
+      "scrapedAt": "2026-01-28",
+      "contentId": "github_badlogic_pi-mono_1769570008668",
+      "imageCount": 0
+    },
+    {
+      "fullName": "supermemoryai/supermemory",
+      "url": "https://github.com/supermemoryai/supermemory",
+      "title": "supermemoryai/supermemory",
+      "stars": 15625,
+      "description": "Memory engine and app that is extremely fast, scalable. The Memory API for the AI era.",
+      "scrapedAt": "2026-01-28",
+      "contentId": "github_supermemoryai_supermemory_1769570009769",
+      "imageCount": 5
+    },
+    {
+      "fullName": "Blaizzy/mlx-audio",
+      "url": "https://github.com/Blaizzy/mlx-audio",
+      "title": "Blaizzy/mlx-audio",
+      "stars": 5467,
+      "description": "A text-to-speech (TTS), speech-to-text (STT) and speech-to-speech (STS) library built on Apple's MLX framework, providing efficient speech analysis on Apple Silicon.",
+      "scrapedAt": "2026-01-28",
+      "contentId": "github_Blaizzy_mlx-audio_1769570010866",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "badlogic/pi-mono": 0,
+    "supermemoryai/supermemory": 1,
+    "blaizzy/mlx-audio": 2
+  },
+  "indexByUrl": {
+    "https://github.com/badlogic/pi-mono": 0,
+    "https://github.com/supermemoryai/supermemory": 1,
+    "https://github.com/Blaizzy/mlx-audio": 2
+  }
+}

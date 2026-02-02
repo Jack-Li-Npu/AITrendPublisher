@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-23T07:36:32.919Z",
+  "totalCount": 3,
+  "projects": [
+    {
+      "fullName": "remotion-dev/remotion",
+      "url": "https://github.com/remotion-dev/remotion",
+      "title": "remotion-dev/remotion",
+      "stars": 27510,
+      "description": "🎥 Make videos programmatically with React",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_remotion-dev_remotion_1769153680616",
+      "imageCount": 2
+    },
+    {
+      "fullName": "block/goose",
+      "url": "https://github.com/block/goose",
+      "title": "block/goose",
+      "stars": 27299,
+      "description": "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_block_goose_1769153681772",
+      "imageCount": 1
+    },
+    {
+      "fullName": "deepseek-ai/FlashMLA",
+      "url": "https://github.com/deepseek-ai/FlashMLA",
+      "title": "deepseek-ai/FlashMLA",
+      "stars": 12215,
+      "description": "FlashMLA: Efficient Multi-head Latent Attention Kernels",
+      "scrapedAt": "2026-01-23",
+      "contentId": "github_deepseek-ai_FlashMLA_1769153682908",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "remotion-dev/remotion": 0,
+    "block/goose": 1,
+    "deepseek-ai/flashmla": 2
+  },
+  "indexByUrl": {
+    "https://github.com/remotion-dev/remotion": 0,
+    "https://github.com/block/goose": 1,
+    "https://github.com/deepseek-ai/FlashMLA": 2
+  }
+}

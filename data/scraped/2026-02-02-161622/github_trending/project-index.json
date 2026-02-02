@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-02T08:16:22.711Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "amantus-ai/vibetunnel",
+      "url": "https://github.com/amantus-ai/vibetunnel",
+      "title": "amantus-ai/vibetunnel",
+      "stars": 3655,
+      "description": "Turn any browser into your terminal & command your agents on the go.",
+      "scrapedAt": "2026-02-02",
+      "contentId": "github_amantus-ai_vibetunnel_1770020164347",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "amantus-ai/vibetunnel": 0
+  },
+  "indexByUrl": {
+    "https://github.com/amantus-ai/vibetunnel": 0
+  }
+}

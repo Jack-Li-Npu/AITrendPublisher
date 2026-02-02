@@ -92,22 +92,28 @@ export class GitHubTrendingScraper implements ContentScraper {
         try {
           logger.debug(`[GitHub Trending] 抓取项目详情: ${project.fullName} (${project.url})`);
           
+          // 获取项目的详细信息，包括默认分支
+          const repoInfo = await this.fetchRepoInfo(project.fullName);
+          const defaultBranch = repoInfo?.default_branch || "main";
+          const starsCount = repoInfo?.stargazers_count || 0;
+
           // 获取项目的 README
-          const markdown = await this.fetchRepoReadme(project.fullName);
+          let markdown = await this.fetchRepoReadme(project.fullName, defaultBranch);
           
           if (markdown) {
-            // 获取项目的 stars 数量
-            const starsCount = await this.fetchStarsCount(project.fullName);
             logger.debug(`[GitHub Trending] 项目 ${project.fullName} 有 ${starsCount} stars`);
             
+            // 解决相对 URL 问题
+            markdown = this.resolveMarkdownUrls(markdown, project.fullName, defaultBranch);
+
             // 过滤内容
-            const filteredMarkdown = this.filterContentAfterNavigation(markdown);
+            const filteredMarkdown = this.resolveMarkdownUrls(markdown, project.fullName, defaultBranch);
             const extractedImages = this.extractImagesFromMarkdown(filteredMarkdown);
             
             // 每个项目最多展示 3 张
-            const allMedia = extractedImages.slice(0, 3);
+            const allMedia = extractedImages ? extractedImages.slice(0, 3) : [];
             
-            logger.info(`[GitHub Trending] 项目 ${project.fullName} 提取到 ${extractedImages.length} 张符合条件的图片，最终展示 ${allMedia.length} 张`);
+            logger.info(`[GitHub Trending] 项目 ${project.fullName} 提取到 ${extractedImages?.length || 0} 张符合条件的图片，最终展示 ${allMedia.length} 张`);
           
             const content: ScrapedContent = {
               id: `github_${project.fullName.replace(/\s?\/\s?/g, "_")}_${Date.now()}`,
@@ -120,7 +126,7 @@ export class GitHubTrendingScraper implements ContentScraper {
                 source: "github-trending",
                 fullName: project.fullName,
                 originalUrl: project.url,
-                description: project.description || "",
+                description: project.description || repoInfo?.description || "",
                 stars: starsCount,
               },
             };
@@ -132,7 +138,7 @@ export class GitHubTrendingScraper implements ContentScraper {
               fullName: project.fullName,
               url: project.url,
               stars: starsCount,
-              description: project.description || "",
+              description: project.description || repoInfo?.description || "",
             });
             
             logger.info(`[GitHub Trending] ✅ 成功获取详情: ${project.fullName} (⭐ ${starsCount}, 图片: ${allMedia.length})`);
@@ -212,9 +218,32 @@ export class GitHubTrendingScraper implements ContentScraper {
   }
 
   /**
+   * 解决 Markdown 中的相对路径问题，将其转换为 GitHub 的原始 URL
+   */
+  private resolveMarkdownUrls(markdown: string, fullName: string, branch: string): string {
+    const rawBaseUrl = `https://raw.githubusercontent.com/${fullName.replace(/\s+/g, "")}/${branch}`;
+    
+    // 1. 替换图片 URL: ![alt](path) -> ![alt](rawBaseUrl/path)
+    // 排除已经以 http 开头的 URL
+    let resolved = markdown.replace(/!\[([^\]]*)\]\((?!https?:\/\/)([^)]+)\)/g, (match, alt, path) => {
+      // 清理路径开头的 /
+      const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+      return `![${alt}](${rawBaseUrl}/${cleanPath})`;
+    });
+
+    // 2. 替换 HTML img 标签: <img src="path" ...> -> <img src="rawBaseUrl/path" ...>
+    resolved = resolved.replace(/<img([^>]+)src=["'](?!https?:\/\/)([^"']+)["']([^>]*)>/gi, (match, before, path, after) => {
+      const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+      return `<img${before}src="${rawBaseUrl}/${cleanPath}"${after}>`;
+    });
+
+    return resolved;
+  }
+
+  /**
    * 获取项目的 README 内容
    */
-  private async fetchRepoReadme(fullName: string): Promise<string> {
+  private async fetchRepoReadme(fullName: string, branch: string = "main"): Promise<string> {
     try {
       const cleanName = fullName.replace(/\s+/g, "");
       // 尝试通过 API 获取（带 Accept: application/vnd.github.v3.raw 可以直接拿内容）
@@ -231,9 +260,9 @@ export class GitHubTrendingScraper implements ContentScraper {
       }
 
       // 如果 API 失败（可能是速率限制），尝试 raw.githubusercontent.com
-      const branches = ['main', 'master'];
-      for (const branch of branches) {
-        const rawUrl = `https://raw.githubusercontent.com/${cleanName}/${branch}/README.md`;
+      const branches = [branch, 'main', 'master'];
+      for (const b of branches) {
+        const rawUrl = `https://raw.githubusercontent.com/${cleanName}/${b}/README.md`;
         const rawRes = await fetch(rawUrl);
         if (rawRes.ok) {
           return await rawRes.text();
@@ -248,13 +277,12 @@ export class GitHubTrendingScraper implements ContentScraper {
   }
 
   /**
-   * 从 GitHub API 获取项目的 stars 数量
+   * 从 GitHub API 获取项目的详细信息
    */
-  private async fetchStarsCount(fullName: string): Promise<number> {
+  private async fetchRepoInfo(fullName: string): Promise<any> {
     try {
       const cleanName = fullName.replace(/\s+/g, "");
       const apiUrl = `https://api.github.com/repos/${cleanName}`;
-      // 这里仍然使用 httpClient 因为它处理了 JSON 解析和可能的 API Token
       const response = await this.httpClient.request<any>(apiUrl, {
         method: "GET",
         headers: {
@@ -264,11 +292,19 @@ export class GitHubTrendingScraper implements ContentScraper {
         timeout: 5000,
       });
 
-      return response.stargazers_count || 0;
+      return response;
     } catch (error) {
-      logger.warn(`[GitHub Trending] 获取 stars 失败 (${fullName}):`, error);
-      return 0;
+      logger.warn(`[GitHub Trending] 获取仓库信息失败 (${fullName}):`, error);
+      return null;
     }
+  }
+
+  /**
+   * 从 GitHub API 获取项目的 stars 数量 (保留此方法作为备用)
+   */
+  private async fetchStarsCount(fullName: string): Promise<number> {
+    const info = await this.fetchRepoInfo(fullName);
+    return info?.stargazers_count || 0;
   }
 
   /**

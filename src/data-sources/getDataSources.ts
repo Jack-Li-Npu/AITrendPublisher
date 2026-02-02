@@ -34,16 +34,13 @@ type SourceConfig = Record<NewsPlatform, SourceItem[]>;
 export const techNewsSourceConfigs: SourceConfig = {
   firecrawl: [
     // AI Business - AI 商业新闻
-    //{ identifier: "https://aibusiness.com/latest-news#close-modal", name: "AI Business", category: "ai-news", maxRecursiveLinks: 5 },
+    { identifier: "https://aibusiness.com/latest-news#close-modal", name: "AI Business", category: "ai-news", maxRecursiveLinks: 3 },
     
     // The Robot Report - 机器人新闻
-    // { identifier: "http://therobotreport.com/category/financial/", name: "The Robot Report", category: "robotics-news", maxRecursiveLinks: 1 },
+    { identifier: "http://therobotreport.com/category/financial/", name: "The Robot Report", category: "robotics-news", maxRecursiveLinks: 3 },
     
     // // AI Magazine - AI 杂志（爬取1篇）
-     { identifier: "https://aimagazine.com/news", name: "AI Magazine", category: "ai-news", maxRecursiveLinks: 10 },
-    
-    // SemiAnalysis - 半导体与 AI 行业分析
-  //  { identifier: "https://semianalysis.com/", name: "SemiAnalysis", category: "ai-news", maxRecursiveLinks: 1 },
+     { identifier: "https://aimagazine.com/news", name: "AI Magazine", category: "ai-news", maxRecursiveLinks: 3 },    
   ],
   github: [],
 };
@@ -67,13 +64,17 @@ interface DbSource {
 /**
  * 获取数据源配置
  * @param mode 内容模式，默认为 TECH_NEWS
+ * @param maxArticles 最大文章数（用于动态设置每个源的抓取数量）
  */
-export const getDataSources = async (mode?: ContentMode): Promise<SourceConfig> => {
+export const getDataSources = async (mode?: ContentMode, maxArticles?: number): Promise<SourceConfig> => {
   const configManager = ConfigManager.getInstance();
   
   try {
     // 读取配置的内容模式
     const configMode = mode || await configManager.get<ContentMode>("CONTENT_MODE") || "TECH_NEWS";
+    
+    // 获取最大文章数
+    const articleLimit = maxArticles || await configManager.get("ARTICLE_NUM") || 5;
     
     // 根据模式选择基础配置
     let baseSources: SourceConfig;
@@ -86,6 +87,16 @@ export const getDataSources = async (mode?: ContentMode): Promise<SourceConfig> 
     } else {
       baseSources = JSON.parse(JSON.stringify(techNewsSourceConfigs));
       logger.info("使用科技新闻模式数据源");
+      
+      // 动态设置每个源的抓取数量
+      if (baseSources.firecrawl && baseSources.firecrawl.length > 0) {
+        const sourceCount = baseSources.firecrawl.length;
+        const linksPerSource = Math.ceil(articleLimit / sourceCount);
+        baseSources.firecrawl.forEach(source => {
+          source.maxRecursiveLinks = linksPerSource;
+        });
+        logger.info(`每个数据源将抓取 ${linksPerSource} 篇文章（共 ${sourceCount} 个源，目标 ${articleLimit} 篇）`);
+      }
     }
 
     // 尝试从数据库获取额外配置

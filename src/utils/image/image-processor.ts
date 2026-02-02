@@ -1,5 +1,6 @@
 // src/utils/image/image-processor.ts
 import { Logger } from "@zilla/logger";
+import { encodeBase64 } from "jsr:@std/encoding/base64";
 
 // 动态导入图片处理库，避免启动时下载
 let imagescriptModule: { decode: any; Image: any } | null = null;
@@ -268,17 +269,24 @@ export class WeixinImageProcessor {
   }
 
   /**
-   * 处理文章内容中的所有图片
+   * 处理文章内容中的所有图片、SVG 和图表
    */
   async processContent(content: string): Promise<{
     content: string;
     results: ImageProcessResult[];
   }> {
-    const imageUrls = this.extractImageUrls(content);
-    const results: ImageProcessResult[] = [];
     let processedContent = content;
+    const results: ImageProcessResult[] = [];
 
-    logger.info(`发现 ${imageUrls.length} 张图片需要处理`);
+    // 1. 处理常见的图表占位符 (PlantUML, Mermaid)
+    processedContent = await this.processDiagrams(processedContent, results);
+
+    // 2. 处理内联 SVG (如 MathJax 渲染的结果)
+    processedContent = await this.processInlineSvgs(processedContent, results);
+
+    // 3. 处理普通图片 URL 和 base64
+    const imageUrls = this.extractImageUrls(processedContent);
+    logger.info(`发现 ${imageUrls.length} 张普通图片需要处理`);
 
     for (const imageUrl of imageUrls) {
       try {
@@ -506,16 +514,25 @@ export class WeixinImageProcessor {
         };
       }
 
-      logger.info(`处理 base64 图片，原始大小: ${(parsed.buffer.byteLength / 1024).toFixed(2)}KB`);
+      logger.info(`处理 base64 图片, 类型: ${parsed.mimeType}, 原始大小: ${(parsed.buffer.byteLength / 1024).toFixed(2)}KB`);
 
       // 转换为 JPEG 并压缩
       let processedImage: Uint8Array;
       try {
-        processedImage = await this.compressImage(parsed.buffer, 0.8);
+        if (parsed.mimeType.includes("svg")) {
+          // 如果是 SVG base64，转换为 PNG
+          processedImage = await this.convertSvgToPng(parsed.buffer);
+        } else {
+          processedImage = await this.compressImage(parsed.buffer, 0.8);
+        }
         logger.info(`转换后大小: ${(processedImage.length / 1024).toFixed(2)}KB`);
-      } catch {
-        // 如果压缩失败，直接使用原始数据
-        processedImage = parsed.buffer;
+      } catch (error) {
+        // 如果压缩失败且不是 SVG，尝试直接使用原始数据
+        if (!parsed.mimeType.includes("svg")) {
+          processedImage = parsed.buffer;
+        } else {
+          throw error;
+        }
       }
 
       // 上传到微信
@@ -537,28 +554,47 @@ export class WeixinImageProcessor {
   }
 
   /**
-   * 从文章内容中提取所有图片URL（包括 base64）
+   * 从文章内容中提取所有有效的图片URL（包括 base64）
    */
   private extractImageUrls(content: string): string[] {
     const urls = new Set<string>();
     
-    // Markdown 图片
+    // 基础过滤函数：排除明显非图片或垃圾 URL
+    const isValid = (url: string) => {
+      if (!url) return false;
+      // 允许 base64
+      if (url.startsWith('data:image/')) return true;
+      // 必须是 http 开头
+      if (!url.startsWith('http')) return false;
+      
+      const lower = url.toLowerCase();
+      // 排除常见的徽章、图标、追踪像素等
+      return !lower.includes('badge') && 
+             !lower.includes('shields.io') && 
+             !lower.includes('travis-ci') && 
+             !lower.includes('coveralls.io') && 
+             !lower.includes('codecov.io') &&
+             !lower.includes('favicon') &&
+             !lower.includes('pixel');
+    };
+
+    // 1. Markdown 图片: ![alt](url)
     const mdPattern = /!\[[^\]]*\]\(([^)]+)\)/g;
     let match;
     while ((match = mdPattern.exec(content)) !== null) {
-      urls.add(match[1]);
+      if (isValid(match[1])) urls.add(match[1]);
     }
 
-    // HTML img 标签
+    // 2. HTML img 标签: <img src="url" />
     const imgPattern = /<img[^>]+src=["']([^"']+)["'][^>]*>/g;
     while ((match = imgPattern.exec(content)) !== null) {
-      urls.add(match[1]);
+      if (isValid(match[1])) urls.add(match[1]);
     }
 
-    // 纯 URL（支持更多格式）
+    // 3. 纯 URL（支持更多格式）
     const urlPattern = /(https?:\/\/[^\s<>"]+?\.(jpg|jpeg|png|gif|webp|svg|avif|bmp|tiff|tif))/gi;
     while ((match = urlPattern.exec(content)) !== null) {
-      urls.add(match[1]);
+      if (isValid(match[1])) urls.add(match[1]);
     }
 
     return Array.from(urls);
@@ -630,7 +666,7 @@ export class WeixinImageProcessor {
       try {
         const response = await fetch(url, { 
           method: "HEAD",
-          signal: AbortSignal.timeout(5000),
+          signal: AbortSignal.timeout(15000), // 增加到 15 秒
         });
         const contentType = response.headers.get("content-type");
 
@@ -752,6 +788,110 @@ export class WeixinImageProcessor {
     }
 
     return isQualified;
+  }
+
+  /**
+   * 处理图表占位符 (PlantUML, Mermaid)
+   */
+  private async processDiagrams(content: string, results: ImageProcessResult[]): Promise<string> {
+    let processedContent = content;
+
+    // 1. 处理 PlantUML: <div class="plantuml-diagram" ... data-plantuml-url="...">...</div>
+    const plantumlPattern = /<div[^>]+class="plantuml-diagram"[^>]+data-plantuml-url="([^"]+)"[^>]*>[\s\S]*?<\/div>/g;
+    let match;
+    const plantumlMatches = [];
+    while ((match = plantumlPattern.exec(content)) !== null) {
+      plantumlMatches.push({ full: match[0], url: match[1] });
+    }
+
+    for (const item of plantumlMatches) {
+      try {
+        logger.info(`正在处理 PlantUML 图表: ${item.url.substring(0, 50)}...`);
+        const response = await fetch(item.url);
+        if (!response.ok) throw new Error(`PlantUML 获取失败: ${response.status}`);
+        
+        const buffer = new Uint8Array(await response.arrayBuffer());
+        const isSvg = item.url.includes('/svg/');
+        
+        let pngBuffer: Uint8Array;
+        if (isSvg) {
+          pngBuffer = await this.convertSvgToPng(buffer);
+        } else {
+          pngBuffer = await this.compressImage(buffer);
+        }
+
+        const weixinUrl = await this.weixinPublisher.uploadContentImage("plantuml.png", pngBuffer);
+        processedContent = processedContent.replace(item.full, `<img src="${weixinUrl}" style="max-width: 100%; margin: 10px 0;" />`);
+        results.push({ originalUrl: "plantuml", newUrl: weixinUrl });
+      } catch (error) {
+        logger.error(`PlantUML 处理失败:`, error);
+      }
+    }
+
+    // 2. 处理 Mermaid: <!--mermaid-start--><div ... data-mermaid-code="...">...</div><!--mermaid-end-->
+    const mermaidPattern = /<!--mermaid-start--><div[^>]+data-mermaid-code="([^"]+)"[^>]*>[\s\S]*?<\/div><!--mermaid-end-->/g;
+    const mermaidMatches = [];
+    while ((match = mermaidPattern.exec(processedContent)) !== null) {
+      mermaidMatches.push({ full: match[0], code: decodeURIComponent(match[1]) });
+    }
+
+    for (const item of mermaidMatches) {
+      try {
+        logger.info(`正在处理 Mermaid 图表...`);
+        // 使用 mermaid.ink 将代码转换为图片 URL
+        // 这里的代码需要 base64 编码，使用 @std/encoding/base64 处理 Unicode
+        const base64Code = encodeBase64(new TextEncoder().encode(item.code));
+        const mermaidInkUrl = `https://mermaid.ink/img/${base64Code}`;
+        
+        const response = await fetch(mermaidInkUrl);
+        if (!response.ok) throw new Error(`Mermaid 获取失败: ${response.status}`);
+        
+        const buffer = new Uint8Array(await response.arrayBuffer());
+        const pngBuffer = await this.compressImage(buffer);
+
+        const weixinUrl = await this.weixinPublisher.uploadContentImage("mermaid.png", pngBuffer);
+        processedContent = processedContent.replace(item.full, `<img src="${weixinUrl}" style="max-width: 100%; margin: 10px 0;" />`);
+        results.push({ originalUrl: "mermaid", newUrl: weixinUrl });
+      } catch (error) {
+        logger.error(`Mermaid 处理失败:`, error);
+      }
+    }
+
+    return processedContent;
+  }
+
+  /**
+   * 处理内联 SVG (如 MathJax)
+   */
+  private async processInlineSvgs(content: string, results: ImageProcessResult[]): Promise<string> {
+    let processedContent = content;
+    
+    // 匹配内联 <svg> 标签
+    const svgPattern = /<svg[\s\S]*?<\/svg>/g;
+    let match;
+    const svgMatches = [];
+    while ((match = svgPattern.exec(content)) !== null) {
+      svgMatches.push(match[0]);
+    }
+
+    if (svgMatches.length === 0) return content;
+
+    logger.info(`发现 ${svgMatches.length} 个内联 SVG 需要处理`);
+
+    for (const svg of svgMatches) {
+      try {
+        const svgBuffer = new TextEncoder().encode(svg);
+        const pngBuffer = await this.convertSvgToPng(svgBuffer);
+        
+        const weixinUrl = await this.weixinPublisher.uploadContentImage("math-formula.png", pngBuffer);
+        processedContent = processedContent.replace(svg, `<img src="${weixinUrl}" style="vertical-align: middle; display: inline-block;" />`);
+        results.push({ originalUrl: "inline-svg", newUrl: weixinUrl });
+      } catch (error) {
+        logger.error(`内联 SVG 处理失败:`, error);
+      }
+    }
+
+    return processedContent;
   }
 
   /**

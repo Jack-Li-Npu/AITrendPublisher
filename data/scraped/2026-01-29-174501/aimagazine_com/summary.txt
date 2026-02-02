@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-29T09:45:01.706Z
+文件夹: 2026-01-29-174501
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Cisco CEO: Why AI will be 'Bigger Than The Internet' | AI Magazine
+   来源: https://aimagazine.com/news/envisioning-the-future-of-the-workplace-with-invisible-it
+   发布时间: 2026/01/29 09:43:52
+   内容长度: 7985 字符
+   图片数量: 5
+
+2. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/formula-e-google-cloud-ai-partnership
+   发布时间: 2026/01/29 09:43:55
+   内容长度: 5176 字符
+   图片数量: 5
+
+3. Dario Amodei: Transforming the Future of AI and Work | AI Magazine
+   来源: https://aimagazine.com/news/dario-amodei-transforming-the-future-of-ai-and-work
+   发布时间: 2026/01/29 09:44:00
+   内容长度: 3926 字符
+   图片数量: 5
+

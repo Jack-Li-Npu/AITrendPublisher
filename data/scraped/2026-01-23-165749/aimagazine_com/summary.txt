@@ -1,0 +1,58 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-23T08:57:49.289Z
+文件夹: 2026-01-23-165749
+总数量: 8 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Inside Siemens' Testing of AI-Powered Humanoid Robots | AI Magazine
+   来源: https://aimagazine.com/news/google-apple-ai-collaboration
+   发布时间: 2026/01/23 08:55:53
+   内容长度: 4446 字符
+   图片数量: 5
+
+2. Amazon CEO: Why we Joined Forces with OpenAI | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-ceo-at-davos-potential-real-world-impact-of-ai
+   发布时间: 2026/01/23 08:56:03
+   内容长度: 4154 字符
+   图片数量: 5
+
+3. UST: A Guide to Building Responsible AI Systems | AI Magazine
+   来源: https://aimagazine.com/news/q-a-usts-heather-dawe-on-building-responsible-ai-at-scale
+   发布时间: 2026/01/23 08:56:06
+   内容长度: 6267 字符
+   图片数量: 5
+
+4. WEF 2026: How AI is Impacting Jobs and the Workplace | AI Magazine
+   来源: https://aimagazine.com/news/how-sam-altman-became-the-worlds-most-influential-ai-leader
+   发布时间: 2026/01/23 08:56:19
+   内容长度: 4609 字符
+   图片数量: 5
+
+5. How Sam Altman Became the World's Most Influential AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/amazon-ceo-on-ai-wef-2026
+   发布时间: 2026/01/23 08:56:31
+   内容长度: 3667 字符
+   图片数量: 5
+
+6. How Sam Altman Became the World's Most Influential AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/nvidia-ceo-jensen-huang-wef-davos-2026
+   发布时间: 2026/01/23 08:56:39
+   内容长度: 5564 字符
+   图片数量: 5
+
+7. How is AI Accelerating the Race to Get Rockets in Space? | AI Magazine
+   来源: https://aimagazine.com/news/how-is-ai-reshaping-aerospace-manufacturing-industry
+   发布时间: 2026/01/23 08:56:49
+   内容长度: 139 字符
+   图片数量: 5
+
+8. How is AI Accelerating the Race to Get Rockets in Space? | AI Magazine
+   来源: https://aimagazine.com/news/energy-circularity-responsible-ai-ciscos-purpose-report
+   发布时间: 2026/01/23 08:56:53
+   内容长度: 4506 字符
+   图片数量: 5
+

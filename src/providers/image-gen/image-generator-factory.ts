@@ -5,8 +5,7 @@ import {
 } from "@src/providers/interfaces/image-gen.interface.ts";
 import { TextLogoGenerator } from "@src/providers/image-gen/text-logo.ts";
 import { PDD920LogoGenerator } from "@src/providers/image-gen/pdd920-logo.ts";
-import { AliWanX21ImageGenerator } from "@src/providers/image-gen/aliyun/aliwanx2.1.image.ts";
-import { AliyunWanxPosterGenerator } from "@src/providers/image-gen/aliyun/aliwanx-poster.image-generator.ts";
+import { QwenImageMaxGenerator } from "@src/providers/image-gen/aliyun/qwen-image-max.image-generator.ts";
 import { GeminiImageGenerator } from "@src/providers/image-gen/gemini/gemini-image-generator.ts";
 
 /**
@@ -59,11 +58,8 @@ export class ImageGeneratorFactory {
       case "PDD920_LOGO":
         generator = new PDD920LogoGenerator();
         break;
-      case "ALIWANX21":
-        generator = new AliWanX21ImageGenerator();
-        break;
-      case "ALIWANX_POSTER":
-        generator = new AliyunWanxPosterGenerator();
+      case "QWEN_IMAGE_MAX":
+        generator = new QwenImageMaxGenerator();
         break;
       case "GEMINI":
       case "GEMINI_PRO":

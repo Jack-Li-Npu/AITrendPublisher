@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-01T10:08:35.833Z",
+  "totalCount": 3,
+  "projects": [
+    {
+      "fullName": "ThePrimeagen/99",
+      "url": "https://github.com/ThePrimeagen/99",
+      "title": "ThePrimeagen/99",
+      "stars": 2538,
+      "description": "Neovim AI agent done right",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_ThePrimeagen_99_1769940512903",
+      "imageCount": 0
+    },
+    {
+      "fullName": "microsoft/BitNet",
+      "url": "https://github.com/microsoft/BitNet",
+      "title": "microsoft/BitNet",
+      "stars": 27466,
+      "description": "Official inference framework for 1-bit LLMs",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_microsoft_BitNet_1769940514101",
+      "imageCount": 1
+    },
+    {
+      "fullName": "microsoft/agent-lightning",
+      "url": "https://github.com/microsoft/agent-lightning",
+      "title": "microsoft/agent-lightning",
+      "stars": 12747,
+      "description": "The absolute trainer to light up AI agents.",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_microsoft_agent-lightning_1769940515326",
+      "imageCount": 2
+    }
+  ],
+  "indexByFullName": {
+    "theprimeagen/99": 0,
+    "microsoft/bitnet": 1,
+    "microsoft/agent-lightning": 2
+  },
+  "indexByUrl": {
+    "https://github.com/ThePrimeagen/99": 0,
+    "https://github.com/microsoft/BitNet": 1,
+    "https://github.com/microsoft/agent-lightning": 2
+  }
+}

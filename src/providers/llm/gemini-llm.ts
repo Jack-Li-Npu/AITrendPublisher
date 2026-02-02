@@ -47,15 +47,41 @@ export class GeminiLLM implements LLMProvider {
   }
 
   async refresh(): Promise<void> {
-    // 从配置中读取 Gemini API 配置
-    this.baseURL =
-      (await this.configManager.get("GEMINI_BASE_URL")) ||
-      "https://generativelanguage.googleapis.com/v1beta";
-    this.apiKey = await this.configManager.get("GEMINI_API_KEY");
+    // 检查是否启用中转模式
+    const apiSourceType = await this.configManager.get<string>("API_SOURCE_TYPE").catch(() => "official");
+    const isProxy = apiSourceType === "proxy";
+
+    if (isProxy) {
+      // 【中转模式】使用 PROXY_ 配置
+      let proxyBaseUrl = (await this.configManager.get("PROXY_BASE_URL")) || 
+                         "https://api.jacklihome.com";
+      
+      // 确保包含 /v1beta 路径（Gemini 原生协议需要）
+      if (!proxyBaseUrl.includes('/v1beta')) {
+        proxyBaseUrl = proxyBaseUrl.replace(/\/$/, '') + '/v1beta';
+      }
+      
+      this.baseURL = proxyBaseUrl;
+      this.apiKey = await this.configManager.get<string>("PROXY_API_KEY").catch(() => "");
+      console.log(`[GeminiLLM] 🔄 中转模式: 使用 ${this.baseURL}`);
+    } else {
+      // 【官方模式】使用 GEMINI_ 配置
+      // 优先读取 GOOGLE_GEMINI_BASE_URL（用户自定义代理），然后是 GEMINI_BASE_URL
+      // 使用 try-catch 避免配置项缺失抛出错误
+      try {
+        this.baseURL =
+          (await this.configManager.get<string>("GOOGLE_GEMINI_BASE_URL").catch(() => "")) ||
+          (await this.configManager.get<string>("GEMINI_BASE_URL").catch(() => "")) ||
+          "https://generativelanguage.googleapis.com/v1beta";
+        this.apiKey = await this.configManager.get<string>("GEMINI_API_KEY").catch(() => "");
+      } catch (e) {
+        // 忽略错误，由下方的 !this.apiKey 判断统一处理
+      }
+    }
 
     // 支持多模型配置 "gemini-2.0-flash-exp|gemini-1.5-pro"
     const modelConfig =
-      (await this.configManager.get("GEMINI_MODEL")) || "gemini-3-flash-preview";
+      (await this.configManager.get<string>("GEMINI_MODEL").catch(() => "")) || "gemini-3-flash-preview";
     this.availableModels = (modelConfig as string)
       .split("|")
       .map((model: string) => model.trim());
@@ -152,22 +178,25 @@ export class GeminiLLM implements LLMProvider {
         maxOutputTokens: options.max_tokens ?? 2048,
       };
 
-      // 添加 thinkingConfig（Gemini 3 Pro 支持）
-      // Gemini 3 Pro 默认启用思考，需要明确配置
+      // 添加 thinkingConfig（Gemini 3 Pro 或 2.0 思考模型支持）
       const thinkingLevel = options.thinkingLevel || this.defaultThinkingLevel;
-      if (model.includes("gemini-3")) {
-        if (thinkingLevel === "none") {
-          // 明确禁用思考功能
-          generationConfig.thinkingConfig = {
-            thinkingLevel: "NONE",
+      if (model.includes("gemini-3") || model.includes("thinking") || model.includes("flash-lite")) {
+        if (thinkingLevel === "NONE" || thinkingLevel === "none") {
+          // 明确禁用思考功能或设置预算为 0
+          generationConfig.thinking_config = {
+            include_thoughts: false,
           };
-          logger.debug("已禁用 Gemini 3 Pro 思考功能");
+          logger.debug(`已禁用 ${model} 思考功能`);
         } else {
           // 启用思考功能
-          generationConfig.thinkingConfig = {
-            thinkingLevel: thinkingLevel,
+          // 注意：不同模型可能对 thinking_config 的字段要求不同
+          // 按照用户提供的示例，使用 thinkingBudget
+          generationConfig.thinking_config = {
+            include_thoughts: true,
+            // 如果是 flash-lite，根据用户示例使用 0 预算，或者根据级别调整
+            thinking_budget: (model.includes("flash-lite")) ? 0 : 32000, 
           };
-          logger.debug(`Gemini 3 Pro 思考级别: ${thinkingLevel}`);
+          logger.debug(`${model} 思考配置已启用`);
         }
       }
 

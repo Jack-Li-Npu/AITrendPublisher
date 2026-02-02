@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T04:29:42.713Z
+文件夹: 2026-02-02-122942
+总数量: 2 条
+数据源: www.therobotreport.com
+
+文章列表:
+------------------
+1. RobCo raises Series C funding to scale industrial automation - The Robot Report
+   来源: https://www.therobotreport.com/robco-raises-100m-scale-industrial-automation/
+   发布时间: 2026/02/02 04:29:07
+   内容长度: 2597 字符
+   图片数量: 2
+
+2. Waabi raises $1B to advance autonomous trucks and robotaxis - The Robot Report
+   来源: https://www.therobotreport.com/waabi-raises-1b-to-advance-autonomous-trucks-and-robotaxis/
+   发布时间: 2026/02/02 04:29:15
+   内容长度: 3972 字符
+   图片数量: 1
+

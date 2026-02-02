@@ -1,0 +1,70 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T02:59:12.336Z
+文件夹: 2026-01-28-105912
+总数量: 10 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 02:56:16
+   内容长度: 13039 字符
+   图片数量: 5
+
+2. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/intel-ai-chip-supply-shortages
+   发布时间: 2026/01/28 02:56:27
+   内容长度: 2634 字符
+   图片数量: 5
+
+3. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 02:56:50
+   内容长度: 10908 字符
+   图片数量: 5
+
+4. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/jensen-huang-ai-top-100-leaders-2026-no-2
+   发布时间: 2026/01/28 02:56:59
+   内容长度: 10925 字符
+   图片数量: 5
+
+5. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-unveils-maia-200-ai-accelerator
+   发布时间: 2026/01/28 02:57:17
+   内容长度: 13099 字符
+   图片数量: 5
+
+6. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/demis-hassabis-top-100-ai-leaders-2026
+   发布时间: 2026/01/28 02:57:33
+   内容长度: 10152 字符
+   图片数量: 6
+
+7. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/kpmg-uniphore-building-ai-agents-for-industries
+   发布时间: 2026/01/28 02:57:53
+   内容长度: 11669 字符
+   图片数量: 5
+
+8. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/formula-e-google-cloud-ai-partnership
+   发布时间: 2026/01/28 02:58:02
+   内容长度: 10283 字符
+   图片数量: 5
+
+9. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/dario-amodei-transforming-the-future-of-ai-and-work
+   发布时间: 2026/01/28 02:58:18
+   内容长度: 9581 字符
+   图片数量: 5
+
+10. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/what-tiktok-spin-off-means-for-ai-regulation
+   发布时间: 2026/01/28 02:58:30
+   内容长度: 9093 字符
+   图片数量: 5
+

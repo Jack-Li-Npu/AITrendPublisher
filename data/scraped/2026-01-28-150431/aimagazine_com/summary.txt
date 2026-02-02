@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T07:04:31.015Z
+文件夹: 2026-01-28-150431
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Palantir CEO: How AI will Reshape Skills and Hiring | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 07:03:00
+   内容长度: 12482 字符
+   图片数量: 5
+
+2. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/intel-ai-chip-supply-shortages
+   发布时间: 2026/01/28 07:03:33
+   内容长度: 6222 字符
+   图片数量: 5
+
+3. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 07:03:55
+   内容长度: 11526 字符
+   图片数量: 5
+

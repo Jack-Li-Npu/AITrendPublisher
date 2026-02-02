@@ -1,241 +1,25 @@
 {
   "version": "1.0",
-  "updatedAt": "2026-01-21T07:51:07.061Z",
-  "totalCount": 26,
+  "updatedAt": "2026-02-02T08:42:14.883Z",
+  "totalCount": 2,
   "projects": [
     {
-      "fullName": "ahujasid / blender-mcp",
-      "url": "https://github.com/ahujasid/blender-mcp",
-      "firstScrapedAt": "2026-01-20T03:49:54.872Z",
-      "lastScrapedAt": "2026-01-20T03:49:54.872Z",
+      "fullName": "openclaw/openclaw",
+      "url": "https://github.com/openclaw/openclaw",
+      "firstScrapedAt": "2026-02-02T08:40:00.204Z",
+      "lastScrapedAt": "2026-02-02T08:40:00.204Z",
       "scrapeCount": 1,
-      "stars": 15980,
-      "description": "Contribute to ahujasid/blender-mcp development by creating an account on GitHub."
+      "stars": 146437,
+      "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞"
     },
     {
-      "fullName": "AlexxIT / go2rtc",
-      "url": "https://github.com/AlexxIT/go2rtc",
-      "firstScrapedAt": "2026-01-21T07:51:07.053Z",
-      "lastScrapedAt": "2026-01-21T07:51:07.053Z",
+      "fullName": "ThePrimeagen/99",
+      "url": "https://github.com/ThePrimeagen/99",
+      "firstScrapedAt": "2026-02-02T08:42:14.883Z",
+      "lastScrapedAt": "2026-02-02T08:42:14.883Z",
       "scrapeCount": 1,
-      "stars": 11672,
-      "description": "Ultimate camera streaming application with support RTSP, RTMP, HTTP-FLV, WebRTC, MSE, HLS, MP4, MJPEG, HomeKit, FFmpeg, etc. - AlexxIT/go2rtc"
-    },
-    {
-      "fullName": "blakeblackshear / frigate",
-      "url": "https://github.com/blakeblackshear/frigate",
-      "firstScrapedAt": "2026-01-16T06:19:48.791Z",
-      "lastScrapedAt": "2026-01-16T06:19:48.791Z",
-      "scrapeCount": 1,
-      "stars": 29443,
-      "description": "NVR with realtime local object detection for IP cameras - blakeblackshear/frigate"
-    },
-    {
-      "fullName": "cilium / cilium",
-      "url": "https://github.com/cilium/cilium",
-      "firstScrapedAt": "2026-01-16T06:19:48.791Z",
-      "lastScrapedAt": "2026-01-16T06:19:48.791Z",
-      "scrapeCount": 1,
-      "stars": 23395,
-      "description": "eBPF-based Networking, Security, and Observability - cilium/cilium"
-    },
-    {
-      "fullName": "cjpais / Handy",
-      "url": "https://github.com/cjpais/Handy",
-      "firstScrapedAt": "2026-01-17T02:56:58.468Z",
-      "lastScrapedAt": "2026-01-17T02:56:58.468Z",
-      "scrapeCount": 1,
-      "stars": 11865,
-      "description": "A free, open source, and extensible speech-to-text application that works completely offline. - cjpais/Handy"
-    },
-    {
-      "fullName": "czlonkowski / n8n-mcp",
-      "url": "https://github.com/czlonkowski/n8n-mcp",
-      "firstScrapedAt": "2026-01-20T03:49:54.871Z",
-      "lastScrapedAt": "2026-01-20T03:49:54.871Z",
-      "scrapeCount": 1,
-      "stars": 12238,
-      "description": "A MCP for Claude Desktop / Claude Code / Windsurf / Cursor to build n8n workflows for you  - GitHub - czlonkowski/n8n-mcp: A MCP for Claude Desktop / Claude Code / Windsurf / Cursor to build n8n workflows for you"
-    },
-    {
-      "fullName": "DavidXanatos / TaskExplorer",
-      "url": "https://github.com/DavidXanatos/TaskExplorer",
-      "firstScrapedAt": "2026-01-20T03:55:18.681Z",
-      "lastScrapedAt": "2026-01-20T03:55:18.681Z",
-      "scrapeCount": 1,
-      "stars": 2516,
-      "description": "Power full Task Manager. Contribute to DavidXanatos/TaskExplorer development by creating an account on GitHub."
-    },
-    {
-      "fullName": "dev-sec / ansible-collection-hardening",
-      "url": "https://github.com/dev-sec/ansible-collection-hardening",
-      "firstScrapedAt": "2026-01-15T08:32:39.345Z",
-      "lastScrapedAt": "2026-01-15T08:32:39.345Z",
-      "scrapeCount": 1,
-      "stars": 5072,
-      "description": "This Ansible collection provides battle tested hardening for Linux, SSH, nginx, MySQL - dev-sec/ansible-collection-hardening"
-    },
-    {
-      "fullName": "eigent-ai / eigent",
-      "url": "https://github.com/eigent-ai/eigent",
-      "firstScrapedAt": "2026-01-16T06:19:48.791Z",
-      "lastScrapedAt": "2026-01-16T06:19:48.791Z",
-      "scrapeCount": 1,
-      "stars": 6649,
-      "description": "Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity. - eigent-ai/eigent"
-    },
-    {
-      "fullName": "Gentleman-Programming / Gentleman.Dots",
-      "url": "https://github.com/Gentleman-Programming/Gentleman.Dots",
-      "firstScrapedAt": "2026-01-17T02:56:58.468Z",
-      "lastScrapedAt": "2026-01-17T02:56:58.468Z",
-      "scrapeCount": 1,
-      "stars": 1164,
-      "description": "My personal configuration for LazyVim ! Contribute to Gentleman-Programming/Gentleman.Dots development by creating an account on GitHub."
-    },
-    {
-      "fullName": "google / langextract",
-      "url": "https://github.com/google/langextract",
-      "firstScrapedAt": "2026-01-17T02:56:58.468Z",
-      "lastScrapedAt": "2026-01-17T02:56:58.468Z",
-      "scrapeCount": 1,
-      "stars": 21208,
-      "description": "A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization. - google/langextract"
-    },
-    {
-      "fullName": "google-ai-edge / mediapipe",
-      "url": "https://github.com/google-ai-edge/mediapipe",
-      "firstScrapedAt": "2026-01-16T06:19:48.791Z",
-      "lastScrapedAt": "2026-01-16T06:19:48.791Z",
-      "scrapeCount": 1,
-      "stars": 33255,
-      "description": "Cross-platform, customizable ML solutions for live and streaming media. - google-ai-edge/mediapipe"
-    },
-    {
-      "fullName": "grab / cursor-talk-to-figma-mcp",
-      "url": "https://github.com/grab/cursor-talk-to-figma-mcp",
-      "firstScrapedAt": "2026-01-15T08:32:39.345Z",
-      "lastScrapedAt": "2026-01-15T08:32:39.345Z",
-      "scrapeCount": 1,
-      "stars": 6082,
-      "description": "TalkToFigma: MCP integration between Cursor and Figma, allowing Cursor Agentic AI to communicate with Figma for reading designs and modifying them programmatically. - grab/cursor-talk-to-figma-mcp"
-    },
-    {
-      "fullName": "iOfficeAI / AionUi",
-      "url": "https://github.com/iOfficeAI/AionUi",
-      "firstScrapedAt": "2026-01-17T02:56:58.469Z",
-      "lastScrapedAt": "2026-01-17T02:56:58.469Z",
-      "scrapeCount": 1,
-      "stars": 4332,
-      "description": "Free, local, open-source Cowork for Gemini CLI, Claude Code, Codex, Opencode, Qwen Code, Goose Cli, Auggie, and more | 🌟 Star if you like it! - iOfficeAI/AionUi"
-    },
-    {
-      "fullName": "lukasz-madon / awesome-remote-job",
-      "url": "https://github.com/lukasz-madon/awesome-remote-job",
-      "firstScrapedAt": "2026-01-21T07:51:07.053Z",
-      "lastScrapedAt": "2026-01-21T07:51:07.053Z",
-      "scrapeCount": 1,
-      "stars": 42752,
-      "description": "A curated list of awesome remote jobs and resources. Inspired by https://github.com/vinta/awesome-python - lukasz-madon/awesome-remote-job"
-    },
-    {
-      "fullName": "microsoft / agent-lightning",
-      "url": "https://github.com/microsoft/agent-lightning",
-      "firstScrapedAt": "2026-01-21T07:51:07.053Z",
-      "lastScrapedAt": "2026-01-21T07:51:07.053Z",
-      "scrapeCount": 1,
-      "stars": 10968,
-      "description": "The absolute trainer to light up AI agents. Contribute to microsoft/agent-lightning development by creating an account on GitHub."
-    },
-    {
-      "fullName": "mudler / LocalAI",
-      "url": "https://github.com/mudler/LocalAI",
-      "firstScrapedAt": "2026-01-15T08:32:39.345Z",
-      "lastScrapedAt": "2026-01-15T08:32:39.345Z",
-      "scrapeCount": 1,
-      "stars": 41708,
-      "description": ":robot: The free, Open Source alternative to OpenAI, Claude and others. Self-hosted and local-first. Drop-in replacement for OpenAI,  running on consumer-grade hardware. No GPU required. Runs gguf, transformers, diffusers and many more. Features: Generate Text, MCP, Audio, Video, Images, Voice Cloning, Distributed, P2P and decentralized inference - mudler/LocalAI"
-    },
-    {
-      "fullName": "nautechsystems / nautilus_trader",
-      "url": "https://github.com/nautechsystems/nautilus_trader",
-      "firstScrapedAt": "2026-01-20T03:49:54.872Z",
-      "lastScrapedAt": "2026-01-20T03:49:54.872Z",
-      "scrapeCount": 1,
-      "stars": 18102,
-      "description": "A high-performance algorithmic trading platform and event-driven backtester - nautechsystems/nautilus_trader"
-    },
-    {
-      "fullName": "obra / superpowers",
-      "url": "https://github.com/obra/superpowers",
-      "firstScrapedAt": "2026-01-15T08:32:39.344Z",
-      "lastScrapedAt": "2026-01-15T08:32:39.344Z",
-      "scrapeCount": 1,
-      "stars": 23066,
-      "description": "Claude Code superpowers: core skills library. Contribute to obra/superpowers development by creating an account on GitHub."
-    },
-    {
-      "fullName": "OpenBMB / VoxCPM",
-      "url": "https://github.com/OpenBMB/VoxCPM",
-      "firstScrapedAt": "2026-01-20T03:49:54.871Z",
-      "lastScrapedAt": "2026-01-20T03:49:54.871Z",
-      "scrapeCount": 1,
-      "stars": 4981,
-      "description": "VoxCPM: Tokenizer-Free TTS for Context-Aware Speech Generation and True-to-Life Voice Cloning - OpenBMB/VoxCPM"
-    },
-    {
-      "fullName": "puckeditor / puck",
-      "url": "https://github.com/puckeditor/puck",
-      "firstScrapedAt": "2026-01-17T02:56:58.469Z",
-      "lastScrapedAt": "2026-01-17T02:56:58.469Z",
-      "scrapeCount": 1,
-      "stars": 11078,
-      "description": "The visual editor for React. Contribute to puckeditor/puck development by creating an account on GitHub."
-    },
-    {
-      "fullName": "tobi / try",
-      "url": "https://github.com/tobi/try",
-      "firstScrapedAt": "2026-01-21T07:51:07.053Z",
-      "lastScrapedAt": "2026-01-21T07:51:07.053Z",
-      "scrapeCount": 1,
-      "stars": 2988,
-      "description": "fresh directories for every vibe. Contribute to tobi/try development by creating an account on GitHub."
-    },
-    {
-      "fullName": "twitter / the-algorithm",
-      "url": "https://github.com/twitter/the-algorithm",
-      "firstScrapedAt": "2026-01-15T08:32:39.344Z",
-      "lastScrapedAt": "2026-01-15T08:32:39.344Z",
-      "scrapeCount": 1,
-      "stars": 70031,
-      "description": "Source code for the X Recommendation Algorithm. Contribute to twitter/the-algorithm development by creating an account on GitHub."
-    },
-    {
-      "fullName": "ultralytics / ultralytics",
-      "url": "https://github.com/ultralytics/ultralytics",
-      "firstScrapedAt": "2026-01-16T05:15:51.043Z",
-      "lastScrapedAt": "2026-01-16T05:15:51.043Z",
-      "scrapeCount": 1,
-      "stars": 51510,
-      "description": "Ultralytics YOLO 🚀. Contribute to ultralytics/ultralytics development by creating an account on GitHub."
-    },
-    {
-      "fullName": "wavetermdev / waveterm",
-      "url": "https://github.com/wavetermdev/waveterm",
-      "firstScrapedAt": "2026-01-16T06:19:48.791Z",
-      "lastScrapedAt": "2026-01-16T06:19:48.791Z",
-      "scrapeCount": 1,
-      "stars": 16502,
-      "description": "An open-source, cross-platform terminal for seamless workflows - wavetermdev/waveterm"
-    },
-    {
-      "fullName": "yichuan-w / LEANN",
-      "url": "https://github.com/yichuan-w/LEANN",
-      "firstScrapedAt": "2026-01-20T03:49:54.872Z",
-      "lastScrapedAt": "2026-01-20T03:49:54.872Z",
-      "scrapeCount": 1,
-      "stars": 9357,
-      "description": "RAG on Everything with LEANN. Enjoy 97% storage savings while running a fast, accurate, and 100% private RAG application on your personal device. - yichuan-w/LEANN"
+      "stars": 2845,
+      "description": "Neovim AI agent done right"
     }
   ]
 }

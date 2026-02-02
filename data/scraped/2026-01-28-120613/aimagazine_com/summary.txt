@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T04:06:13.900Z
+文件夹: 2026-01-28-120613
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 04:03:37
+   内容长度: 10950 字符
+   图片数量: 5
+
+2. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/jensen-huang-ai-top-100-leaders-2026-no-2
+   发布时间: 2026/01/28 04:03:53
+   内容长度: 5647 字符
+   图片数量: 5
+
+3. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/kpmg-uniphore-building-ai-agents-for-industries
+   发布时间: 2026/01/28 04:04:51
+   内容长度: 5848 字符
+   图片数量: 5
+

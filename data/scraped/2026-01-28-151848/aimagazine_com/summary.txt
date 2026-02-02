@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T07:18:48.727Z
+文件夹: 2026-01-28-151848
+总数量: 1 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Palantir CEO: How AI will Reshape Skills and Hiring | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 07:18:15
+   内容长度: 12482 字符
+   图片数量: 5
+

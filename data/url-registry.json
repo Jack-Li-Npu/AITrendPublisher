@@ -1,56 +1,26 @@
 [
   {
-    "url": "https://aimagazine.com/news/how-caterpillar-is-deploying-physical-ai-in-industry",
-    "title": "卡特彼勒与英伟达深化合作 推进工业物理AI落地",
-    "processedAt": "2026-01-20T08:57:27.725Z",
+    "url": "https://www.therobotreport.com/waabi-raises-1b-to-advance-autonomous-trucks-and-robotaxis/",
+    "title": "Waabi完成10亿美元C轮融资，AI平台将同时赋能卡车与出租车",
+    "processedAt": "2026-02-02T04:30:18.937Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://aimagazine.com/news/openai-chatgpt-health-launch",
-    "title": "OpenAI推出ChatGPT Health，整合医疗数据与AI支持服务",
-    "processedAt": "2026-01-20T08:57:27.725Z",
+    "url": "https://aimagazine.com/news/jane-fraser-on-how-citi-is-harnessing-ai",
+    "title": "花旗集团推行AI优先文化：员工培训与道德原则并重",
+    "processedAt": "2026-02-02T04:30:18.937Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://aimagazine.com/news/how-mustafa-suleyman-is-shaping-microsofts-ai-strategy",
-    "title": "微软AI主管苏莱曼重塑战略：强调人类控制与领域专用性",
-    "processedAt": "2026-01-20T08:57:27.725Z",
+    "url": "https://aibusiness.com/agentic-ai/servicenow-and-anthropic-ai-deal",
+    "title": "ServiceNow与Anthropic达成AI合作，集成Claude模型",
+    "processedAt": "2026-02-02T04:30:18.937Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://aimagazine.com/news/why-agentic-operations-make-or-break-enterprise-ai-success",
-    "title": "企业级AI落地挑战：代理操作模式决定成败关键",
-    "processedAt": "2026-01-20T08:57:27.725Z",
+    "url": "https://aimagazine.com/news/mark-zuckerberg-top-100-ai-leaders-2026",
+    "title": "扎克伯格引领Meta，聚焦开源与超级智能",
+    "processedAt": "2026-02-02T04:30:18.937Z",
     "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://www.artificialintelligence-news.com/news/opencog-hyperon-and-agi-beyond-large-language-models/",
-    "title": "OpenCog Hyperon：超越大型语言模型，迈向通用人工智能的新路径",
-    "processedAt": "2026-01-21T07:01:12.065Z",
-    "mode": "AI_NEWS_SITE"
-  },
-  {
-    "url": "https://aimagazine.com/news/openai-10-year-plan-to-build-ai-hardware-in-the-us",
-    "title": "OpenAI十年战略：构建美国本土AI硬件生态",
-    "processedAt": "2026-01-21T07:22:56.476Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://aimagazine.com/news/blackrock-investors-will-back-energy-over-big-tech-in-2026",
-    "title": "贝莱德洞察：2026年AI投资重心转向能源与电网基础设施",
-    "processedAt": "2026-01-21T07:22:56.476Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://aimagazine.com/news/google-alleviating-climate-change-impacts-physics-ai",
-    "title": "Google开源NeuralGCM：AI融合物理模型重塑气候预报",
-    "processedAt": "2026-01-21T07:22:56.476Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://letters.thedankoe.com/p/how-to-fix-your-entire-life-in-1",
-    "title": "How to fix your entire life in 1 day - by DAN KOE",
-    "processedAt": "2026-01-22T08:54:49.092Z",
-    "mode": "SINGLE_URL"
   }
 ]

@@ -1,0 +1,58 @@
+AI Strategy
+# The AI-Powered Strategy Behind Pinterest's C-Suite Additions
+By [Tom Chapman](https://aimagazine.com/author/tom-chapman)
+January 29, 2026
+![](https://assets.bizclikmedia.net/138/8c637392831983a30e27b02093be96f3:ddde277e7610666821a472cfc9925c66/lee-brown.webp)
+Lee Brown, Pinterest's first Chief Business Officer
+Pinterest CEO Bill Ready recently confirmed the appointment of Chief Business Officer (CBO) Lee Brown and Chief Marketing Officer (CMO) Claudine Cheever
+[Pinterest](https://aimagazine.com/company/pinterest)'s reorganisation of its executive team is designed to advance its strategy to become a global platform for AI-powered shopping.
+CEO Bill Ready recently confirmed the appointment of two new senior leaders, Lee Brown and Claudine Cheever, who have taken on key roles aimed at sharpening the company's commercial and brand strategy.
+![](https://assets.bizclikmedia.net/668/2b1a6c3994d0807fb5e66ba944997034:06492a632cb7f68b26b3f85557017cc6/1765919125091-e-1770854400-v-beta-t-gqmyruzojyct5ccdowb5ryj8xk-x8cd2clb7dh1qn7q)
+Bill Ready, CEO at Pinterest
+Lee has become Pinterest’s first Chief Business Officer (CBO), while Claudine has joined as Chief Marketing Officer (CMO). Both will report directly to Bill, who frames the changes as essential to the company’s next growth phase.
+Pinterest continues to push into e-commerce and advertising, with [Gen AI](https://aimagazine.com/news/top-10-generative-ai-tools) underpinning its commercial roadmap and positioning.
+## A new commercial structure
+Lee steps into the newly-created CBO role to lead Pinterest's customer-facing business units. This includes oversight of global sales, advertising, partnerships and content.
+As part of the restructure, multiple existing teams now report into Lee, including Chief Content Officer Malik Ducard and Julie Towns, who leads advertising product marketing.
+![](https://assets.bizclikmedia.net/668/9217f1936d6e31c91f647aa5fa1c76d0:c7338dd088a3b07ebed36bb97f9502a2/1668063926415-e-1770854400-v-beta-t-akxd9gd3ydocfdr3mbz8qocu7-vrnvplm6fr1t3xnu4)
+Julie Towns, VP of Product Marketing & Product Operations at Pinterest
+Bill says the CBO role has been introduced to unify Pinterest’s customer operations and scale revenue opportunities.
+"The new Chief Business Officer role brings together all customer-facing touch-points at a moment where we have a number of new revenue opportunities," he told Axios.
+Lee brings ample experience building commercial models around user engagement, stating: "Whether it's [Spotify](https://aimagazine.com/news/spotify-partnering-with-labels-for-ai-music-products), DoorDash or BuzzFeed – at all of these companies, I've turned consumer demand to strong advertising opportunities by deepening client relationships, customer operations and content partnerships."
+Reflecting on his tenure at DoorDash, he adds: "It gave me a front row seat to how world-class operators execute."
+Lee's arrival coincides with the departure of long-time Chief Revenue Officer Bill Watkins, who leaves the company after more than 10 years.
+![](https://assets.bizclikmedia.net/668/3cb37a49a194243628a1591e0b64e04f:bde48fcd565e1ac937707fa1df11b409/1694721547014-e-1770854400-v-beta-t-bi2ioz4eev2oksnikc154jy-yfmdb-4-5vyxpc2ckoq)
+Bill Watkins, Pinterest's Chief Revenue Officer
+## Shaping the brand with positive AI
+Claudine joins from Amazon, where she led marketing across various divisions during her 10-year stint. In her role as CMO, she is tasked with refining Pinterest’s market narrative and expanding its messaging as the platform leans further into AI-led shopping and e-commerce.
+Bill sees Claudine’s role as essential to telling a clearer story around Pinterest’s market position: "We think there's a much better story for us to tell, [from a marketing perspective](https://aimagazine.com/top10/top-10-ai-driven-marketing), that goes along with that shopping and commercialisation growth."
+Claudine focus will be on how Pinterest applies AI to personalise content without compromising user comfort.
+"We can really automate and personalise that relevance, and it will never feel creepy or weird," she says. "It will feel rich and useful."
+![](https://assets.bizclikmedia.net/668/c2af4918c53eb76572a5358178f03f91:7a3cc8c307055b91990fc8dc09386096/1722527904102-e-1770854400-v-beta-t-t03tsy33hdgy15cmdkysslzkh9l50osi-iiqdwu26ge)
+Claudine Cheever, appointed Chief Marketing Officer at Pinterest
+"By tuning AI for positivity and rejecting engagement via enragement," Bill says, Pinterest can be a brand "that can make a lot more".
+Claudine will also oversees a new consumer marketing campaign in development. The campaign aims to highlight Pinterest as a destination where users can both browse and shop through visual discovery, positioning it as a more active and useful platform compared to competitors.
+## Reaching a younger audience
+The new hires align with Pinterest’s broader bid to expand its [commercial reach](https://aimagazine.com/news/why-is-microsoft-ceo-satya-nadella-shifting-his-focus-to-ai), particularly among younger audiences.
+![Youtube Placeholder](https://i.ytimg.com/vi/u1GtdacoVWA/hqdefault.jpg)
+Gen Z accounts for a growing portion of Pinterest’s global user base. Under Bill's leadership, the platform has recorded nine consecutive quarters of user growth, with more than 600 million monthly active users worldwide.
+Writing on LinkedIn, Bill added: "Over the past three-and-a-half years, we've made significant progress at Pinterest: reaching a record 600 million MAU, turning Pinterest into an AI-powered shopping destination and performance ad platform. We've done all of this while putting positivity and user well-being at the centre of our reason for being.
+"It's an important moment for us as we continue to grow our business globally. I’m confident that, with the addition of Lee and Claudine, we will reach new heights and continue to win market share."
+As more users seek online experiences that combine relevance, utility and emotional comfort, Pinterest is leaning into AI to bridge discovery with commerce. Its executive restructure supports this direction, with a focus on monetisation, user experience and sustained global growth.
+## Company portals
+- ![](https://assets.bizclikmedia.net/127/69bb2980a3062e83bccecfced0731bb6:43f8d235d4c823e7611e309abbe48bd3/picture)
+### [Amazon](https://aimagazine.com/company/amazon)
+- ![](https://assets.bizclikmedia.net/127/2bb121eba8ec05f5369852571ed6d109:8a1bf430a5a7870d3aebd99f411d80a5/picture)
+### [DoorDash](https://aimagazine.com/company/doordash)
+- ![](https://assets.bizclikmedia.net/127/a0b4b41d748c533dfd6db3fa1d9639cc:9a77e8552b7fb588ae223faed3238d64/picture)
+### [Pinterest](https://aimagazine.com/company/pinterest)
+- ![](https://assets.bizclikmedia.net/127/709ead3c8567f2ea7135b603261f53c3:58e9a6382bd115a78d09b6b59a414f87/spotify-technology-600.png)
+### [Spotify Technology](https://aimagazine.com/company/spotify)
+## Executives
+- ![](https://assets.bizclikmedia.net/220/7b596253fb9a0d652f466bbe63c6ccbc:3b62648eeca7d340d9e1c330bbf8e557/1534287213635-e-1763596800-v-beta-t-to-kn3mogmohxty0mgindp1-uzb0rkoqtntu-vucqgs)![](https://assets.bizclikmedia.net/220/7b596253fb9a0d652f466bbe63c6ccbc:3b62648eeca7d340d9e1c330bbf8e557/1534287213635-e-1763596800-v-beta-t-to-kn3mogmohxty0mgindp1-uzb0rkoqtntu-vucqgs)
+### [Bill Ready](https://aimagazine.com/executive/bill-ready)
+Chief Executive Officer
+- ![](https://assets.bizclikmedia.net/220/4a6cfc7af6c45ebf8c2340b61ac5aef6:1b5cf2c6db28c0d73500da32f94b0e03/1694721547014-e-1770854400-v-beta-t-bi2ioz4eev2oksnikc154jy-yfmdb-4-5vyxpc2ckoq)![](https://assets.bizclikmedia.net/220/4a6cfc7af6c45ebf8c2340b61ac5aef6:1b5cf2c6db28c0d73500da32f94b0e03/1694721547014-e-1770854400-v-beta-t-bi2ioz4eev2oksnikc154jy-yfmdb-4-5vyxpc2ckoq)
+### [Bill Watkins](https://aimagazine.com/executive/bill-watkins)
+Chief Revenue Officer
+- ![](https://assets.bizclikmedia.net/220/bea16f5f932e767ef976cd61cc2c7fd1:f8c16f8b8c08d926b4333db7f18c607b/1722527904102-e-1770...

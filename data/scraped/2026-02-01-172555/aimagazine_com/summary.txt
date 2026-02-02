@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-01T09:25:55.776Z
+文件夹: 2026-02-01-172555
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Mark Zuckerberg and the Drive Towards AI Superintelligence | AI Magazine
+   来源: https://aimagazine.com/news/mark-zuckerberg-top-100-ai-leaders-2026
+   发布时间: 2026/02/01 09:23:45
+   内容长度: 4521 字符
+   图片数量: 5
+
+2. How Citigroup Helps Employees Harness the Power of AI | AI Magazine
+   来源: https://aimagazine.com/news/jane-fraser-on-how-citi-is-harnessing-ai
+   发布时间: 2026/02/01 09:23:48
+   内容长度: 8431 字符
+   图片数量: 5
+
+3. The AI-Powered Strategy Behind Pinterest's C-Suite Additions | AI Magazine
+   来源: https://aimagazine.com/news/ai-behind-pinterest-leadership-changes
+   发布时间: 2026/02/01 09:23:58
+   内容长度: 6196 字符
+   图片数量: 6
+

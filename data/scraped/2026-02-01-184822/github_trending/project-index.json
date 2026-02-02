@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-01T10:48:22.395Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "anthropics/claude-plugins-official",
+      "url": "https://github.com/anthropics/claude-plugins-official",
+      "title": "anthropics/claude-plugins-official",
+      "stars": 6012,
+      "description": "Official, Anthropic-managed directory of high quality Claude Code Plugins.",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_anthropics_claude-plugins-official_1769942901889",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "anthropics/claude-plugins-official": 0
+  },
+  "indexByUrl": {
+    "https://github.com/anthropics/claude-plugins-official": 0
+  }
+}

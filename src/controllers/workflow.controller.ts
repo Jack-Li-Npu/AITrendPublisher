@@ -9,8 +9,8 @@ export async function triggerWorkflow(params: Record<string, any>) {
 
   const workflow = getWorkflow(workflowType);
   workflow.execute({
-    payload: {},
-    id: "local-step-execution",
+    payload: params,
+    id: params.eventId || "local-ui-trigger",
     timestamp: Date.now(),
   });
 }   

@@ -1,0 +1,70 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-23T03:27:47.728Z
+文件夹: 2026-01-23-112747
+总数量: 10 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. How NVIDIA Became One of the World's Most Valuable Brands | AI Magazine
+   来源: https://aimagazine.com/news/how-nvidia-became-one-of-the-worlds-most-valuable-brands
+   发布时间: 2026/01/23 03:25:39
+   内容长度: 4676 字符
+   图片数量: 5
+
+2. Inside Siemens' Testing of AI-Powered Humanoid Robots | AI Magazine
+   来源: https://aimagazine.com/news/google-apple-ai-collaboration
+   发布时间: 2026/01/23 03:25:45
+   内容长度: 5204 字符
+   图片数量: 9
+
+3. Amazon CEO: Why we Joined Forces with OpenAI | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-ceo-at-davos-potential-real-world-impact-of-ai
+   发布时间: 2026/01/23 03:25:54
+   内容长度: 4587 字符
+   图片数量: 5
+
+4. UST: A Guide to Building Responsible AI Systems | AI Magazine
+   来源: https://aimagazine.com/news/q-a-usts-heather-dawe-on-building-responsible-ai-at-scale
+   发布时间: 2026/01/23 03:25:58
+   内容长度: 7351 字符
+   图片数量: 5
+
+5. Amazon CEO: Why we Joined Forces with OpenAI | AI Magazine
+   来源: https://aimagazine.com/news/google-cloud-what-is-the-ai-powered-partner-network
+   发布时间: 2026/01/23 03:26:13
+   内容长度: 5428 字符
+   图片数量: 8
+
+6. How Sam Altman Became the World's Most Influential AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/how-sam-altman-became-the-worlds-most-influential-ai-leader
+   发布时间: 2026/01/23 03:26:21
+   内容长度: 6669 字符
+   图片数量: 5
+
+7. How Sam Altman Became the World's Most Influential AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/amazon-ceo-on-ai-wef-2026
+   发布时间: 2026/01/23 03:26:35
+   内容长度: 5207 字符
+   图片数量: 6
+
+8. Google Cloud: What is the AI-Powered Partner Network? | AI Magazine
+   来源: https://aimagazine.com/news/wef-2026-tech-firms-on-ai
+   发布时间: 2026/01/23 03:26:41
+   内容长度: 7828 字符
+   图片数量: 7
+
+9. How Sam Altman Became the World's Most Influential AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/nvidia-ceo-jensen-huang-wef-davos-2026
+   发布时间: 2026/01/23 03:26:48
+   内容长度: 8002 字符
+   图片数量: 5
+
+10. Amazon CEO: Why we Joined Forces with OpenAI | AI Magazine
+   来源: https://aimagazine.com/news/siemens-ai-powered-humanoid-robots
+   发布时间: 2026/01/23 03:26:58
+   内容长度: 6118 字符
+   图片数量: 5
+

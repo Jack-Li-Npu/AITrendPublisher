@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-01-22T09:03:46.603Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "tambo-ai/tambo",
+      "url": "https://github.com/tambo-ai/tambo",
+      "title": "tambo-ai/tambo",
+      "stars": 3552,
+      "description": "Generative UI SDK for React",
+      "scrapedAt": "2026-01-22",
+      "contentId": "github_tambo-ai_tambo_1769072613378",
+      "imageCount": 8
+    },
+    {
+      "fullName": "EveryInc/compound-engineering-plugin",
+      "url": "https://github.com/EveryInc/compound-engineering-plugin",
+      "title": "EveryInc/compound-engineering-plugin",
+      "stars": 5908,
+      "description": "Official Claude Code compound engineering plugin",
+      "scrapedAt": "2026-01-22",
+      "contentId": "github_EveryInc_compound-engineering-plugin_1769072614506",
+      "imageCount": 0
+    },
+    {
+      "fullName": "twitter/the-algorithm",
+      "url": "https://github.com/twitter/the-algorithm",
+      "title": "twitter/the-algorithm",
+      "stars": 71563,
+      "description": "Source code for the X Recommendation Algorithm",
+      "scrapedAt": "2026-01-22",
+      "contentId": "github_twitter_the-algorithm_1769072615703",
+      "imageCount": 1
+    },
+    {
+      "fullName": "xai-org/grok-1",
+      "url": "https://github.com/xai-org/grok-1",
+      "title": "xai-org/grok-1",
+      "stars": 51093,
+      "description": "Grok open release",
+      "scrapedAt": "2026-01-22",
+      "contentId": "github_xai-org_grok-1_1769072616877",
+      "imageCount": 0
+    },
+    {
+      "fullName": "microsoft/agent-lightning",
+      "url": "https://github.com/microsoft/agent-lightning",
+      "title": "microsoft/agent-lightning",
+      "stars": 11329,
+      "description": "The absolute trainer to light up AI agents.",
+      "scrapedAt": "2026-01-22",
+      "contentId": "github_microsoft_agent-lightning_1769072618032",
+      "imageCount": 1
+    }
+  ],
+  "indexByFullName": {
+    "tambo-ai/tambo": 0,
+    "everyinc/compound-engineering-plugin": 1,
+    "twitter/the-algorithm": 2,
+    "xai-org/grok-1": 3,
+    "microsoft/agent-lightning": 4
+  },
+  "indexByUrl": {
+    "https://github.com/tambo-ai/tambo": 0,
+    "https://github.com/EveryInc/compound-engineering-plugin": 1,
+    "https://github.com/twitter/the-algorithm": 2,
+    "https://github.com/xai-org/grok-1": 3,
+    "https://github.com/microsoft/agent-lightning": 4
+  }
+}

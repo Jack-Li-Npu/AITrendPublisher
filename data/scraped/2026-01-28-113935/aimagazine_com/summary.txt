@@ -1,0 +1,70 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T03:39:35.982Z
+文件夹: 2026-01-28-113935
+总数量: 10 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 03:36:05
+   内容长度: 10414 字符
+   图片数量: 5
+
+2. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/intel-ai-chip-supply-shortages
+   发布时间: 2026/01/28 03:36:22
+   内容长度: 6222 字符
+   图片数量: 5
+
+3. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 03:36:37
+   内容长度: 10987 字符
+   图片数量: 5
+
+4. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/jensen-huang-ai-top-100-leaders-2026-no-2
+   发布时间: 2026/01/28 03:36:53
+   内容长度: 5647 字符
+   图片数量: 5
+
+5. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-unveils-maia-200-ai-accelerator
+   发布时间: 2026/01/28 03:37:07
+   内容长度: 6261 字符
+   图片数量: 5
+
+6. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/world-economic-forum-the-key-leadership-lessons-from-davos
+   发布时间: 2026/01/28 03:37:29
+   内容长度: 12572 字符
+   图片数量: 6
+
+7. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/demis-hassabis-top-100-ai-leaders-2026
+   发布时间: 2026/01/28 03:37:56
+   内容长度: 10176 字符
+   图片数量: 6
+
+8. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/kpmg-uniphore-building-ai-agents-for-industries
+   发布时间: 2026/01/28 03:38:08
+   内容长度: 5849 字符
+   图片数量: 5
+
+9. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/envisioning-the-future-of-the-workplace-with-invisible-it
+   发布时间: 2026/01/28 03:38:34
+   内容长度: 15998 字符
+   图片数量: 5
+
+10. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/formula-e-google-cloud-ai-partnership
+   发布时间: 2026/01/28 03:38:53
+   内容长度: 10353 字符
+   图片数量: 5
+

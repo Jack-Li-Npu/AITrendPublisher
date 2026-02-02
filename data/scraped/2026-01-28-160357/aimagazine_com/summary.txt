@@ -1,0 +1,40 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T08:03:57.176Z
+文件夹: 2026-01-28-160357
+总数量: 5 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 08:02:45
+   内容长度: 8002 字符
+   图片数量: 10
+
+2. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/intel-ai-chip-supply-shortages
+   发布时间: 2026/01/28 08:03:13
+   内容长度: 7075 字符
+   图片数量: 6
+
+3. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 08:03:27
+   内容长度: 8001 字符
+   图片数量: 11
+
+4. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/jensen-huang-ai-top-100-leaders-2026-no-2
+   发布时间: 2026/01/28 08:03:37
+   内容长度: 6499 字符
+   图片数量: 7
+
+5. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-unveils-maia-200-ai-accelerator
+   发布时间: 2026/01/28 08:03:47
+   内容长度: 6968 字符
+   图片数量: 7
+

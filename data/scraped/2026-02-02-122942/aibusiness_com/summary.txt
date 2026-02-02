@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T04:29:42.711Z
+文件夹: 2026-02-02-122942
+总数量: 2 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. ServiceNow and Anthropic Disclose AI Deal
+   来源: https://aibusiness.com/agentic-ai/servicenow-and-anthropic-ai-deal
+   发布时间: 2026/02/02 04:28:17
+   内容长度: 1957 字符
+   图片数量: 5
+
+2. Google DeepMind Introduces Agentic Vision to Gemini 3 Flash
+   来源: https://aibusiness.com/image-recognition/google-deepmind-agentic-vision-gemini-3-flash
+   发布时间: 2026/02/02 04:28:43
+   内容长度: 1386 字符
+   图片数量: 5
+

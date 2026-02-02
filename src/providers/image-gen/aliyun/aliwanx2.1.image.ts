@@ -13,9 +13,20 @@ export interface AliWanX21Options {
 export class AliWanX21ImageGenerator extends BaseAliyunImageGenerator {
   constructor() {
     super();
-    this.baseUrl =
-      "https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis";
     this.model = "wanx2.1-t2i-turbo";
+  }
+  
+  /**
+   * 刷新配置，设置区域对应的 endpoint
+   */
+  async refresh(): Promise<void> {
+    await super.refresh();
+    
+    // 根据 taskQueryBaseUrl 推断区域，设置对应的图像合成 endpoint
+    const isInternational = this.taskQueryBaseUrl.includes("dashscope-intl");
+    this.baseUrl = isInternational
+      ? "https://dashscope-intl.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis"
+      : "https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis";
   }
 
   /**

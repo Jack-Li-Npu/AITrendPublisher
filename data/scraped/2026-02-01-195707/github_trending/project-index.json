@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-01T11:57:07.169Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "openclaw/openclaw",
+      "url": "https://github.com/openclaw/openclaw",
+      "title": "openclaw/openclaw",
+      "stars": 137128,
+      "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_openclaw_openclaw_1769947020656",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "openclaw/openclaw": 0
+  },
+  "indexByUrl": {
+    "https://github.com/openclaw/openclaw": 0
+  }
+}

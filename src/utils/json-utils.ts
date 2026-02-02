@@ -46,10 +46,27 @@ function fixJsonEscaping(jsonString: string): string {
           // 有效转义序列，保留
           fixed += char + nextChar;
           i += 2;
-        } else if (nextChar === 'u' && /^[0-9a-fA-F]{4}/.test(content.substring(i + 2, i + 6))) {
+        } else if (nextChar === 'u') {
           // Unicode 转义序列
-          fixed += content.substring(i, i + 6);
-          i += 6;
+          const hexPart = content.substring(i + 2, i + 6);
+          if (/^[0-9a-fA-F]{4}$/.test(hexPart)) {
+            // 有效的 Unicode 转义序列
+            const codePoint = parseInt(hexPart, 16);
+            // 检查是否是零宽字符或其他不可见字符，如果是则跳过
+            if (codePoint === 0x200b || codePoint === 0xfeff || 
+                codePoint === 0x200c || codePoint === 0x200d || 
+                codePoint === 0x00ad || codePoint === 0x200e || codePoint === 0x200f) {
+              // 跳过零宽字符
+              i += 6;
+            } else {
+              // 保留有效的非零宽 Unicode 字符
+              fixed += content.substring(i, i + 6);
+              i += 6;
+            }
+          } else {
+            // 不完整或无效的 Unicode 转义序列，跳过 \u 部分
+            i += 2;
+          }
         } else {
           // 无效的转义序列（LaTeX 公式中的单个反斜杠），转义它
           fixed += '\\\\';
@@ -123,6 +140,30 @@ export function parseJsonFromLLM<T = any>(content: string): T {
   }
 
   cleanedContent = cleanedContent.trim();
+
+  // 清理零宽字符和其他不可见的 Unicode 字符
+  // 这些字符可能来自网页内容，会导致 JSON 解析失败
+  cleanedContent = cleanedContent
+    // 零宽空格 (Zero Width Space)
+    .replace(/\u200b/g, '')
+    // 零宽非断开空格 (Zero Width No-Break Space / BOM)
+    .replace(/\ufeff/g, '')
+    // 零宽连接符 (Zero Width Joiner)
+    .replace(/\u200d/g, '')
+    // 零宽非连接符 (Zero Width Non-Joiner)
+    .replace(/\u200c/g, '')
+    // 软连字符 (Soft Hyphen)
+    .replace(/\u00ad/g, '')
+    // 左至右标记 (Left-to-Right Mark)
+    .replace(/\u200e/g, '')
+    // 右至左标记 (Right-to-Left Mark)
+    .replace(/\u200f/g, '')
+    // 清理字符串中重复出现的 Unicode 转义序列（如 \u200b\u200b...）
+    // 这是 AI 模型可能输出的错误格式
+    .replace(/\\u200b+/g, '')
+    .replace(/\\ufeff+/g, '')
+    .replace(/\\u200[cdef]+/g, '')
+    .replace(/\\u00ad+/g, '');
 
   // 尝试解析 JSON
   try {

@@ -1,0 +1,52 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T03:30:48.877Z
+文件夹: 2026-01-28-113048
+总数量: 7 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 03:27:58
+   内容长度: 13045 字符
+   图片数量: 5
+
+2. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/intel-ai-chip-supply-shortages
+   发布时间: 2026/01/28 03:28:11
+   内容长度: 12297 字符
+   图片数量: 5
+
+3. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 03:28:30
+   内容长度: 10908 字符
+   图片数量: 5
+
+4. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-unveils-maia-200-ai-accelerator
+   发布时间: 2026/01/28 03:28:53
+   内容长度: 12383 字符
+   图片数量: 5
+
+5. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/demis-hassabis-top-100-ai-leaders-2026
+   发布时间: 2026/01/28 03:29:14
+   内容长度: 7713 字符
+   图片数量: 6
+
+6. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/formula-e-google-cloud-ai-partnership
+   发布时间: 2026/01/28 03:29:58
+   内容长度: 10318 字符
+   图片数量: 5
+
+7. Davos 2026: How AI Discussion and Debate Took Centre Stage | AI Magazine
+   来源: https://aimagazine.com/news/dario-amodei-transforming-the-future-of-ai-and-work
+   发布时间: 2026/01/28 03:30:15
+   内容长度: 9581 字符
+   图片数量: 5
+

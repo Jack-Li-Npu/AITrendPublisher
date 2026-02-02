@@ -1,0 +1,52 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-28T03:57:29.279Z
+文件夹: 2026-01-28-115729
+总数量: 7 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/why-palantir-ceo-alex-karp-thinks-ai-will-destroy-jobs
+   发布时间: 2026/01/28 03:53:59
+   内容长度: 10414 字符
+   图片数量: 5
+
+2. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/intel-ai-chip-supply-shortages
+   发布时间: 2026/01/28 03:54:12
+   内容长度: 6222 字符
+   图片数量: 5
+
+3. Google Cloud: AI Fuels Formula E's Green Racing Goals | AI Magazine
+   来源: https://aimagazine.com/news/elon-musk-on-ai-robotics-wef-davos-2026
+   发布时间: 2026/01/28 03:54:27
+   内容长度: 10984 字符
+   图片数量: 5
+
+4. How Demis Hassabis Built a Lasting AI Legacy | AI Magazine
+   来源: https://aimagazine.com/news/jensen-huang-ai-top-100-leaders-2026-no-2
+   发布时间: 2026/01/28 03:54:39
+   内容长度: 5635 字符
+   图片数量: 5
+
+5. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/kpmg-uniphore-building-ai-agents-for-industries
+   发布时间: 2026/01/28 03:56:03
+   内容长度: 5849 字符
+   图片数量: 5
+
+6. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/envisioning-the-future-of-the-workplace-with-invisible-it
+   发布时间: 2026/01/28 03:56:30
+   内容长度: 15990 字符
+   图片数量: 5
+
+7. Microsoft: How Maia 200 Accelerator Addresses AI Bottlenecks | AI Magazine
+   来源: https://aimagazine.com/news/formula-e-google-cloud-ai-partnership
+   发布时间: 2026/01/28 03:56:47
+   内容长度: 9739 字符
+   图片数量: 5
+

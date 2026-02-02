@@ -1,0 +1,20 @@
+![一辆带有Waabi技术的Uber Freight卡车。Waabi将把其为卡车开发的物理人工智能平台应用于与Uber扩展合作中的无人驾驶出租车。](https://www.therobotreport.com/wp-content/uploads/2026/01/Waabi_SeriesC.jpg)
+Waabi将把其为卡车开发的物理人工智能平台应用于与Uber扩展合作中的无人驾驶出租车。来源：Waabi
+Waabi创始人兼首席执行官Raquel Urtasun表示：“Waabi的物理人工智能平台使我们能够在过去几年中，以行业领先的速度开发和商业化自动驾驶卡车。”
+她补充说：“我们目前在高速公路和普通地面街道上的自动驾驶能力，已经解锁了一种新的直接面向客户的模式，该模式首次解决了行业的痛点，并提供了一个前所未有的机会，可以快速无缝地进入无人驾驶出租车市场，为这两个垂直领域提供真正可扩展的解决方案。”
+Waabi成立于2021年，表示其物理人工智能平台可以推广到不同的外形、地理位置和环境。这家总部位于多伦多的[公司](https://www.therobotreport.com/tag/waabi)声称，该平台“结合了一个可验证的端到端人工智能模型，能够与世界上最先进的神经[模拟器](https://www.therobotreport.com/category/software-simulation/)一起进行推理”。
+## Waabi和Uber将人工智能大脑带给卡车和出租车
+Waabi表示，其方法使相同的[人工智能](https://www.therobotreport.com/category/design-development/ai-cognition/)模型可以作为[自动驾驶卡车](http://therobotreport.com/tag/autonomous-trucking)和[无人驾驶出租车](https://www.therobotreport.com/tag/robotaxi)的“共享大脑”。该[公司](https://waabi.ai/)断言，其扩展到自动驾驶乘用车最终将提高Waabi Driver的整体能力。
+根据合作协议，Uber将追加基于里程碑的投资，以支持使用Waabi Driver开发无人驾驶出租车。两家公司表示，他们计划部署25,000辆或更多的自动驾驶汽车（[AV](https://www.therobotreport.com/category/robots-platforms/self-driving-vehicles/)）。
+Urtasun说：“我们很高兴与一流的拼车平台合作，共同创造一个更安全、更高效和更可持续的未来。”
+Waabi此前于2023年与Uber Freight[合作](https://www.therobotreport.com/waabi-partners-with-uber-freight-to-deploy-autonomous-trucks-at-scale/)，Uber参与了其2024年的2亿美元[B轮融资](https://www.therobotreport.com/waabi-raises-200m-uber-nvidia-on-the-road-self-driving-trucks/)。
+Uber首席执行官Dara Khosrowshahi表示：“Waabi将重点扩展到无人驾驶出租车，标志着他们的团队和更广泛的AV行业的一个重要里程碑。我们非常高兴能够深化与Waabi的合作，因为他们正在大幅扩展其物理人工智能平台，并进入一个已经非常卓越的旅程的新阶段。”
+虽然Uber在2020年将其先进技术集团（ATG）[出售](https://www.therobotreport.com/uber-sells-self-driving-unit-aurora-ending-tumultuous-era/)给[Aurora Innovation](https://www.therobotreport.com/tag/aurora/)，但[Uber](https://www.therobotreport.com/tag/uber/)也投资了其他AV开发商，包括[Nuro](https://www.therobotreport.com/nuro-closes-203m-propel-ai-first-self-driving-tech-commercial-partnerships/)、[Lucid](https://www.therobotreport.com/lucid-nuro-uber-team-up-on-global-robotaxi-fleet/)和[Wayve](https://www.therobotreport.com/wayve-announces-strategic-partnership-and-investment-from-uber/)，并且与无人驾驶出租车提供商[Motional](https://www.therobotreport.com/motional-partners-with-uber-for-10-year-commercial-agreement/)、[Waymo](https://www.therobotreport.com/phoenix-residents-can-soon-hail-waymo-robotaxis-with-uber/)和[WeRide](https://www.therobotreport.com/uber-to-invest-100m-into-weride-to-bring-robotaxis-to-15-cities/)建立了合作关系。
+
+## 汽车领导者、加拿大投资者加入Waabi的融资
+Khosla Ventures和G2 Venture Partners共同领投了Waabi的C轮融资，该公司表示这是加拿大历史上最大规模的融资。
+Khosla Ventures的创始人Vinod Khosla表示：“我们投资于引领人工智能时代的公司。Waabi开发了一个真正具有突破性的物理人工智能平台，代表了下一代无人驾驶技术开发方式的根本性飞跃。”
+其他战略投资者包括NVentures（[NVIDIA](https://www.therobotreport.com/tag/nvidia)的风险投资部门）、沃尔沃集团风险投资公司和保时捷汽车控股公司。
+G2 Venture Partners的联合创始人兼合伙人Brook Porter表示：“Waabi从根本上改变了自动驾驶运输的轨迹。他们以模拟为先、端到端的人工智能是一个强大的推动者，在加速商业应用的同时，大大降低了规模化的资本需求。Waabi正在释放自动驾驶的潜力，以提高车辆效率和利用率，从而促进向更可持续的交通运输系统的转变。”
+此外，由贝莱德、Radical Ventures、HarbourVest Partners、阿布扎比投资局（ADIA）的全资子公司、Linse Capital、Incharge Capital等管理的基金和账户也参与了投资。Waabi指出，加拿大公司，如BDC Capital的Thrive Venture Fund、加拿大出口发展公司（EDC）、TELUS Global Ventures和BMO Global Asset Management也在其支持者之列。
+Waabi的C轮融资加入了其他大型无人驾驶出租车投资的行列，包括[Waymo在2024年的56亿美元C轮融资](https://www.therobotreport.com/waymo-raises-5-6b-to-accelerate-self-driving-car-growth/)、[Cruise在2021年的27.5亿美元融资](https://www.therobotreport.com/cruise-raises-2b-partners-microsoft-autonomous-vehicles/)以及[Aurora在2024年的8.2亿美元股票出售](https://ir.aurora.tech/news-events/press-releases/detail/79/aurora-announces-closing-of-820-million-upsized-public-offering-and-private-placement-of-class-a-common-stock)。在自动驾驶卡车领域，[Einride在2025年10月筹集了1亿美元](https://www.therobotreport.com/einride-raises-100m-to-scale-autonomous-freight-deployments/)，而[Plus Automation](https://www.therobotreport.com/autonomous-trucking-developer-plus-goes-public-via-spac/)和[Kodiak Robotics](https://www.therobotreport.com/kodiak-robotics-autonomous-trucking-developer-goes-public-via-spac/)去年通过特殊目的收购公司（SPAC）上市。

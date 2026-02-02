@@ -8,6 +8,7 @@ import fs from "node:fs/promises";
  */
 export abstract class BaseImageGenerator implements ImageGenerator {
   protected configManager: ConfigManager;
+  private initialized = false;
 
   constructor() {
     this.configManager = ConfigManager.getInstance();
@@ -18,6 +19,16 @@ export abstract class BaseImageGenerator implements ImageGenerator {
    */
   async initialize(): Promise<void> {
     await this.refresh();
+    this.initialized = true;
+  }
+
+  /**
+   * 确保生成器已初始化
+   */
+  protected async ensureInitialized(): Promise<void> {
+    if (!this.initialized) {
+      await this.initialize();
+    }
   }
 
   /**

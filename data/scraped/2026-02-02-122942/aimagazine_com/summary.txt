@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T04:29:42.714Z
+文件夹: 2026-02-02-122942
+总数量: 2 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Mark Zuckerberg and the Drive Towards AI Superintelligence | AI Magazine
+   来源: https://aimagazine.com/news/mark-zuckerberg-top-100-ai-leaders-2026
+   发布时间: 2026/02/02 04:29:27
+   内容长度: 2084 字符
+   图片数量: 5
+
+2. How Citigroup Helps Employees Harness the Power of AI | AI Magazine
+   来源: https://aimagazine.com/news/jane-fraser-on-how-citi-is-harnessing-ai
+   发布时间: 2026/02/02 04:29:30
+   内容长度: 1839 字符
+   图片数量: 5
+

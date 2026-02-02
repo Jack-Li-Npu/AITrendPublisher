@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrendPublish 控制面板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style id="md-theme-variables"></style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        .terminal { background-color: #1e1e1e; color: #d4d4d4; font-family: 'Fira Code', monospace; }
+        .log-entry { margin-bottom: 2px; line-height: 1.4; font-size: 13px; }
+        .log-info { color: #4ec9b0; }
+        .log-warn { color: #ce9178; }
+        .log-error { color: #f44747; }
+        .log-timestamp { color: #808080; margin-right: 8px; }
+        .loader { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-white border-b px-6 py-4 flex items-center justify-between shadow-sm z-10">
+        <div class="flex items-center space-x-3">
+            <div class="bg-blue-600 p-2 rounded-lg text-white">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <h1 class="text-xl font-bold text-gray-800 tracking-tight">TrendPublish <span class="text-sm font-normal text-gray-500 ml-2">v2.0</span></h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="connection-status" class="flex items-center text-xs text-green-500 font-medium">
+                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> 服务已连接
+            </span>
+            <button onclick="toggleConfig()" class="text-gray-600 hover:text-blue-600 transition-colors">
+                <i class="fas fa-cog text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+            <!-- Sidebar: Control & Mode -->
+            <aside class="w-80 bg-white border-r p-6 overflow-y-auto flex flex-col shadow-sm">
+                <div class="mb-8">
+                <label class="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">运行模式</label>
+                <div class="space-y-2">
+                    <button onclick="setMode('TECH_NEWS')" id="mode-TECH_NEWS" class="mode-btn w-full flex items-center p-3 rounded-xl border transition-all hover:bg-blue-50 hover:border-blue-200">
+                        <i class="fas fa-newspaper w-8 text-blue-500"></i>
+                        <div class="text-left">
+                            <div class="font-semibold text-sm">科技新闻</div>
+                            <div class="text-xs text-gray-500">爬取多源深度 AI 资讯</div>
+                        </div>
+                    </button>
+                    <button onclick="setMode('GITHUB_TRENDING')" id="mode-GITHUB_TRENDING" class="mode-btn w-full flex items-center p-3 rounded-xl border transition-all hover:bg-purple-50 hover:border-purple-200">
+                        <i class="fab fa-github w-8 text-purple-500"></i>
+                        <div class="text-left">
+                            <div class="font-semibold text-sm">GitHub Trending</div>
+                            <div class="text-xs text-gray-500">解析热门项目 README</div>
+                        </div>
+                    </button>
+                    <!--
+                    <button onclick="setMode('SINGLE_URL')" id="mode-SINGLE_URL" class="mode-btn w-full flex items-center p-3 rounded-xl border transition-all hover:bg-orange-50 hover:border-orange-200">
+                        <i class="fas fa-link w-8 text-orange-500"></i>
+                        <div class="text-left">
+                            <div class="font-semibold text-sm">单链接爬取</div>
+                            <div class="text-xs text-gray-500">指定 URL 进行深度翻译</div>
+                        </div>
+                    </button>
+                    <button onclick="setMode('TOPIC_SEARCH')" id="mode-TOPIC_SEARCH" class="mode-btn w-full flex items-center p-3 rounded-xl border transition-all hover:bg-green-50 hover:border-green-200">
+                        <i class="fas fa-search w-8 text-green-500"></i>
+                        <div class="text-left">
+                            <div class="font-semibold text-sm">主题搜索</div>
+                            <div class="text-xs text-gray-500">根据关键词全网搜寻</div>
+                        </div>
+                    </button>
+                    -->
+                </div>
+            </div>
+
+            <!-- Parameters -->
+            <div class="space-y-6 mb-8">
+                <!--
+                <div id="param-url" class="hidden">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">文章 URL</label>
+                    <input type="text" id="url-input" placeholder="https://..." class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm">
+                </div>
+                <div id="param-topic" class="hidden">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">搜索主题</label>
+                    <input type="text" id="topic-input" placeholder="例如：AI 代理..." class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm">
+                </div>
+                -->
+                <div id="param-word-range">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-semibold text-gray-700">内容长度 (字数)</label>
+                        <span id="word-range-val" class="text-xs text-blue-600 font-bold">300 - 800</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <input type="range" id="min-words" min="100" max="2000" step="50" value="300" oninput="updateWordRange()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <input type="range" id="max-words" min="200" max="3000" step="50" value="800" oninput="updateWordRange()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                    </div>
+                </div>
+                <div id="param-max-articles">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">最大采集篇数</label>
+                    <select id="max-articles" class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm bg-white cursor-pointer">
+                        <option value="1">1 篇</option>
+                        <option value="3">3 篇</option>
+                        <option value="5" selected>5 篇</option>
+                        <option value="8">8 篇</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">文章模板</label>
+                    <select id="article-template" onchange="tryUpdatePreview()" class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm bg-white cursor-pointer">
+                        <option value="default">Doocs: 默认 (Classic)</option>
+                        <option value="elegant">Doocs: 优雅 (Elegant)</option>
+                        <option value="simple">Doocs: 简约 (Simple)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">自定义结语</label>
+                    <textarea id="custom-footer" rows="3" onblur="tryUpdatePreview()" placeholder="不填则使用 AI 自动生成..." class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm resize-none"></textarea>
+                    <p class="text-[10px] text-gray-400 mt-1">支持部分 HTML 标签，预览时可实时更新</p>
+                </div>
+            </div>
+
+            <!-- Run Button -->
+            <div class="mt-auto pt-6 border-t">
+                <button id="run-btn" onclick="runWorkflow()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 active:transform active:scale-95 transition-all flex items-center justify-center">
+                    <i class="fas fa-play mr-2"></i> 开始运行任务
+                </button>
+                <div id="running-status" class="hidden mt-4">
+                    <div class="flex items-center justify-center space-x-2 text-blue-600 font-medium text-sm animate-pulse">
+                        <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-4 w-4"></div>
+                        <span>任务执行中...</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content: Log & Preview -->
+        <div class="flex-1 flex flex-col bg-gray-50 overflow-hidden relative">
+            
+            <!-- Log Console -->
+            <div class="flex-1 p-6 overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-bold text-gray-500 uppercase tracking-widest"><i class="fas fa-terminal mr-2"></i> 实时运行日志</h2>
+                    <button onclick="clearLogs()" class="text-xs text-gray-400 hover:text-gray-600">清空记录</button>
+                </div>
+                <div id="terminal" class="terminal flex-1 rounded-xl p-4 overflow-y-auto shadow-inner text-sm border border-gray-800">
+                    <div class="log-entry"><span class="log-timestamp">[欢迎]</span> 系统已就绪，请选择模式并点击“开始运行”。</div>
+                </div>
+            </div>
+
+            <!-- Article Preview Modal (Overlays Log) -->
+            <div id="preview-container" class="hidden absolute inset-0 z-20 bg-white flex flex-col border-l border-gray-200 transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+                <div class="px-6 py-4 border-b flex items-center justify-between bg-white sticky top-0">
+                    <div class="flex items-center space-x-3">
+                        <button onclick="closePreview()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                        <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-eye mr-2 text-blue-500"></i> 文章预览</h2>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <select id="preview-template" onchange="syncTemplateFromPreview()" class="p-2 text-sm border rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="default">Doocs: 默认 (Classic)</option>
+                            <option value="elegant">Doocs: 优雅 (Elegant)</option>
+                            <option value="simple">Doocs: 简约 (Simple)</option>
+                        </select>
+                        <button onclick="openRefinePanel()" class="px-4 py-2 text-sm font-medium text-purple-600 hover:bg-purple-50 rounded-lg transition-colors flex items-center">
+                            <i class="fas fa-magic mr-2"></i> 再改改
+                        </button>
+                        <button onclick="publishArticle()" id="publish-btn" class="px-6 py-2 bg-green-600 text-white text-sm font-bold rounded-lg shadow-md hover:bg-green-700 active:scale-95 transition-all flex items-center">
+                            <i class="fas fa-cloud-upload-alt mr-2"></i> 确认发布到公众号
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                    <div class="max-w-2xl mx-auto bg-white p-10 shadow-sm border rounded-lg min-h-screen" id="preview-content">
+                        <!-- Preview HTML will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Header -->
+            <div class="px-8 py-5 border-b flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 flex-shrink-0">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800 tracking-tight">配置中心</h2>
+                    <p class="text-xs text-gray-500 mt-1">修改环境变量 (.env) 并持久化到磁盘</p>
+                </div>
+                <button onclick="toggleConfig()" class="text-gray-400 hover:text-gray-600 bg-white p-2 rounded-full shadow-sm hover:shadow transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto px-6 py-4">
+                <!-- Tab Switcher -->
+                <div class="flex items-center justify-center mb-5 bg-gray-100 p-1.5 rounded-xl max-w-md mx-auto">
+                    <button type="button" id="tab-domestic" onclick="switchConfigRegion('domestic')" class="region-tab flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-white shadow-md text-red-600">
+                        🇨🇳 国内服务
+                    </button>
+                    <button type="button" id="tab-international" onclick="switchConfigRegion('international')" class="region-tab flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-500 hover:bg-gray-50">
+                        🌍 国外服务
+                    </button>
+                    <button type="button" class="flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-300 cursor-not-allowed" title="中转服务暂不可用" disabled>
+                        🔄 中转
+                    </button>
+                </div>
+
+                <form id="config-form" class="space-y-6">
+                    <!-- Hidden field to store region and source type -->
+                    <input type="hidden" name="API_SOURCE_TYPE" id="api-source-type-input" value="official">
+                    <input type="hidden" name="CONFIG_REGION" id="config-region-input" value="domestic">
+                    
+                    <!-- 国内服务面板 -->
+                    <div id="domestic-panel" class="space-y-4">
+                        <div class="bg-red-50 border border-red-100 rounded-lg px-4 py-3">
+                            <p class="text-xs text-red-700 flex items-center">
+                                <i class="fas fa-shield-alt mr-2"></i>
+                                <strong>国内直连：</strong>优先使用国产模型，速度极快且无需特殊网络
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- 文字处理模型 (国内) -->
+                            <div class="p-4 bg-white border border-gray-200 rounded-xl space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-font mr-2 text-red-500"></i> 文字处理模型
+                                </h3>
+                                <select name="DOMESTIC_TEXT_MODEL" class="w-full p-2 text-sm border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-red-500">
+                                    <option value="DEEPSEEK:deepseek-chat">DeepSeek V3 (推荐)</option>
+                                    <option value="QWEN:qwen-max">通义千问 Qwen-Max</option>
+                                </select>
+                                <div class="space-y-2 pt-2 border-t border-dashed">
+                                    <div>
+                                        <label class="block text-[10px] font-medium text-gray-500 mb-1">DEEPSEEK_API_KEY</label>
+                                        <input type="password" name="DEEPSEEK_API_KEY" class="config-input w-full p-2 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-red-500" placeholder="sk-...">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-medium text-gray-500 mb-1">DASHSCOPE_API_KEY (Qwen)</label>
+                                        <input type="password" name="DASHSCOPE_API_KEY" class="config-input w-full p-2 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-red-500" placeholder="sk-...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 图片生成模型 (国内固定) -->
+                            <div class="p-4 bg-white border border-gray-200 rounded-xl space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-image mr-2 text-orange-500"></i> 封面图生成
+                                </h3>
+                                <div class="p-3 bg-orange-50 rounded-lg border border-orange-100">
+                                    <div class="text-xs font-semibold text-orange-700">阿里云 - 通义万相 (Max)</div>
+                                    <div class="text-[10px] text-orange-600 mt-1">国内版自动锁定，效果最稳定</div>
+                                </div>
+                                <p class="text-[10px] text-gray-400">使用上方已填写的 DASHSCOPE_API_KEY 访问</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 国外服务面板 -->
+                    <div id="international-panel" class="space-y-4 hidden">
+                        <div class="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
+                            <p class="text-xs text-blue-700 flex items-center">
+                                <i class="fas fa-globe-americas mr-2"></i>
+                                <strong>全球 API：</strong>支持 Gemini, Claude, OpenAI 等顶尖模型
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- 内容总结模型 (国外) -->
+                            <div class="p-4 bg-white border border-gray-200 rounded-xl space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-microchip mr-2 text-blue-500"></i> 主要总结模型
+                                </h3>
+                                <select name="AI_SUMMARIZER_LLM_PROVIDER" onchange="handleModelChange(this)" class="model-selector w-full p-2 text-sm border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500">
+                                    <optgroup label="Google">
+                                        <option value="GEMINI:gemini-2.0-flash">Gemini 2.0 Flash</option>
+                                        <option value="GEMINI:gemini-3-pro-preview">Gemini 3 Pro (New!)</option>
+                                    </optgroup>
+                                    <optgroup label="Anthropic">
+                                        <option value="CLAUDE:claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+                                    </optgroup>
+                                    <optgroup label="OpenAI">
+                                        <option value="OPENAI:gpt-4o">GPT-4o</option>
+                                        <option value="OPENAI:gpt-4o-mini">GPT-4o-mini</option>
+                                    </optgroup>
+                                    <optgroup label="国内出口">
+                                        <option value="DEEPSEEK:deepseek-chat">DeepSeek V3</option>
+                                        <option value="QWEN:qwen-max">通义千问 Max (国际版)</option>
+                                    </optgroup>
+                                </select>
+                                <div class="dynamic-key-container space-y-2 transition-all duration-300"></div>
+                            </div>
+
+                            <!-- 预提取模型 (国外) -->
+                            <div class="p-4 bg-white border border-gray-200 rounded-xl space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-bolt mr-2 text-yellow-500"></i> 预提取模型 (快速)
+                                </h3>
+                                <select name="AI_PRE_EXTRACT_LLM_PROVIDER" onchange="handleModelChange(this)" class="model-selector w-full p-2 text-sm border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="GEMINI:gemini-flash-lite-latest">Gemini Flash Lite (极速)</option>
+                                    <option value="DEEPSEEK:deepseek-chat">DeepSeek V3</option>
+                                </select>
+                                <div class="dynamic-key-container space-y-2 transition-all duration-300"></div>
+                            </div>
+
+                            <!-- 文生图模型 (国外) -->
+                            <div class="p-4 bg-white border border-gray-200 rounded-xl space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-image mr-2 text-purple-500"></i> 封面图生成模型
+                                </h3>
+                                <select name="IMAGE_GENERATOR_TYPE" onchange="handleModelChange(this)" class="model-selector w-full p-2 text-sm border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="QWEN_IMAGE_MAX">阿里云 - 通义万相 (Max)</option>
+                                    <option value="GEMINI_PRO">Google - Gemini 3 Pro</option>
+                                </select>
+                                <div class="dynamic-key-container space-y-2 transition-all duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 公共配置区域 (常驻) -->
+                    <div class="pt-4 mt-4 border-t">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center">
+                                <i class="fas fa-tools mr-2"></i> 全局通用配置
+                            </h3>
+                            <span class="text-[9px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">不随版本切换</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- 爬虫服务 -->
+                            <div class="p-3 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
+                                <h4 class="text-xs font-semibold text-gray-700">爬虫服务</h4>
+                                <div>
+                                    <label class="block text-[10px] font-medium text-gray-500 mb-1">FIRE_CRAWL_API_KEY</label>
+                                    <input type="password" name="FIRE_CRAWL_API_KEY" class="w-full p-2 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-blue-500" placeholder="fc-...">
+                                </div>
+                            </div>
+
+                            <!-- 微信与通知 -->
+                            <div class="p-3 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
+                                <h4 class="text-xs font-semibold text-gray-700">微信发布</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-[10px] font-medium text-gray-500 mb-1">APP_ID</label>
+                                        <input type="text" name="WEIXIN_APP_ID" class="w-full p-1.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-green-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-medium text-gray-500 mb-1">APP_SECRET</label>
+                                        <input type="password" name="WEIXIN_APP_SECRET" class="w-full p-1.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-green-500">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-[10px] font-medium text-gray-500 mb-1">作者</label>
+                                        <input type="text" name="AUTHOR" class="w-full p-1.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-green-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-medium text-gray-500 mb-1">BARK_URL</label>
+                                        <input type="text" name="BARK_URL" class="w-full p-1.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-green-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer with Save Button -->
+            <div class="px-6 py-4 bg-gradient-to-r from-gray-50 to-blue-50 border-t flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center space-x-3">
+                    <span id="config-save-status" class="text-sm font-medium text-green-600 transition-opacity opacity-0">已保存</span>
+                    <span class="text-xs text-gray-400">配置会保存到 .env 文件</span>
+                </div>
+                <button onclick="saveConfigs()" class="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 active:scale-95 transition-all flex items-center">
+                    <i class="fas fa-save mr-2"></i> 保存配置
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 hidden">
+        <div class="bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl flex items-center space-x-3">
+            <span id="toast-icon" class="text-blue-400"><i class="fas fa-info-circle"></i></span>
+            <span id="toast-message" class="text-sm font-medium">消息通知</span>
+        </div>
+    </div>
+
+    <!-- Refine Modal - Markdown Editor + Live Preview -->
+    <div id="refine-modal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="h-full w-full flex flex-col bg-white">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b flex items-center justify-between bg-gradient-to-r from-purple-50 to-blue-50 shadow-sm">
+                <div class="flex items-center space-x-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-edit text-purple-600 mr-2"></i> 全文 Markdown 编辑器
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-0.5">直接修改全文 Markdown，右侧实时预览最终排版效果</p>
+                    </div>
+                    <!-- Quick Style Access in Modal -->
+                    <div class="h-8 w-px bg-gray-200 mx-2"></div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">字号</span>
+                            <div class="flex bg-white rounded-md border p-0.5">
+                                <button onclick="updateStyle('fontSize', '14px')" class="style-btn-fontSize px-2 py-0.5 text-[10px] rounded hover:bg-gray-50" data-value="14px">14</button>
+                                <button onclick="updateStyle('fontSize', '16px')" class="style-btn-fontSize px-2 py-0.5 text-[10px] rounded hover:bg-gray-50" data-value="16px">16</button>
+                                <button onclick="updateStyle('fontSize', '18px')" class="style-btn-fontSize px-2 py-0.5 text-[10px] rounded hover:bg-gray-50" data-value="18px">18</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">主题色</span>
+                            <div class="flex items-center space-x-1">
+                                <button onclick="updateStyle('primaryColor', '#0F4C81')" class="style-btn-primaryColor w-4 h-4 rounded-full border border-white shadow-sm" style="background-color: #0F4C81" data-value="#0F4C81"></button>
+                                <button onclick="updateStyle('primaryColor', '#009874')" class="style-btn-primaryColor w-4 h-4 rounded-full border border-white shadow-sm" style="background-color: #009874" data-value="#009874"></button>
+                                <button onclick="updateStyle('primaryColor', '#FF6F61')" class="style-btn-primaryColor w-4 h-4 rounded-full border border-white shadow-sm" style="background-color: #FF6F61" data-value="#FF6F61"></button>
+                                <button onclick="updateStyle('primaryColor', '#3f9cf5')" class="style-btn-primaryColor w-4 h-4 rounded-full border border-white shadow-sm" style="background-color: #3f9cf5" data-value="#3f9cf5"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="closeRefinePanel()" class="text-gray-400 hover:text-gray-600 bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all">
+                    <i class="fas fa-times mr-1"></i> 关闭
+                </button>
+            </div>
+
+            <!-- Editor + Preview Split -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Left Sidebar: Sections & Style -->
+                <div class="w-64 bg-gray-50 border-r flex flex-col overflow-hidden flex-shrink-0">
+                    <!-- Section Selector -->
+                    <div class="p-4 border-b">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center">
+                            <i class="fas fa-list-ul mr-2"></i> 编辑区域选择
+                        </h3>
+                        <div id="section-list" class="space-y-2">
+                            <button onclick="switchSection('full')" id="btn-section-full" class="section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all bg-purple-100 text-purple-700 font-bold border border-purple-200">
+                                <i class="fas fa-file-alt mr-2"></i> 整篇文章
+                            </button>
+                            <button onclick="switchSection('introduction')" id="btn-section-introduction" class="section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent">
+                                <i class="fas fa-align-left mr-2"></i> 文章开头
+                            </button>
+                            <div id="article-sections" class="space-y-2 py-1">
+                                <!-- Dynamic article sections here -->
+                            </div>
+                            <button onclick="switchSection('footer')" id="btn-section-footer" class="section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent">
+                                <i class="fas fa-quote-right mr-2"></i> 结语部分
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Style Preview Configuration (Moved to bottom of sidebar) -->
+                    <div class="p-4 flex-1 overflow-y-auto">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center">
+                            <i class="fas fa-palette mr-2"></i> 样式预览配置
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <!-- Font Size -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 mb-2 uppercase">字号</label>
+                                <div class="grid grid-cols-5 gap-1">
+                                    <button onclick="updateStyle('fontSize', '14px')" class="style-btn-fontSize text-[10px] p-1 border rounded bg-white hover:bg-blue-50" data-value="14px">14</button>
+                                    <button onclick="updateStyle('fontSize', '15px')" class="style-btn-fontSize text-[10px] p-1 border rounded bg-white hover:bg-blue-50" data-value="15px">15</button>
+                                    <button onclick="updateStyle('fontSize', '16px')" class="style-btn-fontSize text-[10px] p-1 border rounded bg-white hover:bg-blue-50" data-value="16px">16</button>
+                                    <button onclick="updateStyle('fontSize', '17px')" class="style-btn-fontSize text-[10px] p-1 border rounded bg-white hover:bg-blue-50" data-value="17px">17</button>
+                                    <button onclick="updateStyle('fontSize', '18px')" class="style-btn-fontSize text-[10px] p-1 border rounded bg-white hover:bg-blue-50" data-value="18px">18</button>
+                                </div>
+                            </div>
+
+                            <!-- Theme Color -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 mb-2 uppercase">主题色</label>
+                                <div class="grid grid-cols-5 gap-2">
+                                    <button onclick="updateStyle('primaryColor', '#0F4C81')" class="style-btn-primaryColor w-6 h-6 rounded-full border-2 border-white shadow-sm" style="background-color: #0F4C81" data-value="#0F4C81" title="经典蓝"></button>
+                                    <button onclick="updateStyle('primaryColor', '#009874')" class="style-btn-primaryColor w-6 h-6 rounded-full border-2 border-white shadow-sm" style="background-color: #009874" data-value="#009874" title="翡翠绿"></button>
+                                    <button onclick="updateStyle('primaryColor', '#FF6F61')" class="style-btn-primaryColor w-6 h-6 rounded-full border-2 border-white shadow-sm" style="background-color: #FF6F61" data-value="#FF6F61" title="珊瑚红"></button>
+                                    <button onclick="updateStyle('primaryColor', '#6B5B95')" class="style-btn-primaryColor w-6 h-6 rounded-full border-2 border-white shadow-sm" style="background-color: #6B5B95" data-value="#6B5B95" title="葡萄紫"></button>
+                                    <button onclick="updateStyle('primaryColor', '#3f9cf5')" class="style-btn-primaryColor w-6 h-6 rounded-full border-2 border-white shadow-sm" style="background-color: #3f9cf5" data-value="#3f9cf5" title="天空蓝"></button>
+                                </div>
+                            </div>
+
+                            <!-- Font Family -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 mb-2 uppercase">字体风格</label>
+                                <select onchange="updateStyle('fontFamily', this.value)" class="modal-font-family-select w-full p-2 text-[10px] border rounded bg-white outline-none focus:ring-1 focus:ring-blue-500">
+                                    <option value="Optima-Regular, Optima, PingFangSC-light, PingFangSC-Regular, 'Helvetica Neue', Helvetica, Arial, sans-serif">无衬线 (系统默认)</option>
+                                    <option value="Georgia, 'Nimbus Roman No9 L', 'Songti SC', 'Noto Serif CJK SC', 'Source Serif Pro', 'AR PL New Sung', 'AR PL Sumti', 'STSong', 'SimSun', serif">衬线 (优雅经典)</option>
+                                    <option value="Menlo, Monaco, Consolas, 'Courier New', monospace">等宽 (程序员风)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle: Markdown Editor -->
+                <div class="flex-1 flex flex-col border-r bg-gray-50 overflow-hidden">
+                    <div class="px-4 py-3 bg-white border-b flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm font-semibold text-gray-700">📄 Markdown 源码</span>
+                            <span class="text-xs text-gray-400" id="markdown-char-count">0 字符</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="undoMarkdown()" class="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded" title="撤销">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button onclick="redoMarkdown()" class="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded" title="重做">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="markdown-editor" 
+                        class="flex-1 p-6 font-mono text-sm leading-relaxed resize-none outline-none bg-white"
+                        placeholder="在此输入或编辑 Markdown 内容..."
+                        oninput="onMarkdownChange()"
+                        onscroll="syncScroll()"
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+
+                <!-- Right: Live Preview -->
+                <div class="flex-1 flex flex-col bg-white overflow-hidden">
+                    <div class="px-4 py-3 bg-white border-b flex items-center justify-between">
+                        <span class="text-sm font-semibold text-gray-700">👁️ 实时预览</span>
+                        <select id="preview-render-mode" onchange="renderMarkdownPreview()" class="px-2 py-1 text-xs border rounded">
+                            <option value="default">Doocs: 默认 (Classic)</option>
+                            <option value="elegant">Doocs: 优雅 (Elegant)</option>
+                            <option value="simple">Doocs: 简约 (Simple)</option>
+                            <option value="raw">Raw: 简单渲染</option>
+                        </select>
+                    </div>
+                    <div id="markdown-preview" class="flex-1 overflow-y-auto p-6 prose prose-sm max-w-none" onscroll="syncScrollFromPreview()">
+                        <p class="text-gray-400 text-center mt-10">预览区域</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer: AI Tools + Actions -->
+            <div class="px-6 py-4 bg-gray-50 border-t flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs font-semibold text-gray-600">🤖 AI 助手:</span>
+                    <select id="selected-model" class="px-3 py-1.5 text-xs border rounded-lg bg-white">
+                        <!-- 模型选项将根据配置区域动态更新 -->
+                        <option value="DEEPSEEK:deepseek-chat">DeepSeek V3 (推理强)</option>
+                        <option value="QWEN:qwen-max">Qwen Max (质量高)</option>
+                    </select>
+                    <input 
+                        type="text" 
+                        id="refine-instruction" 
+                        placeholder="输入修改指令，例如：增加技术细节、改为通俗语言..." 
+                        class="px-3 py-1.5 text-xs border rounded-lg w-80 outline-none focus:ring-2 focus:ring-purple-400"
+                    />
+                    <button onclick="executeAIRefine()" class="px-4 py-1.5 bg-purple-600 text-white text-xs font-bold rounded-lg hover:bg-purple-700 transition-all">
+                        <i class="fas fa-wand-magic-sparkles mr-1"></i> AI 润色
+                    </button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span id="refine-status" class="text-xs text-gray-500"></span>
+                    <button onclick="saveMarkdownChanges()" class="px-6 py-2 bg-green-600 text-white text-sm font-bold rounded-lg hover:bg-green-700 transition-all">
+                        <i class="fas fa-save mr-2"></i> 保存修改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'TECH_NEWS';
+        let isRunning = false;
+
+        // --- Style & Theme Support ---
+        let themeState = {
+            fontSize: localStorage.getItem('md-size') || '16px',
+            primaryColor: localStorage.getItem('md-color') || '#3f9cf5',
+            fontFamily: localStorage.getItem('md-fonts') || "Optima-Regular, Optima, PingFangSC-light, PingFangSC-Regular, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        };
+
+        function applyTheme() {
+            const styleEl = document.getElementById('md-theme-variables');
+            if (!styleEl) return;
+
+            const css = `
+                :root {
+                    --md-primary-color: ${themeState.primaryColor};
+                    --md-font-family: ${themeState.fontFamily};
+                    --md-font-size: ${themeState.fontSize};
+                }
+                #preview-content, #markdown-preview {
+                    font-family: var(--md-font-family) !important;
+                    font-size: var(--md-font-size) !important;
+                }
+                #preview-content h1, #preview-content h2, #preview-content h3,
+                #markdown-preview h1, #markdown-preview h2, #markdown-preview h3 {
+                    color: var(--md-primary-color) !important;
+                }
+            `;
+            styleEl.textContent = css;
+
+            // 更新 UI 状态
+            document.querySelectorAll('.style-btn-fontSize').forEach(btn => {
+                btn.classList.toggle('bg-blue-600', btn.getAttribute('data-value') === themeState.fontSize);
+                btn.classList.toggle('text-white', btn.getAttribute('data-value') === themeState.fontSize);
+            });
+            document.querySelectorAll('.style-btn-primaryColor').forEach(btn => {
+                btn.classList.toggle('ring-2', btn.getAttribute('data-value') === themeState.primaryColor);
+                btn.classList.toggle('ring-offset-1', btn.getAttribute('data-value') === themeState.primaryColor);
+                btn.classList.toggle('ring-blue-500', btn.getAttribute('data-value') === themeState.primaryColor);
+            });
+            const familySelect = document.getElementById('font-family-select');
+            if (familySelect) familySelect.value = themeState.fontFamily;
+            
+            // 同步模态框内的字体选择器
+            document.querySelectorAll('.modal-font-family-select').forEach(s => {
+                s.value = themeState.fontFamily;
+            });
+
+            // 持久化
+            localStorage.setItem('md-size', themeState.fontSize);
+            localStorage.setItem('md-color', themeState.primaryColor);
+            localStorage.setItem('md-fonts', themeState.fontFamily);
+        }
+
+        function updateStyle(key, value) {
+            themeState[key] = value;
+            applyTheme();
+        }
+
+        // --- Mermaid Setup ---
+        const svgCache = new Map();
+        
+        async function initMermaid() {
+            if (window.mermaid) {
+                window.mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    fontFamily: 'Inter, sans-serif'
+                });
+            }
+        }
+
+        async function renderMermaidDiagrams(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container || !window.mermaid) return;
+
+            const diagrams = container.querySelectorAll('.mermaid-diagram');
+            for (const el of diagrams) {
+                const code = decodeURIComponent(el.getAttribute('data-mermaid-code'));
+                const cacheKey = el.id.replace('mermaid-', '');
+                
+                if (svgCache.has(cacheKey)) {
+                    el.innerHTML = svgCache.get(cacheKey);
+                    continue;
+                }
+
+                try {
+                    const { svg } = await window.mermaid.render(`svg-${cacheKey}`, code);
+                    // 修复 mermaid SVG 中 tspan 文本颜色问题 (由用户提供)
+                    const fixedSvg = svg.replace(/<tspan([^>]*)>/g, '<tspan$1 style="fill: #333333 !important; stroke: none !important;">');
+                    svgCache.set(cacheKey, fixedSvg);
+                    el.innerHTML = fixedSvg;
+                } catch (error) {
+                    console.error('Mermaid 渲染失败:', error);
+                    el.innerHTML = `<div class="p-2 border border-red-200 bg-red-50 text-red-600 text-xs rounded">Mermaid 渲染失败: ${error.message}</div>`;
+                }
+            }
+        }
+
+        async function renderPlantUMLDiagrams(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const diagrams = container.querySelectorAll('.plantuml-diagram');
+            for (const el of diagrams) {
+                const isInline = el.getAttribute('data-plantuml-inline') === 'true';
+                if (!isInline) continue;
+
+                const url = el.getAttribute('data-plantuml-url');
+                const cacheKey = el.id.replace('plantuml-', '');
+
+                if (svgCache.has(cacheKey)) {
+                    el.innerHTML = svgCache.get(cacheKey);
+                    continue;
+                }
+
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    let svg = await response.text();
+                    
+                    // 移除固定尺寸，使 SVG 响应式
+                    svg = svg.replace(/(<svg[^>]*)\swidth="[^"]*"/g, '$1')
+                             .replace(/(<svg[^>]*)\sheight="[^"]*"/g, '$1');
+                    
+                    svgCache.set(cacheKey, svg);
+                    el.innerHTML = svg;
+                } catch (error) {
+                    console.error('PlantUML 渲染失败:', error);
+                    // 保持原有的 <img> 标签作为降级
+                }
+            }
+        }
+
+        // --- Core Functions ---
+
+        async function rpc(method, params = {}) {
+            const res = await fetch('/api/workflow', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ jsonrpc: '2.0', method, params, id: Date.now() })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message || 'RPC Error');
+            return data.result;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-blue-500', 'bg-blue-50', 'bg-purple-50', 'bg-orange-50', 'bg-green-50');
+                btn.classList.add('border-transparent');
+            });
+            
+            const btn = document.getElementById(`mode-${mode}`);
+            btn.classList.add('ring-2');
+            if (mode === 'TECH_NEWS') btn.classList.add('ring-blue-500', 'bg-blue-50');
+            if (mode === 'GITHUB_TRENDING') btn.classList.add('ring-purple-500', 'bg-purple-50');
+            if (mode === 'SINGLE_URL') btn.classList.add('ring-orange-500', 'bg-orange-50');
+            if (mode === 'TOP_SEARCH') btn.classList.add('ring-green-500', 'bg-green-50');
+
+            // 注意：param-url 和 param-topic 已被注释掉，需要空值检查
+            const paramUrl = document.getElementById('param-url');
+            const paramTopic = document.getElementById('param-topic');
+            if (paramUrl) paramUrl.classList.toggle('hidden', mode !== 'SINGLE_URL');
+            if (paramTopic) paramTopic.classList.toggle('hidden', mode !== 'TOPIC_SEARCH');
+
+            // GitHub Trending 模式：隐藏字数和文章数量选项（固定每次 1 篇，直接使用 README）
+            const isGitHubMode = mode === 'GITHUB_TRENDING';
+            document.getElementById('param-word-range').classList.toggle('hidden', isGitHubMode);
+            document.getElementById('param-max-articles').classList.toggle('hidden', isGitHubMode);
+
+            // GitHub 模式下固定为 1 篇
+            if (isGitHubMode) {
+                document.getElementById('max-articles').value = '1';
+            }
+        }
+
+        function updateWordRange() {
+            let min = parseInt(document.getElementById('min-words').value);
+            let max = parseInt(document.getElementById('max-words').value);
+            
+            // 确保最小字数不大于最大字数
+            if (min > max) {
+                min = max;
+                document.getElementById('min-words').value = min;
+            }
+            
+            document.getElementById('word-range-val').innerText = `${min} - ${max}`;
+        }
+
+        async function runWorkflow() {
+            if (isRunning) return;
+            
+            try {
+                isRunning = true;
+                document.getElementById('run-btn').disabled = true;
+                document.getElementById('run-btn').classList.add('opacity-50');
+                document.getElementById('running-status').classList.remove('hidden');
+                clearLogs();
+                appendLog('[系统]', '正在启动工作流...', 'log-info');
+
+                const params = {
+                    workflowType: 'weixin-article-workflow',
+                    contentMode: currentMode,
+                    maxArticles: parseInt(document.getElementById('max-articles').value),
+                    minWords: parseInt(document.getElementById('min-words').value),
+                    maxWords: parseInt(document.getElementById('max-words').value),
+                    template: document.getElementById('article-template').value,
+                    customFooter: document.getElementById('custom-footer').value,
+                    previewOnly: true // 始终先预览
+                };
+
+                if (currentMode === 'SINGLE_URL') params.url = document.getElementById('url-input').value;
+                if (currentMode === 'TOPIC_SEARCH') params.topic = document.getElementById('topic-input').value;
+
+                await rpc('triggerWorkflow', params);
+                appendLog('[系统]', '工作流触发成功，正在处理内容...', 'log-info');
+                
+                // 开始定时轮询预览结果
+                checkPreviewInterval = setInterval(async () => {
+                    const preview = await rpc('getArticlePreview');
+                    if (preview) {
+                        clearInterval(checkPreviewInterval);
+                        showPreview(preview);
+                        resetRunButton();
+                    }
+                }, 3000);
+
+            } catch (error) {
+                appendLog('[错误]', error.message, 'log-error');
+                resetRunButton();
+            }
+        }
+
+        let checkPreviewInterval;
+
+        function resetRunButton() {
+            isRunning = false;
+            document.getElementById('run-btn').disabled = false;
+            document.getElementById('run-btn').classList.remove('opacity-50');
+            document.getElementById('running-status').classList.add('hidden');
+        }
+
+        let currentPreview = null;
+
+        function showPreview(preview) {
+            currentPreview = preview;
+            document.getElementById('preview-content').innerHTML = preview.html;
+            renderMermaidDiagrams('preview-content');
+            renderPlantUMLDiagrams('preview-content');
+
+            // 同步预览区模板选择
+            const mainTemplate = document.getElementById('article-template').value;
+            const previewTemplate = document.getElementById('preview-template');
+            if (previewTemplate) previewTemplate.value = mainTemplate;
+            
+            const container = document.getElementById('preview-container');
+            container.classList.remove('hidden');
+            setTimeout(() => container.classList.remove('translate-x-full'), 10);
+            showToast('预览已生成，请检查');
+        }
+
+        function syncTemplateFromPreview() {
+            const previewTemplate = document.getElementById('preview-template').value;
+            const mainTemplate = document.getElementById('article-template');
+            if (mainTemplate) {
+                mainTemplate.value = previewTemplate;
+            }
+            tryUpdatePreview();
+        }
+
+        async function tryUpdatePreview() {
+            // 如果预览容器不是隐藏状态，说明预览正在显示，此时才更新
+            const container = document.getElementById('preview-container');
+            if (container.classList.contains('hidden')) return;
+
+            try {
+                const template = document.getElementById('article-template').value;
+                const customFooter = document.getElementById('custom-footer').value;
+
+                const previewTemplate = document.getElementById('preview-template');
+                if (previewTemplate) previewTemplate.value = template;
+                
+                showToast('正在应用新模板...', 'info');
+                const updated = await rpc('updatePreview', { template, customFooter });
+                document.getElementById('preview-content').innerHTML = updated.html;
+                renderMermaidDiagrams('preview-content');
+                renderPlantUMLDiagrams('preview-content');
+                showToast('预览已更新', 'success');
+            } catch (error) {
+                showToast('更新预览失败: ' + error.message, 'error');
+            }
+        }
+
+        // --- Markdown Editor Functions ---
+        
+        let markdownHistory = [];
+        let historyIndex = -1;
+        let debounceTimer = null;
+        let currentSection = { type: 'full', index: null };
+
+        // 当前配置区域（domestic/international）
+        let currentConfigRegion = 'domestic';
+
+        // 清理本地图片路径的辅助函数
+        function removeLocalImagePaths(content) {
+            if (!content) return '';
+            // 移除 Markdown 格式的本地图片：![...]](data/...)
+            let cleaned = content.replace(/!\[([^\]]*)\]\(data\/[^)]+\)/g, '');
+            // 移除 HTML <img> 标签中的本地图片：src="data/..."
+            cleaned = cleaned.replace(/<img[^>]*src=["']data\/[^"']*["'][^>]*>/gi, '');
+            return cleaned;
+        }
+
+        // 从 articles 数组重新组装完整 Markdown
+        // 注意：不再额外插入 media 图片，图片应已由 LLM 保留在正文中
+        function reconstructFullMarkdown() {
+            if (!currentPreview) return '';
+            
+            let fullMarkdown = `# ${currentPreview.title || '文章标题'}\n\n`;
+            
+            // 添加引入部分（清理本地图片路径）
+            if (currentPreview.introduction) {
+                const cleanedIntro = removeLocalImagePaths(currentPreview.introduction);
+                fullMarkdown += `${cleanedIntro}\n\n---\n\n`;
+            }
+            
+            // 添加每篇文章
+            if (currentPreview.articles && currentPreview.articles.length > 0) {
+                currentPreview.articles.forEach((art, idx) => {
+                    // 移除本地图片路径，保留远程图片
+                    const articleContent = removeLocalImagePaths(art.content || '');
+                    
+                    fullMarkdown += `## ${art.title || `文章 ${idx + 1}`}\n\n${articleContent}\n\n`;
+                    
+                    // 添加文章链接（GitHub Trending 显示"项目地址"，其他显示"文章链接"）
+                    if (art.url) {
+                        const linkLabel = (currentPreview.metadata?.contentMode === 'GITHUB_TRENDING') ? '项目地址' : '文章链接';
+                        fullMarkdown += `> 🔗 **${linkLabel}**：[${art.url}](${art.url})\n\n`;
+                    }
+                    
+                    if (idx < currentPreview.articles.length - 1) {
+                        fullMarkdown += `---\n\n`;
+                    }
+                });
+            }
+            
+            // 添加结语（清理本地图片路径）
+            if (currentPreview.footer) {
+                const cleanedFooter = removeLocalImagePaths(currentPreview.footer);
+                fullMarkdown += `\n---\n\n${cleanedFooter}`;
+            }
+            
+            return fullMarkdown;
+        }
+
+        // 更新润色模型选项（根据配置区域）
+        function updateRefineModelOptions() {
+            const select = document.getElementById('selected-model');
+            if (!select) return;
+
+            if (currentConfigRegion === 'domestic') {
+                // 国内模式：只显示 DeepSeek 和 Qwen Max
+                select.innerHTML = `
+                    <option value="DEEPSEEK:deepseek-chat">DeepSeek V3 (推理强)</option>
+                    <option value="QWEN:qwen-max">Qwen Max (质量高)</option>
+                `;
+            } else {
+                // 国际模式：显示所有模型
+                select.innerHTML = `
+                    <option value="GEMINI:gemini-2.0-flash">Gemini 2.0 Flash (推荐)</option>
+                    <option value="CLAUDE:claude-3-5-sonnet-20241022">Claude Sonnet (优雅)</option>
+                    <option value="DEEPSEEK:deepseek-chat">DeepSeek V3</option>
+                    <option value="QWEN:qwen-max">Qwen Max (国际版)</option>
+                `;
+            }
+        }
+
+        async function openRefinePanel() {
+            if (!currentPreview) {
+                showToast('请先生成预览', 'error');
+                return;
+            }
+
+            // 获取当前配置区域
+            try {
+                const configs = await rpc('getEnvConfig');
+                const dashscopeBaseUrl = configs.DASHSCOPE_BASE_URL || '';
+                const dashscopeRegion = configs.DASHSCOPE_REGION || '';
+                currentConfigRegion = (dashscopeBaseUrl.includes('-intl') || dashscopeRegion === 'intl') ? 'international' : 'domestic';
+            } catch (e) {
+                currentConfigRegion = 'domestic'; // 默认国内
+            }
+
+            // 更新模型选项
+            updateRefineModelOptions();
+
+            document.getElementById('refine-modal').classList.remove('hidden');
+
+            // 初始化区域列表
+            updateSectionList();
+
+            // 默认打开整篇文章
+            switchSection('full');
+        }
+
+        function updateSectionList() {
+            const container = document.getElementById('article-sections');
+            container.innerHTML = '';
+            
+            if (currentPreview.articles && currentPreview.articles.length > 0) {
+                currentPreview.articles.forEach((article, idx) => {
+                    const btn = document.createElement('button');
+                    btn.id = `btn-section-article-${idx}`;
+                    btn.onclick = () => switchSection('article', idx);
+                    btn.className = 'section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent';
+                    btn.innerHTML = `<i class="fas fa-newspaper mr-2 text-xs opacity-70"></i> 子文章 ${idx + 1}`;
+                    container.appendChild(btn);
+                });
+            }
+        }
+
+        function switchSection(type, index = null) {
+            // 保存当前正在编辑的内容（可选，或者提示用户保存）
+            
+            currentSection = { type, index };
+            
+            // 更新 UI 样式
+            document.querySelectorAll('.section-btn').forEach(btn => {
+                btn.className = 'section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent';
+            });
+            
+            let btnId = `btn-section-${type}`;
+            if (type === 'article') btnId = `btn-section-article-${index}`;
+            
+            const activeBtn = document.getElementById(btnId);
+            if (activeBtn) {
+                activeBtn.className = 'section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all bg-purple-100 text-purple-700 font-bold border border-purple-200';
+            }
+            
+            // 加载内容
+            const editor = document.getElementById('markdown-editor');
+            let content = '';
+            
+            if (type === 'full') {
+                // 整篇文章：从 articles 数组重新组装，使用 media 中的远程图片 URL
+                content = reconstructFullMarkdown();
+            } else if (type === 'introduction') {
+                content = currentPreview.introduction || '';
+            } else if (type === 'footer') {
+                content = currentPreview.footer || '';
+            } else if (type === 'article' && index !== null) {
+                const article = currentPreview.articles[index];
+                // 清理本地图片路径，保留远程图片
+                content = removeLocalImagePaths(article.content || '');
+
+                // 如果子文章有标题，在编辑区显示 ## 标题
+                if (article.title) {
+                    content = `## ${article.title}\n\n${content}`;
+                }
+                
+                // 添加文章链接（在内容末尾）
+                if (article.url) {
+                    const linkLabel = (currentPreview.metadata?.contentMode === 'GITHUB_TRENDING') ? '项目地址' : '文章链接';
+                    content += `\n\n> 🔗 **${linkLabel}**：[${article.url}](${article.url})`;
+                }
+            }
+            
+            editor.value = content;
+            markdownHistory = [content];
+            historyIndex = 0;
+            renderMarkdownPreview();
+            updateCharCount();
+            
+            // 更新标题提示
+            const headerTitle = document.querySelector('#refine-modal h2');
+            const typeLabels = { 'full': '全文 Markdown', 'introduction': '文章开头', 'article': `子文章 ${index + 1}`, 'footer': '结语部分' };
+            headerTitle.innerHTML = `<i class="fas fa-edit text-purple-600 mr-2"></i> ${typeLabels[type]} 编辑器`;
+        }
+
+        async function renderMarkdownPreview() {
+            const editor = document.getElementById('markdown-editor');
+            const preview = document.getElementById('markdown-preview');
+            const mode = document.getElementById('preview-render-mode').value;
+            
+            const markdown = editor.value;
+            
+            if (!markdown.trim()) {
+                preview.innerHTML = '<p class="text-gray-400 text-center mt-10">预览区域</p>';
+                return;
+            }
+            
+            try {
+                if (mode !== 'raw') {
+                    // 调用后端 Doocs MD 渲染
+                    // 如果是子部分，我们需要包装一下以便显示大致预览效果
+                    let renderContent = markdown;
+                    
+                    const result = await rpc('renderMarkdown', { 
+                        markdown: renderContent,
+                        template: mode
+                    });
+                    preview.innerHTML = result.html;
+                    renderMermaidDiagrams('markdown-preview');
+                    renderPlantUMLDiagrams('markdown-preview');
+                } else {
+                    preview.innerHTML = simpleMarkdownRender(markdown);
+                }
+            } catch (error) {
+                preview.innerHTML = `<p class="text-red-500 text-sm p-4">渲染失败: ${error.message}</p>`;
+            }
+        }
+
+        async function executeAIRefine() {
+            const instruction = document.getElementById('refine-instruction').value.trim();
+            const llmProvider = document.getElementById('selected-model').value;
+            const editor = document.getElementById('markdown-editor');
+            
+            if (!instruction) {
+                showToast('请输入修改指令', 'error');
+                return;
+            }
+
+            try {
+                const status = document.getElementById('refine-status');
+                status.textContent = `⏳ AI 正在${currentSection.type === 'full' ? '全文' : '当前区域'}打磨中...`;
+                
+                const params = {
+                    sectionType: currentSection.type,
+                    sectionIndex: currentSection.index,
+                    currentContent: editor.value,
+                    userInstruction: instruction,
+                    llmProvider,
+                };
+
+                const result = await rpc('refineContent', params);
+                
+                // 注意：后端 refineContent 应该返回更新后的预览对象
+                currentPreview = result;
+                
+                // 重新加载当前区域的内容到编辑器
+                switchSection(currentSection.type, currentSection.index);
+                
+                showToast('✨ AI 打磨完成', 'success');
+                status.textContent = '✅ 打磨完成，可继续编辑或保存';
+                
+            } catch (error) {
+                showToast('打磨失败: ' + error.message, 'error');
+                document.getElementById('refine-status').textContent = '❌ 打磨失败';
+            }
+        }
+
+        async function saveMarkdownChanges() {
+            const editor = document.getElementById('markdown-editor');
+            const content = editor.value;
+            
+            try {
+                const status = document.getElementById('refine-status');
+                status.textContent = '💾 正在保存...';
+                
+                let result;
+                if (currentSection.type === 'full') {
+                    result = await rpc('updateFullMarkdown', { markdown: content });
+                } else {
+                    result = await rpc('updateMarkdownContent', {
+                        sectionType: currentSection.type,
+                        sectionIndex: currentSection.index,
+                        markdown: content
+                    });
+                }
+                
+                currentPreview = result;
+                // 更新全局预览背景页
+                document.getElementById('preview-content').innerHTML = result.html;
+                renderMermaidDiagrams('preview-content');
+                renderPlantUMLDiagrams('preview-content');
+                
+                // 如果当前编辑的是文章，可能更新了标题，需要刷新区域列表
+                if (currentSection.type === 'article') {
+                    updateSectionList();
+                }
+                
+                showToast('✅ 保存成功，预览已同步', 'success');
+                status.textContent = '✅ 已保存';
+                
+                setTimeout(() => { status.textContent = ''; }, 2000);
+                
+            } catch (error) {
+                showToast('保存失败: ' + error.message, 'error');
+                document.getElementById('refine-status').textContent = '❌ 保存失败';
+            }
+        }
+
+        function closeRefinePanel() {
+            document.getElementById('refine-modal').classList.add('hidden');
+            document.getElementById('refine-instruction').value = '';
+            document.getElementById('refine-status').textContent = '';
+            markdownHistory = [];
+            historyIndex = -1;
+        }
+
+        function onMarkdownChange() {
+            const editor = document.getElementById('markdown-editor');
+            const content = editor.value;
+            
+            // 添加到历史记录
+            if (content !== markdownHistory[historyIndex]) {
+                markdownHistory = markdownHistory.slice(0, historyIndex + 1);
+                markdownHistory.push(content);
+                historyIndex++;
+                
+                // 限制历史记录数量
+                if (markdownHistory.length > 50) {
+                    markdownHistory.shift();
+                    historyIndex--;
+                }
+            }
+            
+            updateCharCount();
+            
+            // 防抖渲染
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                renderMarkdownPreview();
+            }, 300);
+        }
+
+        function updateCharCount() {
+            const editor = document.getElementById('markdown-editor');
+            const count = editor.value.length;
+            document.getElementById('markdown-char-count').textContent = `${count} 字符`;
+        }
+
+        let isSyncingScroll = false;
+
+        function syncScroll() {
+            if (isSyncingScroll) return;
+            const editor = document.getElementById('markdown-editor');
+            const preview = document.getElementById('markdown-preview');
+            if (!editor || !preview) return;
+
+            isSyncingScroll = true;
+            const maxEditorScroll = editor.scrollHeight - editor.clientHeight;
+            const maxPreviewScroll = preview.scrollHeight - preview.clientHeight;
+            const scrollPercentage = maxEditorScroll > 0 ? (editor.scrollTop / maxEditorScroll) : 0;
+            preview.scrollTop = scrollPercentage * maxPreviewScroll;
+            isSyncingScroll = false;
+        }
+
+        function syncScrollFromPreview() {
+            if (isSyncingScroll) return;
+            const editor = document.getElementById('markdown-editor');
+            const preview = document.getElementById('markdown-preview');
+            if (!editor || !preview) return;
+
+            isSyncingScroll = true;
+            const maxPreviewScroll = preview.scrollHeight - preview.clientHeight;
+            const maxEditorScroll = editor.scrollHeight - editor.clientHeight;
+            const scrollPercentage = maxPreviewScroll > 0 ? (preview.scrollTop / maxPreviewScroll) : 0;
+            editor.scrollTop = scrollPercentage * maxEditorScroll;
+            isSyncingScroll = false;
+        }
+
+        function undoMarkdown() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                const editor = document.getElementById('markdown-editor');
+                editor.value = markdownHistory[historyIndex];
+                renderMarkdownPreview();
+                updateCharCount();
+            }
+        }
+
+        function redoMarkdown() {
+            if (historyIndex < markdownHistory.length - 1) {
+                historyIndex++;
+                const editor = document.getElementById('markdown-editor');
+                editor.value = markdownHistory[historyIndex];
+                renderMarkdownPreview();
+                updateCharCount();
+            }
+        }
+
+        function simpleMarkdownRender(markdown) {
+            // 简单的 Markdown 渲染（基础支持）
+            let html = markdown
+                // 代码块（最先处理，避免内部内容被误匹配）
+                .replace(/```(.*?)```/gs, '<pre class="bg-gray-100 p-3 rounded my-2 overflow-x-auto"><code>$1</code></pre>')
+                // 行内代码
+                .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 rounded text-sm">$1</code>')
+                // 标题
+                .replace(/^### (.*$)/gim, '<h3 class="text-lg font-bold mt-4 mb-2">$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-6 mb-3">$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mt-8 mb-4">$1</h1>')
+                // 图片（必须在链接之前处理，否则 ![](url) 中的 [](url) 会被链接匹配）
+                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full my-4 rounded" />')
+                // 处理原生 img 标签（可能包含 width/height/style）
+                .replace(/<img([^>]*)src=["']([^"']+)["']([^>]*)>/gi, (match, before, src, after) => {
+                    return `<img ${before} src="${src}" ${after} class="max-w-full my-4 rounded" />`;
+                })
+                // 链接
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:underline">$1</a>')
+                // 加粗
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>')
+                // 斜体
+                .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+                // 分隔线
+                .replace(/^---$/gm, '<hr class="my-6 border-gray-300" />')
+                // 段落
+                .replace(/\n\n/g, '</p><p class="mb-4">')
+                // 换行
+                .replace(/\n/g, '<br />');
+
+            return `<div class="markdown-body p-4">${html}</div>`;
+        }
+
+        function closePreview() {
+            const container = document.getElementById('preview-container');
+            container.classList.add('translate-x-full');
+            setTimeout(() => container.classList.add('hidden'), 300);
+        }
+
+        async function publishArticle() {
+            try {
+                const btn = document.getElementById('publish-btn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 发布中...';
+                
+                await rpc('confirmPublish');
+                
+                showToast('🎉 发布成功！已上传至微信草稿箱', 'success');
+                closePreview();
+            } catch (error) {
+                showToast('发布失败: ' + error.message, 'error');
+            } finally {
+                const btn = document.getElementById('publish-btn');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-2"></i> 确认发布到公众号';
+            }
+        }
+
+        // --- Config ---
+
+        const MODEL_CONFIGS = {
+            'GEMINI': { key: 'GEMINI_API_KEY', label: 'Gemini API Key', link: 'https://aistudio.google.com/apikey' },
+            'OPENAI': { key: 'OPENAI_API_KEY', label: 'OpenAI API Key', link: 'https://platform.openai.com/api-keys' },
+            'CLAUDE': { key: 'CLAUDE_API_KEY', label: 'Claude API Key', link: 'https://console.anthropic.com/' },
+            'DEEPSEEK': { key: 'DEEPSEEK_API_KEY', label: 'DeepSeek API Key', link: 'https://platform.deepseek.com/api_keys' },
+            'QWEN': { key: 'DASHSCOPE_API_KEY', label: '阿里云 API Key', link: 'https://dashscope.console.aliyun.com/apiKey' },
+            'QWEN_IMAGE_MAX': { key: 'DASHSCOPE_API_KEY', label: '阿里云 API Key (万相)', link: 'https://dashscope.console.aliyun.com/apiKey' },
+            'GEMINI_PRO': { key: 'GEMINI_API_KEY', label: 'Gemini API Key (Image)', link: 'https://aistudio.google.com/apikey' }
+        };
+
+        function handleModelChange(select) {
+            const container = select.nextElementSibling;
+            if (!container || !container.classList.contains('dynamic-key-container')) return;
+            
+            const val = select.value;
+            const provider = val.includes(':') ? val.split(':')[0] : val;
+            const config = MODEL_CONFIGS[provider];
+            
+            if (config) {
+                container.innerHTML = `
+                    <div class="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">${config.label}</label>
+                        <input type="password" name="${config.key}" class="w-full p-2 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-blue-500" placeholder="填入密钥...">
+                        ${config.link ? `<a href="${config.link}" target="_blank" class="text-[9px] text-blue-500 hover:underline mt-1 inline-block">→ 获取密钥</a>` : ''}
+                    </div>
+                `;
+                
+                // 自动填入当前已知的 key (从 form 中查找)
+                const existingKey = document.querySelector(`#config-form [name="${config.key}"]:not(.dynamic-key-container [name])`);
+                if (existingKey) {
+                    const newInput = container.querySelector('input');
+                    if (newInput) newInput.value = existingKey.value;
+                }
+            } else {
+                container.innerHTML = '';
+            }
+        }
+
+        function switchConfigRegion(region) {
+            document.getElementById('config-region-input').value = region;
+
+            const domesticTab = document.getElementById('tab-domestic');
+            const intlTab = document.getElementById('tab-international');
+            const domesticPanel = document.getElementById('domestic-panel');
+            const intlPanel = document.getElementById('international-panel');
+
+            if (region === 'domestic') {
+                domesticTab.className = 'region-tab flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-white shadow-md text-red-600';
+                intlTab.className = 'region-tab flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-500 hover:bg-gray-50';
+                domesticPanel.classList.remove('hidden');
+                intlPanel.classList.add('hidden');
+            } else {
+                intlTab.className = 'region-tab flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-white shadow-md text-blue-600';
+                domesticTab.className = 'region-tab flex-1 px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-500 hover:bg-gray-50';
+                intlPanel.classList.remove('hidden');
+                domesticPanel.classList.add('hidden');
+
+                // 触发一次国外面板的选择逻辑初始化
+                document.querySelectorAll('#international-panel .model-selector').forEach(sel => handleModelChange(sel));
+            }
+        }
+
+        async function toggleConfig() {
+            const modal = document.getElementById('config-modal');
+            const isHidden = modal.classList.toggle('hidden');
+            if (!isHidden) {
+                const configs = await rpc('getEnvConfig');
+                
+                // 1. 填充所有普通字段
+                Object.entries(configs).forEach(([key, val]) => {
+                    const fields = document.querySelectorAll(`[name="${key}"]`);
+                    fields.forEach(field => {
+                        if (field) field.value = val;
+                    });
+                });
+                
+                // 2. 识别当前应该是国内还是国外模式
+                // 逻辑：如果之前的 DASHSCOPE_BASE_URL 包含 intl，则认为是国外
+                const isIntl = (configs.DASHSCOPE_BASE_URL || '').includes('intl');
+                switchConfigRegion(isIntl ? 'international' : 'domestic');
+
+                // 3. 国内模式下，要把 DOMESTIC_TEXT_MODEL 同步为 AI_SUMMARIZER_LLM_PROVIDER
+                if (!isIntl) {
+                    const model = configs.AI_SUMMARIZER_LLM_PROVIDER;
+                    const domSelect = document.querySelector('[name="DOMESTIC_TEXT_MODEL"]');
+                    if (domSelect) domSelect.value = model;
+                }
+            }
+        }
+
+        async function saveConfigs() {
+            const formData = new FormData(document.getElementById('config-form'));
+            const params = {};
+            formData.forEach((val, key) => params[key] = val);
+            
+            const region = params.CONFIG_REGION;
+            
+            // 自动注入 API_SOURCE_TYPE 和 DASHSCOPE_BASE_URL
+            params.API_SOURCE_TYPE = 'official';
+            
+            if (region === 'domestic') {
+                params.DASHSCOPE_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1";
+                params.DASHSCOPE_REGION = "cn"; // 国内区域
+                // 将国内专用的选择同步到全局变量
+                params.AI_SUMMARIZER_LLM_PROVIDER = params.DOMESTIC_TEXT_MODEL;
+                params.AI_PRE_EXTRACT_LLM_PROVIDER = params.DOMESTIC_TEXT_MODEL;
+                params.IMAGE_GENERATOR_TYPE = "QWEN_IMAGE_MAX";
+            } else {
+                params.DASHSCOPE_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1";
+                params.DASHSCOPE_REGION = "intl"; // 国际区域
+                
+                // 国际模式下，如果没选阿里云模型，BASE_URL 其实不生效，但保持国际版配置
+            }
+            
+            // 移除辅助字段
+            delete params.CONFIG_REGION;
+            delete params.DOMESTIC_TEXT_MODEL;
+            
+            try {
+                await rpc('saveEnvConfig', params);
+                const status = document.getElementById('config-save-status');
+                status.innerHTML = '<i class="fas fa-check-circle mr-1"></i> 已保存';
+                status.classList.remove('opacity-0');
+                setTimeout(() => status.classList.add('opacity-0'), 3000);
+                showToast('配置已保存到 .env 文件', 'success');
+            } catch (error) {
+                showToast('保存失败: ' + error.message, 'error');
+            }
+        }
+
+        // --- Logs (SSE) ---
+
+        function setupLogs() {
+            const terminal = document.getElementById('terminal');
+            const eventSource = new EventSource('/api/logs');
+            
+            eventSource.onmessage = (event) => {
+                const log = JSON.parse(event.data);
+                let type = 'log-info';
+                if (log.includes('[ERROR]')) type = 'log-error';
+                if (log.includes('[WARN]')) type = 'log-warn';
+                
+                const parts = log.match(/^\[(.*?)\] (.*)$/);
+                if (parts) {
+                    appendLog(parts[1], parts[2], type);
+                } else {
+                    appendLog('', log, type);
+                }
+            };
+
+            eventSource.onerror = () => {
+                document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span> 服务已断开';
+                document.getElementById('connection-status').className = 'flex items-center text-xs text-red-500 font-medium';
+            };
+        }
+
+        function appendLog(timestamp, message, typeClass) {
+            const terminal = document.getElementById('terminal');
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.innerHTML = `<span class="log-timestamp">${timestamp}</span><span class="${typeClass}">${message}</span>`;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('terminal').innerHTML = '';
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast');
+            const message = document.getElementById('toast-message');
+            const icon = document.getElementById('toast-icon');
+            
+            message.innerText = msg;
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check-circle text-green-400"></i>' : 
+                            type === 'error' ? '<i class="fas fa-exclamation-circle text-red-400"></i>' : 
+                            '<i class="fas fa-info-circle text-blue-400"></i>';
+            
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // Init
+        setMode('TECH_NEWS');
+        updateWordRange();
+        setupLogs();
+        initMermaid();
+        applyTheme();
+    </script>
+</body>
+</html>

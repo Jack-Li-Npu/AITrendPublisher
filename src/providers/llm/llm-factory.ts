@@ -101,10 +101,26 @@ export class LLMFactory {
     // 根据类型创建对应的LLM提供者
     let provider: LLMProvider;
 
-    switch (config.providerType) {
-      case "OPENAI":
-        provider = new OpenAICompatibleLLM("OPENAI_", undefined, config.model);
-        break;
+    // 检查是否启用了中间服务代理
+    const apiSourceType = await this.configManager.get<string>("API_SOURCE_TYPE").catch(() => "official");
+    const isProxy = apiSourceType === "proxy";
+
+    // 【中转模式】如果启用了代理，OpenAI/Claude/DeepSeek 使用 OpenAI 兼容协议
+    // 注意：Gemini 即使在中转模式也使用原生协议，其配置在 GeminiLLM 内部处理
+    if (isProxy && ["OPENAI", "CLAUDE", "DEEPSEEK"].includes(config.providerType)) {
+      console.log(`[LLMFactory] 🔄 中转模式: ${config.providerType}:${config.model || 'default'} -> OpenAI协议`);
+      provider = new OpenAICompatibleLLM(
+        "PROXY_",
+        undefined,
+        config.model,
+      );
+    } 
+    // 【官方模式】直接使用各厂商原生 SDK
+    else {
+      switch (config.providerType) {
+        case "OPENAI":
+          provider = new OpenAICompatibleLLM("OPENAI_", undefined, config.model);
+          break;
       case "DEEPSEEK":
         provider = new OpenAICompatibleLLM(
           "DEEPSEEK_",
@@ -139,6 +155,7 @@ export class LLMFactory {
         break;
       default:
         throw new Error(`不支持的LLM提供者类型: ${config.providerType}`);
+      }
     }
 
     // 初始化提供者

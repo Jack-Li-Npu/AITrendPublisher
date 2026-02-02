@@ -19,6 +19,48 @@
 
 ## 🚀 快速开始
 
+### 方式一：UI 控制面板（推荐，v2.0 新增）
+
+**零配置，双击即用：**
+
+1. **下载可执行文件**：
+   - Windows: `TrendPublish.exe`
+   - macOS: `TrendPublish-mac-x64` 或 `TrendPublish-mac-arm64`
+   - Linux: `TrendPublish-linux-x64`
+
+2. **双击运行**：
+   - 程序自动启动后端服务
+   - 自动打开浏览器访问控制面板
+
+3. **在 UI 中配置**：
+   - 点击右上角齿轮图标进入配置中心
+   - 填写 API Key（Gemini、微信等）
+   - 点击保存（自动写入 .env 文件）
+
+4. **运行任务**：
+   - 选择运行模式（科技新闻/GitHub Trending/单链接/主题搜索）
+   - 设置字数范围和采集数量
+   - 点击"开始运行任务"
+   - 实时查看日志输出
+   - 预览文章并确认发布
+
+📖 **详细文档**: [UI 控制面板使用指南](docs/ui-dashboard-guide.md)
+
+**或自行编译**：
+```bash
+# 编译 Windows 版本
+deno task build:win
+
+# 编译 macOS 版本
+deno task build:mac-x64    # Intel 芯片
+deno task build:mac-arm64  # Apple Silicon
+
+# 编译 Linux 版本
+deno task build:linux-x64
+```
+
+### 方式二：命令行模式
+
 感谢 https://github.com/233cy 提供的入门教程 https://mp.weixin.qq.com/s/cpfNsezIA3OOvxHLdcdmkg
 
 ### 1. 安装 Deno
@@ -79,32 +121,39 @@ deno task build:all
 
 ## 🌟 主要功能
 
-- 🤖 多源数据采集
+- 🎨 **图形化控制面板**（v2.0 新增）
+  - 集成 UI 界面，无需命令行操作
+  - 在界面中直接配置环境变量（.env）
+  - 实时日志监控终端
+  - 文章预览与手动确认发布
+  - 单文件打包，双击即用
 
+- 🤖 多源数据采集
   - Twitter/X 内容抓取
   - 网站内容抓取 (基于 FireCrawl)
+  - GitHub Trending 项目自动抓取
   - 支持自定义数据源配置
   - Advanced scraping and search via Jina AI
 
 - 🧠 AI 智能处理
-
   - 多模型支持：DeepSeek, OpenAI, Gemini 2.0, 千问, 讯飞等
   - 智能内容总结与关键信息提取
   - AI 驱动的标题生成
   - 内容质量评分与排序
   - 向量嵌入与语义检索（Jina AI）
   - 智能缓存机制，减少 API 调用成本
+  - 字数范围可控（minWords/maxWords）
 
 - 📢 自动发布
-
   - 微信公众号文章发布
-  - 自定义文章模板
+  - 自定义文章模板（5+ 种风格）
   - 定时发布任务
+  - 预览后确认发布机制
 
 - 📱 通知系统
   - Bark 通知集成
-- 钉钉通知集成
-- 飞书通知集成
+  - 钉钉通知集成
+  - 飞书通知集成
   - 任务执行状态通知
   - 错误告警
 
@@ -115,6 +164,14 @@ TrendPublish 提供了多种精美的文章模板。查看
 了解更多详情。
 
 ## ✨ 最新更新
+
+### v2.0.0 (2026-01-23) 🎉
+- [x] ✅ **集成 UI 控制面板** - 图形化界面，双击即用
+- [x] ✅ **环境变量可视化配置** - 无需手动编辑 .env 文件
+- [x] ✅ **实时日志监控** - SSE 推送终端输出到 UI
+- [x] ✅ **文章预览与确认发布** - 预览满意后再发布
+- [x] ✅ **单文件打包** - 无需安装任何依赖即可运行
+- [x] ✅ **字数范围控制** - 支持 UI 动态调整文章长度
 
 ### v2.1.0 (2026-01)
 - [x] ✅ **新增 Google Gemini 2.0 支持** - 集成最新的 Gemini 2.0 Flash 和 Gemini 1.5 Pro
@@ -129,24 +186,12 @@ TrendPublish 提供了多种精美的文章模板。查看
 - [x] 多 LLM 提供商支持（OpenAI, DeepSeek, Gemini, 千问, 讯飞）
 - [x] 支持多模型配置（如 `DEEPSEEK_MODEL="deepseek-chat|deepseek-reasoner"`）
 - [x] 支持指定特定模型（如 `AI_CONTENT_RANKER_LLM_PROVIDER="DEEPSEEK:deepseek-reasoner"`）
+- [x] **提供 exe 可视化界面** ✨ v2.0 完成
 
-## Todo
-
-- [ ] 热门AI相关论文推荐
-- [ ] 热门AI相关工具推荐
+## 规划中
+- [ ] 热门 AI 相关论文推荐
+- [ ] 热门 AI 相关工具推荐
 - [ ] FireCrawl 自动注册免费续期
-
-## 优化项
-
-- [ ] 内容插入相关图片
-- [x] 内容去重
-- [ ] 降低AI率
-- [ ] 文章图片优化
-- [ ] ...
-
-## 进阶
-
-- [ ] 提供exe可视化界面
 
 ## 🛠 技术栈
 
@@ -160,190 +205,11 @@ TrendPublish 提供了多种精美的文章模板。查看
   - FireCrawl 网页抓取
   - RSSHub 订阅源
   - Jina AI 智能搜索
-- **模板引擎**: EJS
 - **数据库**: MySQL + Drizzle ORM
 - **性能优化**: 
   - 智能缓存系统
   - 并发限制器
   - 重试机制
-
-## 🚀 快速开始
-
-### 环境要求
-
-- Deno (v2+)
-- TypeScript
-
-### 安装
-
-1. 克隆项目
-
-```bash
-git clone https://github.com/OpenAISpace/ai-trend-publish
-```
-
-2. 配置环境变量
-
-```bash
-cp .env.example .env
-# 编辑 .env 文件配置必要的环境变量
-# Key environment variables include API keys for various AI services.
-# For Jina AI functionalities (scraping, search, embeddings, reranking),
-# ensure JINA_API_KEY is set. See the .env.example file and the
-# Jina Integration Guide (docs/jina_integration_guide.md) for more details.
-```
-
-## ⚙️ 环境变量配置
-
-在 `.env` 文件中配置必要的环境变量：
-
-(Refer to `.env.example` for a comprehensive list of environment variables. For details on Jina AI specific setup, see the [Jina Integration Guide](docs/jina_integration_guide.md)).
-
-## ⚠️ 配置IP白名单
-
-在使用微信公众号相关功能前,请先将本机IP添加到公众号后台的IP白名单中。
-
-### 操作步骤
-
-1. 查看本机IP: [IP查询工具](https://tool.lu/ip/)
-2. 登录微信公众号后台,添加IP白名单
-
-### 图文指南
-
-<div align="center">
-  <img src="https://oss.liuyaowen.cn/images/202503051122480.png" width="200" style="margin-right: 20px"/>
-  <img src="https://oss.liuyaowen.cn/images/202503051122263.png" width="400" />
-</div>
-
-4. 启动项目
-
-```bash
-# 测试模式
-deno task test
-
-# 运行
-deno start start
-
-详细运行时间见 src\controllers\cron.ts
-```
-
-## 📦 部署指南
-
-### 方式一：直接部署
-
-1. 在服务器上安装 Deno
-
-Windows:
-
-```powershell
-irm https://deno.land/install.ps1 | iex
-```
-
-Linux/MacOS:
-
-```bash
-curl -fsSL https://deno.land/install.sh | sh
-```
-
-2. 克隆项目
-
-```bash
-git clone https://github.com/OpenAISpace/ai-trend-publish.git
-cd ai-trend-publish
-```
-
-3. 配置环境变量
-
-```bash
-cp .env.example .env
-# 编辑 .env 文件配置必要的环境变量
-```
-
-4. 启动服务
-
-```bash
-# 开发模式（支持热重载）
-deno task start
-
-# 测试模式运行
-deno task test
-
-# 使用PM2进行进程管理（推荐）
-npm install -g pm2
-pm2 start --interpreter="deno" --interpreter-args="run --allow-all" src/main.ts
-```
-
-5. 设置开机自启（可选）
-
-```bash
-# 使用PM2设置开机自启
-pm2 startup
-pm2 save
-```
-
-### 方式二：Docker 部署
-
-1. 拉取代码
-
-```bash
-git clone https://github.com/OpenAISpace/ai-trend-publish.git
-```
-
-2. 构建 Docker 镜像：
-
-```bash
-# 构建镜像
-docker build -t ai-trend-publish .
-```
-
-4. 运行容器：
-
-```bash
-# 方式1：通过环境变量文件运行
-docker run -d --env-file .env --name ai-trend-publish-container ai-trend-publish
-
-# 方式2：直接指定环境变量运行
-docker run -d \
-  -e XXXX=XXXX \
-  ...其他环境变量... \
-  --name ai-trend-publish-container \
-  ai-trend-publish
-```
-
-### CI/CD 自动部署
-
-项目已配置 GitHub Actions 自动部署流程：
-
-1. 推送代码到 main 分支会自动触发部署
-2. 也可以在 GitHub Actions 页面手动触发部署
-3. 确保在 GitHub Secrets 中配置以下环境变量：
-   - `SERVER_HOST`: 服务器地址
-   - `SERVER_USER`: 服务器用户名
-   - `SSH_PRIVATE_KEY`: SSH 私钥
-   - 其他必要的环境变量（参考 .env.example）
-
-## 模板开发指南
-
-本项目支持自定义模板开发，主要包含以下几个部分：
-
-### 1. 了解数据结构
-
-查看 `src/modules/render/interfaces`
-目录下的类型定义文件，了解各个渲染模块需要的数据结构
-
-### 2. 开发模板
-
-在 `src/templates` 目录下按照对应模块开发 EJS 模板
-
-### 3. 注册模板
-
-在对应的渲染器类中注册新模板，如 `WeixinArticleTemplateRenderer`：
-
-### 4. 测试渲染效果
-
-```
-npx ts-node -r tsconfig-paths/register src\modules\render\test\test.weixin.template.ts
-```
 
 ## 🤝 贡献指南
 

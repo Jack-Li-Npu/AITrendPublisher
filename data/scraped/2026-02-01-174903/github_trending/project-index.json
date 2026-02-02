@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-01T09:49:03.905Z",
+  "totalCount": 5,
+  "projects": [
+    {
+      "fullName": "ThePrimeagen/99",
+      "url": "https://github.com/ThePrimeagen/99",
+      "title": "ThePrimeagen/99",
+      "stars": 2523,
+      "description": "Neovim AI agent done right",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_ThePrimeagen_99_1769939304739",
+      "imageCount": 0
+    },
+    {
+      "fullName": "microsoft/BitNet",
+      "url": "https://github.com/microsoft/BitNet",
+      "title": "microsoft/BitNet",
+      "stars": 27455,
+      "description": "Official inference framework for 1-bit LLMs",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_microsoft_BitNet_1769939305845",
+      "imageCount": 5
+    },
+    {
+      "fullName": "PaddlePaddle/PaddleOCR",
+      "url": "https://github.com/PaddlePaddle/PaddleOCR",
+      "title": "PaddlePaddle/PaddleOCR",
+      "stars": 69720,
+      "description": "Turn any PDF or image document into structured data for your AI. A powerful, lightweight OCR toolkit that bridges the gap between images/PDFs and LLMs. Supports 100+ languages.",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_PaddlePaddle_PaddleOCR_1769939307044",
+      "imageCount": 3
+    },
+    {
+      "fullName": "anthropics/claude-plugins-official",
+      "url": "https://github.com/anthropics/claude-plugins-official",
+      "title": "anthropics/claude-plugins-official",
+      "stars": 5997,
+      "description": "Official, Anthropic-managed directory of high quality Claude Code Plugins.",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_anthropics_claude-plugins-official_1769939308190",
+      "imageCount": 0
+    },
+    {
+      "fullName": "microsoft/PowerToys",
+      "url": "https://github.com/microsoft/PowerToys",
+      "title": "microsoft/PowerToys",
+      "stars": 128829,
+      "description": "Microsoft PowerToys is a collection of utilities that help you customize Windows and streamline everyday tasks",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_microsoft_PowerToys_1769939309294",
+      "imageCount": 1
+    }
+  ],
+  "indexByFullName": {
+    "theprimeagen/99": 0,
+    "microsoft/bitnet": 1,
+    "paddlepaddle/paddleocr": 2,
+    "anthropics/claude-plugins-official": 3,
+    "microsoft/powertoys": 4
+  },
+  "indexByUrl": {
+    "https://github.com/ThePrimeagen/99": 0,
+    "https://github.com/microsoft/BitNet": 1,
+    "https://github.com/PaddlePaddle/PaddleOCR": 2,
+    "https://github.com/anthropics/claude-plugins-official": 3,
+    "https://github.com/microsoft/PowerToys": 4
+  }
+}

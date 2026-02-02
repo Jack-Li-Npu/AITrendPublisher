@@ -1,0 +1,46 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-01-23T10:08:09.043Z
+文件夹: 2026-01-23-180809
+总数量: 6 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. How NVIDIA Became One of the World's Most Valuable Brands | AI Magazine
+   来源: https://aimagazine.com/news/how-nvidia-became-one-of-the-worlds-most-valuable-brands
+   发布时间: 2026/01/23 10:05:55
+   内容长度: 9729 字符
+   图片数量: 5
+
+2. Inside Siemens' Testing of AI-Powered Humanoid Robots | AI Magazine
+   来源: https://aimagazine.com/news/google-apple-ai-collaboration
+   发布时间: 2026/01/23 10:05:59
+   内容长度: 9915 字符
+   图片数量: 5
+
+3. Amazon CEO: Why we Joined Forces with OpenAI | AI Magazine
+   来源: https://aimagazine.com/news/microsoft-ceo-at-davos-potential-real-world-impact-of-ai
+   发布时间: 2026/01/23 10:06:09
+   内容长度: 9266 字符
+   图片数量: 5
+
+4. WEF 2026: How AI is Impacting Jobs and the Workplace | AI Magazine
+   来源: https://aimagazine.com/news/google-cloud-what-is-the-ai-powered-partner-network
+   发布时间: 2026/01/23 10:06:31
+   内容长度: 15154 字符
+   图片数量: 5
+
+5. How Sam Altman Became the World's Most Influential AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/how-sam-altman-became-the-worlds-most-influential-ai-leader
+   发布时间: 2026/01/23 10:06:38
+   内容长度: 9853 字符
+   图片数量: 5
+
+6. How is AI Accelerating the Race to Get Rockets in Space? | AI Magazine
+   来源: https://aimagazine.com/news/how-is-ai-reshaping-aerospace-manufacturing-industry
+   发布时间: 2026/01/23 10:07:20
+   内容长度: 6888 字符
+   图片数量: 5
+

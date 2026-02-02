@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T09:04:40.372Z
+文件夹: 2026-02-02-170440
+总数量: 1 条
+数据源: www.therobotreport.com
+
+文章列表:
+------------------
+1. RobCo raises Series C funding to scale industrial automation - The Robot Report
+   来源: https://www.therobotreport.com/robco-raises-100m-scale-industrial-automation/
+   发布时间: 2026/02/02 09:04:06
+   内容长度: 2577 字符
+   图片数量: 2
+

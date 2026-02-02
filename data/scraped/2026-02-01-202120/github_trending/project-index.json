@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-01T12:21:20.212Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "pedramamini/Maestro",
+      "url": "https://github.com/pedramamini/Maestro",
+      "title": "pedramamini/Maestro",
+      "stars": 805,
+      "description": "Agent Orchestration Command Center",
+      "scrapedAt": "2026-02-01",
+      "contentId": "github_pedramamini_Maestro_1769948459601",
+      "imageCount": 6
+    }
+  ],
+  "indexByFullName": {
+    "pedramamini/maestro": 0
+  },
+  "indexByUrl": {
+    "https://github.com/pedramamini/Maestro": 0
+  }
+}

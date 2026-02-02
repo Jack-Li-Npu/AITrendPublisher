@@ -32,10 +32,11 @@ export abstract class BaseAliyunImageGenerator extends BaseImageGenerator {
   protected apiKey!: string;
   protected baseUrl!: string;
   protected model!: string;
+  protected taskQueryBaseUrl!: string;
 
   /**
    * 刷新配置
-   * 从配置管理器中获取最新的API密钥
+   * 从配置管理器中获取最新的API密钥和区域配置
    */
   async refresh(): Promise<void> {
     const apiKey = await this.configManager.get<string>("DASHSCOPE_API_KEY");
@@ -43,6 +44,17 @@ export abstract class BaseAliyunImageGenerator extends BaseImageGenerator {
       throw new Error("DASHSCOPE_API_KEY environment variable is not set");
     }
     this.apiKey = apiKey;
+    
+    // 读取区域配置，默认为国内 (cn)
+    const region = await this.configManager.get<string>("DASHSCOPE_REGION") || "cn";
+    const isInternational = region.toLowerCase() === "intl" || region.toLowerCase() === "singapore";
+    
+    // 根据区域设置 endpoint
+    this.taskQueryBaseUrl = isInternational 
+      ? "https://dashscope-intl.aliyuncs.com/api/v1/tasks"
+      : "https://dashscope.aliyuncs.com/api/v1/tasks";
+    
+    logger.debug(`阿里云区域配置: ${region}, 使用 endpoint: ${this.taskQueryBaseUrl}`);
   }
 
   /**
@@ -102,7 +114,7 @@ export abstract class BaseAliyunImageGenerator extends BaseImageGenerator {
   ): Promise<AliTaskStatusResponse["output"]> {
     try {
       const response = await axios.get<AliTaskStatusResponse>(
-        `https://dashscope.aliyuncs.com/api/v1/tasks/${taskId}`,
+        `${this.taskQueryBaseUrl}/${taskId}`,
         {
           headers: {
             "Authorization": `Bearer ${this.apiKey}`,

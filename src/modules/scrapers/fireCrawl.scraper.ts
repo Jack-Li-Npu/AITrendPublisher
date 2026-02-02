@@ -271,6 +271,28 @@ export class FireCrawlScraper implements ContentScraper {
   private async scrapeUrl(config: FireCrawlScrapeConfig): Promise<FireCrawlV2Response> {
     const endpoint = `${this.baseUrl}/scrape`;
 
+    // 构建符合 v2 规范的请求体
+    const body: any = {
+      url: config.url,
+      formats: config.formats || ["markdown"],
+      onlyMainContent: config.onlyMainContent ?? true,
+    };
+
+    // 只有在提供了 extract 配置时才添加相关参数
+    if (config.extract) {
+      body.extract = config.extract;
+      // 确保 formats 中包含 extract
+      if (!body.formats.includes("extract")) {
+        body.formats.push("extract");
+      }
+    }
+
+    // 添加可选参数，但要确保不发送 null/undefined
+    if (config.waitFor) body.waitFor = config.waitFor;
+    if (config.timeout) body.timeout = config.timeout;
+    if (config.headers) body.headers = config.headers;
+    if (config.mobile) body.mobile = config.mobile;
+
     try {
       const response = await this.httpClient.request<FireCrawlV2Response>(endpoint, {
         method: "POST",
@@ -278,19 +300,7 @@ export class FireCrawlScraper implements ContentScraper {
           "Authorization": `Bearer ${this.apiKey}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          url: config.url,
-          formats: config.formats || ["markdown"],
-          onlyMainContent: config.onlyMainContent ?? true,
-          includeTags: config.includeTags,
-          excludeTags: config.excludeTags,
-          waitFor: config.waitFor,
-          timeout: config.timeout || 30000,
-          extract: config.extract,
-          headers: config.headers,
-          mobile: config.mobile,
-          skipTlsVerification: config.skipTlsVerification,
-        }),
+        body: JSON.stringify(body),
         timeout: 60000,
         retries: 2,
         retryDelay: 2000,
