@@ -307,6 +307,7 @@
                                 <select name="AI_PRE_EXTRACT_LLM_PROVIDER" onchange="handleModelChange(this)" class="model-selector w-full p-2 text-sm border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500">
                                     <option value="GEMINI:gemini-flash-lite-latest">Gemini Flash Lite (极速)</option>
                                     <option value="DEEPSEEK:deepseek-chat">DeepSeek V3</option>
+                                    <option value="QWEN:qwen-max">通义千问 Max (国际版)</option>
                                 </select>
                                 <div class="dynamic-key-container space-y-2 transition-all duration-300"></div>
                             </div>
@@ -435,30 +436,9 @@
 
             <!-- Editor + Preview Split -->
             <div class="flex-1 flex overflow-hidden">
-                <!-- Left Sidebar: Sections & Style -->
-                <div class="w-64 bg-gray-50 border-r flex flex-col overflow-hidden flex-shrink-0">
-                    <!-- Section Selector -->
-                    <div class="p-4 border-b">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center">
-                            <i class="fas fa-list-ul mr-2"></i> 编辑区域选择
-                        </h3>
-                        <div id="section-list" class="space-y-2">
-                            <button onclick="switchSection('full')" id="btn-section-full" class="section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all bg-purple-100 text-purple-700 font-bold border border-purple-200">
-                                <i class="fas fa-file-alt mr-2"></i> 整篇文章
-                            </button>
-                            <button onclick="switchSection('introduction')" id="btn-section-introduction" class="section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent">
-                                <i class="fas fa-align-left mr-2"></i> 文章开头
-                            </button>
-                            <div id="article-sections" class="space-y-2 py-1">
-                                <!-- Dynamic article sections here -->
-                            </div>
-                            <button onclick="switchSection('footer')" id="btn-section-footer" class="section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent">
-                                <i class="fas fa-quote-right mr-2"></i> 结语部分
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Style Preview Configuration (Moved to bottom of sidebar) -->
+                <!-- Left Sidebar: Style Configuration -->
+                <div class="w-56 bg-gray-50 border-r flex flex-col overflow-hidden flex-shrink-0">
+                    <!-- Style Preview Configuration -->
                     <div class="p-4 flex-1 overflow-y-auto">
                         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center">
                             <i class="fas fa-palette mr-2"></i> 样式预览配置
@@ -539,8 +519,10 @@
                             <option value="raw">Raw: 简单渲染</option>
                         </select>
                     </div>
-                    <div id="markdown-preview" class="flex-1 overflow-y-auto p-6 prose prose-sm max-w-none" onscroll="syncScrollFromPreview()">
-                        <p class="text-gray-400 text-center mt-10">预览区域</p>
+                    <div id="markdown-preview-container" class="flex-1 overflow-y-auto p-6 bg-gray-50" onscroll="syncScrollFromPreview()">
+                        <div id="markdown-preview" class="max-w-2xl mx-auto bg-white p-8 shadow-sm border rounded-lg min-h-full">
+                            <p class="text-gray-400 text-center mt-10">预览区域</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -881,15 +863,18 @@
 
         // 当前配置区域（domestic/international）
         let currentConfigRegion = 'domestic';
+        // 暂存后端返回的 ENV 配置
+        let currentEnvConfig = {};
 
-        // 清理本地图片路径的辅助函数
-        function removeLocalImagePaths(content) {
+        // 处理本地图片路径的辅助函数
+        // 将相对路径转换为服务器可访问的绝对路径（以 / 开头）
+        function normalizeImagePaths(content) {
             if (!content) return '';
-            // 移除 Markdown 格式的本地图片：![...]](data/...)
-            let cleaned = content.replace(/!\[([^\]]*)\]\(data\/[^)]+\)/g, '');
-            // 移除 HTML <img> 标签中的本地图片：src="data/..."
-            cleaned = cleaned.replace(/<img[^>]*src=["']data\/[^"']*["'][^>]*>/gi, '');
-            return cleaned;
+            // 将 Markdown 格式的本地图片路径 ![...](data/...) 转换为 ![...](/data/...)
+            let normalized = content.replace(/!\[([^\]]*)\]\((data\/[^)]+)\)/g, '![$1](/$2)');
+            // 将 HTML <img> 标签中的本地图片路径 src="data/..." 转换为 src="/data/..."
+            normalized = normalized.replace(/<img([^>]*)src=["'](data\/[^"']*?)["']/gi, '<img$1src="/$2"');
+            return normalized;
         }
 
         // 从 articles 数组重新组装完整 Markdown
@@ -899,17 +884,17 @@
             
             let fullMarkdown = `# ${currentPreview.title || '文章标题'}\n\n`;
             
-            // 添加引入部分（清理本地图片路径）
+            // 添加引入部分（规范化图片路径）
             if (currentPreview.introduction) {
-                const cleanedIntro = removeLocalImagePaths(currentPreview.introduction);
-                fullMarkdown += `${cleanedIntro}\n\n---\n\n`;
+                const normalizedIntro = normalizeImagePaths(currentPreview.introduction);
+                fullMarkdown += `${normalizedIntro}\n\n---\n\n`;
             }
             
             // 添加每篇文章
             if (currentPreview.articles && currentPreview.articles.length > 0) {
                 currentPreview.articles.forEach((art, idx) => {
-                    // 移除本地图片路径，保留远程图片
-                    const articleContent = removeLocalImagePaths(art.content || '');
+                    // 规范化图片路径（将相对路径转为服务器可访问的绝对路径）
+                    const articleContent = normalizeImagePaths(art.content || '');
                     
                     fullMarkdown += `## ${art.title || `文章 ${idx + 1}`}\n\n${articleContent}\n\n`;
                     
@@ -925,10 +910,10 @@
                 });
             }
             
-            // 添加结语（清理本地图片路径）
+            // 添加结语（规范化图片路径）
             if (currentPreview.footer) {
-                const cleanedFooter = removeLocalImagePaths(currentPreview.footer);
-                fullMarkdown += `\n---\n\n${cleanedFooter}`;
+                const normalizedFooter = normalizeImagePaths(currentPreview.footer);
+                fullMarkdown += `\n---\n\n${normalizedFooter}`;
             }
             
             return fullMarkdown;
@@ -977,85 +962,22 @@
 
             document.getElementById('refine-modal').classList.remove('hidden');
 
-            // 初始化区域列表
-            updateSectionList();
-
-            // 默认打开整篇文章
-            switchSection('full');
+            // 直接加载整篇文章
+            loadFullArticle();
         }
 
-        function updateSectionList() {
-            const container = document.getElementById('article-sections');
-            container.innerHTML = '';
-            
-            if (currentPreview.articles && currentPreview.articles.length > 0) {
-                currentPreview.articles.forEach((article, idx) => {
-                    const btn = document.createElement('button');
-                    btn.id = `btn-section-article-${idx}`;
-                    btn.onclick = () => switchSection('article', idx);
-                    btn.className = 'section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent';
-                    btn.innerHTML = `<i class="fas fa-newspaper mr-2 text-xs opacity-70"></i> 子文章 ${idx + 1}`;
-                    container.appendChild(btn);
-                });
-            }
-        }
+        function loadFullArticle() {
+            currentSection = { type: 'full', index: null };
 
-        function switchSection(type, index = null) {
-            // 保存当前正在编辑的内容（可选，或者提示用户保存）
-            
-            currentSection = { type, index };
-            
-            // 更新 UI 样式
-            document.querySelectorAll('.section-btn').forEach(btn => {
-                btn.className = 'section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all hover:bg-white hover:shadow-sm text-gray-600 border border-transparent';
-            });
-            
-            let btnId = `btn-section-${type}`;
-            if (type === 'article') btnId = `btn-section-article-${index}`;
-            
-            const activeBtn = document.getElementById(btnId);
-            if (activeBtn) {
-                activeBtn.className = 'section-btn w-full text-left p-2.5 rounded-lg text-sm transition-all bg-purple-100 text-purple-700 font-bold border border-purple-200';
-            }
-            
-            // 加载内容
+            // 加载整篇文章内容
             const editor = document.getElementById('markdown-editor');
-            let content = '';
-            
-            if (type === 'full') {
-                // 整篇文章：从 articles 数组重新组装，使用 media 中的远程图片 URL
-                content = reconstructFullMarkdown();
-            } else if (type === 'introduction') {
-                content = currentPreview.introduction || '';
-            } else if (type === 'footer') {
-                content = currentPreview.footer || '';
-            } else if (type === 'article' && index !== null) {
-                const article = currentPreview.articles[index];
-                // 清理本地图片路径，保留远程图片
-                content = removeLocalImagePaths(article.content || '');
+            const content = reconstructFullMarkdown();
 
-                // 如果子文章有标题，在编辑区显示 ## 标题
-                if (article.title) {
-                    content = `## ${article.title}\n\n${content}`;
-                }
-                
-                // 添加文章链接（在内容末尾）
-                if (article.url) {
-                    const linkLabel = (currentPreview.metadata?.contentMode === 'GITHUB_TRENDING') ? '项目地址' : '文章链接';
-                    content += `\n\n> 🔗 **${linkLabel}**：[${article.url}](${article.url})`;
-                }
-            }
-            
             editor.value = content;
             markdownHistory = [content];
             historyIndex = 0;
             renderMarkdownPreview();
             updateCharCount();
-            
-            // 更新标题提示
-            const headerTitle = document.querySelector('#refine-modal h2');
-            const typeLabels = { 'full': '全文 Markdown', 'introduction': '文章开头', 'article': `子文章 ${index + 1}`, 'footer': '结语部分' };
-            headerTitle.innerHTML = `<i class="fas fa-edit text-purple-600 mr-2"></i> ${typeLabels[type]} 编辑器`;
         }
 
         async function renderMarkdownPreview() {
@@ -1103,27 +1025,27 @@
 
             try {
                 const status = document.getElementById('refine-status');
-                status.textContent = `⏳ AI 正在${currentSection.type === 'full' ? '全文' : '当前区域'}打磨中...`;
-                
+                status.textContent = '⏳ AI 正在全文打磨中...';
+
                 const params = {
-                    sectionType: currentSection.type,
-                    sectionIndex: currentSection.index,
+                    sectionType: 'full',
+                    sectionIndex: null,
                     currentContent: editor.value,
                     userInstruction: instruction,
                     llmProvider,
                 };
 
                 const result = await rpc('refineContent', params);
-                
-                // 注意：后端 refineContent 应该返回更新后的预览对象
+
+                // 更新预览对象
                 currentPreview = result;
-                
-                // 重新加载当前区域的内容到编辑器
-                switchSection(currentSection.type, currentSection.index);
-                
+
+                // 重新加载内容到编辑器
+                loadFullArticle();
+
                 showToast('✨ AI 打磨完成', 'success');
                 status.textContent = '✅ 打磨完成，可继续编辑或保存';
-                
+
             } catch (error) {
                 showToast('打磨失败: ' + error.message, 'error');
                 document.getElementById('refine-status').textContent = '❌ 打磨失败';
@@ -1133,38 +1055,24 @@
         async function saveMarkdownChanges() {
             const editor = document.getElementById('markdown-editor');
             const content = editor.value;
-            
+
             try {
                 const status = document.getElementById('refine-status');
                 status.textContent = '💾 正在保存...';
-                
-                let result;
-                if (currentSection.type === 'full') {
-                    result = await rpc('updateFullMarkdown', { markdown: content });
-                } else {
-                    result = await rpc('updateMarkdownContent', {
-                        sectionType: currentSection.type,
-                        sectionIndex: currentSection.index,
-                        markdown: content
-                    });
-                }
-                
+
+                const result = await rpc('updateFullMarkdown', { markdown: content });
+
                 currentPreview = result;
                 // 更新全局预览背景页
                 document.getElementById('preview-content').innerHTML = result.html;
                 renderMermaidDiagrams('preview-content');
                 renderPlantUMLDiagrams('preview-content');
-                
-                // 如果当前编辑的是文章，可能更新了标题，需要刷新区域列表
-                if (currentSection.type === 'article') {
-                    updateSectionList();
-                }
-                
+
                 showToast('✅ 保存成功，预览已同步', 'success');
                 status.textContent = '✅ 已保存';
-                
+
                 setTimeout(() => { status.textContent = ''; }, 2000);
-                
+
             } catch (error) {
                 showToast('保存失败: ' + error.message, 'error');
                 document.getElementById('refine-status').textContent = '❌ 保存失败';
@@ -1216,27 +1124,27 @@
         function syncScroll() {
             if (isSyncingScroll) return;
             const editor = document.getElementById('markdown-editor');
-            const preview = document.getElementById('markdown-preview');
-            if (!editor || !preview) return;
+            const previewContainer = document.getElementById('markdown-preview-container');
+            if (!editor || !previewContainer) return;
 
             isSyncingScroll = true;
             const maxEditorScroll = editor.scrollHeight - editor.clientHeight;
-            const maxPreviewScroll = preview.scrollHeight - preview.clientHeight;
+            const maxPreviewScroll = previewContainer.scrollHeight - previewContainer.clientHeight;
             const scrollPercentage = maxEditorScroll > 0 ? (editor.scrollTop / maxEditorScroll) : 0;
-            preview.scrollTop = scrollPercentage * maxPreviewScroll;
+            previewContainer.scrollTop = scrollPercentage * maxPreviewScroll;
             isSyncingScroll = false;
         }
 
         function syncScrollFromPreview() {
             if (isSyncingScroll) return;
             const editor = document.getElementById('markdown-editor');
-            const preview = document.getElementById('markdown-preview');
-            if (!editor || !preview) return;
+            const previewContainer = document.getElementById('markdown-preview-container');
+            if (!editor || !previewContainer) return;
 
             isSyncingScroll = true;
-            const maxPreviewScroll = preview.scrollHeight - preview.clientHeight;
+            const maxPreviewScroll = previewContainer.scrollHeight - previewContainer.clientHeight;
             const maxEditorScroll = editor.scrollHeight - editor.clientHeight;
-            const scrollPercentage = maxPreviewScroll > 0 ? (preview.scrollTop / maxPreviewScroll) : 0;
+            const scrollPercentage = maxPreviewScroll > 0 ? (previewContainer.scrollTop / maxPreviewScroll) : 0;
             editor.scrollTop = scrollPercentage * maxEditorScroll;
             isSyncingScroll = false;
         }
@@ -1326,8 +1234,8 @@
             'OPENAI': { key: 'OPENAI_API_KEY', label: 'OpenAI API Key', link: 'https://platform.openai.com/api-keys' },
             'CLAUDE': { key: 'CLAUDE_API_KEY', label: 'Claude API Key', link: 'https://console.anthropic.com/' },
             'DEEPSEEK': { key: 'DEEPSEEK_API_KEY', label: 'DeepSeek API Key', link: 'https://platform.deepseek.com/api_keys' },
-            'QWEN': { key: 'DASHSCOPE_API_KEY', label: '阿里云 API Key', link: 'https://dashscope.console.aliyun.com/apiKey' },
-            'QWEN_IMAGE_MAX': { key: 'DASHSCOPE_API_KEY', label: '阿里云 API Key (万相)', link: 'https://dashscope.console.aliyun.com/apiKey' },
+            'QWEN': { key: 'DASHSCOPE_INTL_API_KEY', label: '阿里云(国际) API Key', link: 'https://dashscope.console.aliyun.com/apiKey' },
+            'QWEN_IMAGE_MAX': { key: 'DASHSCOPE_INTL_API_KEY', label: '阿里云(国际) API Key (万相)', link: 'https://dashscope.console.aliyun.com/apiKey' },
             'GEMINI_PRO': { key: 'GEMINI_API_KEY', label: 'Gemini API Key (Image)', link: 'https://aistudio.google.com/apikey' }
         };
 
@@ -1348,12 +1256,20 @@
                     </div>
                 `;
                 
-                // 自动填入当前已知的 key (从 form 中查找)
-                const existingKey = document.querySelector(`#config-form [name="${config.key}"]:not(.dynamic-key-container [name])`);
-                if (existingKey) {
-                    const newInput = container.querySelector('input');
-                    if (newInput) newInput.value = existingKey.value;
+                // 优先从 currentEnvConfig 中获取值
+                const savedValue = currentEnvConfig[config.key] || '';
+                
+                // 其次尝试从 DOM 中已存在的同名 input 获取 (用于国内版共享 key 的情况)
+                let valueToFill = savedValue;
+                if (!valueToFill) {
+                     const existingKey = document.querySelector(`#config-form [name="${config.key}"]:not(.dynamic-key-container [name])`);
+                     if (existingKey) {
+                         valueToFill = existingKey.value;
+                     }
                 }
+
+                const newInput = container.querySelector('input');
+                if (newInput) newInput.value = valueToFill;
             } else {
                 container.innerHTML = '';
             }
@@ -1388,6 +1304,7 @@
             const isHidden = modal.classList.toggle('hidden');
             if (!isHidden) {
                 const configs = await rpc('getEnvConfig');
+                currentEnvConfig = configs || {}; // 保存到全局
                 
                 // 1. 填充所有普通字段
                 Object.entries(configs).forEach(([key, val]) => {

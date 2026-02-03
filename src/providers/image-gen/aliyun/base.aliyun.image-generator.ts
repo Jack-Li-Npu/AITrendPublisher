@@ -39,15 +39,26 @@ export abstract class BaseAliyunImageGenerator extends BaseImageGenerator {
    * 从配置管理器中获取最新的API密钥和区域配置
    */
   async refresh(): Promise<void> {
-    const apiKey = await this.configManager.get<string>("DASHSCOPE_API_KEY");
-    if (!apiKey) {
-      throw new Error("DASHSCOPE_API_KEY environment variable is not set");
-    }
-    this.apiKey = apiKey;
-    
     // 读取区域配置，默认为国内 (cn)
     const region = await this.configManager.get<string>("DASHSCOPE_REGION") || "cn";
     const isInternational = region.toLowerCase() === "intl" || region.toLowerCase() === "singapore";
+    
+    let apiKey = "";
+    if (isInternational) {
+      // 国际版：严格只使用 DASHSCOPE_INTL_API_KEY
+      apiKey = await this.configManager.get<string>("DASHSCOPE_INTL_API_KEY").catch(() => "");
+      if (!apiKey) {
+        throw new Error("国际版模式下必须设置 DASHSCOPE_INTL_API_KEY");
+      }
+    } else {
+      // 国内版：严格只使用 DASHSCOPE_API_KEY
+      apiKey = await this.configManager.get<string>("DASHSCOPE_API_KEY").catch(() => "");
+      if (!apiKey) {
+        throw new Error("国内版模式下必须设置 DASHSCOPE_API_KEY");
+      }
+    }
+
+    this.apiKey = apiKey;
     
     // 根据区域设置 endpoint
     this.taskQueryBaseUrl = isInternational 

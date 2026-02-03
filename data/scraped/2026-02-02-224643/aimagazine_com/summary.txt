@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T14:46:43.856Z
+文件夹: 2026-02-02-224643
+总数量: 2 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. How AI Helps NASA Seek Life on Mars, Titan and Beyond | AI Magazine
+   来源: https://aimagazine.com/news/how-ai-helps-nasa-seek-life-on-mars-titan-and-beyond
+   发布时间: 2026/02/02 14:44:46
+   内容长度: 1847 字符
+   图片数量: 5
+
+2. Dario Amodei: Why the World Must Confront Powerful AI | AI Magazine
+   来源: https://aimagazine.com/news/mark-zuckerberg-top-100-ai-leaders-2026
+   发布时间: 2026/02/02 14:45:04
+   内容长度: 1275 字符
+   图片数量: 5
+

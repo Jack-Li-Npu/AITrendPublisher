@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T14:21:47.188Z
+文件夹: 2026-02-02-222147
+总数量: 1 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. ServiceNow and Anthropic Disclose AI Deal
+   来源: https://aibusiness.com/agentic-ai/servicenow-and-anthropic-ai-deal
+   发布时间: 2026/02/02 14:19:43
+   内容长度: 1673 字符
+   图片数量: 5
+

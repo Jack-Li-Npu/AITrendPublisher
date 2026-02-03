@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T02:32:45.624Z
+文件夹: 2026-02-03-103245
+总数量: 1 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. How SAP is modernising HMRC’s tax infrastructure with AI
+   来源: https://www.artificialintelligence-news.com/news/how-sap-modernising-hmrc-tax-infrastructure-with-ai/
+   发布时间: 2026/02/03 02:32:21
+   内容长度: 1154 字符
+   图片数量: 1
+

@@ -215,18 +215,13 @@ export async function refineContent(params: {
   switch (sectionType) {
     case "full":
       updatedPreview.markdown = refinedContent;
-      // 注意：全量打磨可能会导致分段信息丢失，但在分段模式下，用户通常会选择特定区域打磨
-      // 如果用户坚持使用全量打磨，我们保留原有的 collapse 逻辑，但界面上会引导使用分段
-      const lines = refinedContent.split('\n');
-      const title = lines[0].startsWith('# ') ? lines[0].replace(/^# /, '').trim() : preview.title;
-      updatedPreview.articles = [{
-        title,
-        content: refinedContent,
-        url: preview.articles?.[0]?.url || "",
-        publishTime: "",
-        description: "",
-        thumbnail: "",
-      }];
+      // ✅ 解析打磨后的全文，保留原有的多文章结构
+      const parsedContent = parseFullMarkdown(refinedContent, preview.articles || []);
+      updatedPreview.title = parsedContent.title || preview.title;
+      updatedPreview.introduction = parsedContent.introduction;
+      updatedPreview.articles = parsedContent.articles;
+      updatedPreview.footer = parsedContent.footer;
+      logger.info(`[内容打磨] 全文打磨后保留了 ${updatedPreview.articles.length} 篇子文章`);
       break;
 
     case "introduction":
@@ -293,37 +288,16 @@ export async function updateFullMarkdown(params: { markdown: string }) {
 
   // 更新 PreviewStore 中的全文 Markdown
   const updatedPreview = { ...preview, markdown };
-  
-  // 同时更新 articles 数组，将全文作为一个整体，以便模板切换功能依然可用
-  // 我们提取第一行作为标题，其余作为内容
-  // 注意：在全文模式下，我们保留内容中的标题，由渲染器决定是否额外添加序号标题
-  const lines = markdown.split('\n');
-  const title = lines[0].startsWith('# ') ? lines[0].replace(/^# /, '').trim() : preview.title;
-  // 不再剔除第一行，保留完整 Markdown 源码
-  const content = markdown;
-  
-  updatedPreview.articles = [{
-    title,
-    content,
-    url: preview.articles?.[0]?.url || "",
-    publishTime: "",
-    description: "",
-    thumbnail: "",
-  }];
-  
-  // 重新渲染 HTML
-  const { DoocsMdRenderer } = await import("@src/modules/render/weixin/doocs-md.renderer.ts");
-  const doocsMdRenderer = new DoocsMdRenderer({
-    theme: (preview.template as any) || "default",
-    primaryColor: "#3f9cf5",
-    fontSize: 16,
-    showCitation: true,
-  });
 
-  // 创建一个伪文章列表用于渲染全文
-  // DoocsMdRenderer.render 实际上是在调用 articlesToMarkdown，
-  // 我们这里直接跳过 articlesToMarkdown，直接用 marked 渲染
-  // 但为了保持样式一致，我们最好还是调用 renderMarkdown 逻辑
+  // ✅ 解析全文 Markdown，保留原有的多文章结构
+  const parsedContent = parseFullMarkdown(markdown, preview.articles || []);
+
+  updatedPreview.title = parsedContent.title || preview.title;
+  updatedPreview.introduction = parsedContent.introduction;
+  updatedPreview.articles = parsedContent.articles;
+  updatedPreview.footer = parsedContent.footer;
+
+  // 重新渲染 HTML
   const result = await renderMarkdown({ markdown });
   const renderedTemplate = result.html;
 
@@ -331,15 +305,198 @@ export async function updateFullMarkdown(params: { markdown: string }) {
     ...updatedPreview,
     html: renderedTemplate,
   };
-  
+
   store.setPreview(finalPreview);
-  logger.info(`[全文更新] 更新完成`);
+  logger.info(`[全文更新] 更新完成，保留了 ${updatedPreview.articles.length} 篇子文章`);
   return finalPreview;
+}
+
+/**
+ * 解析全文 Markdown，提取出 introduction、articles、footer 等部分
+ * 保留原有的多文章结构
+ *
+ * 预期格式：
+ * # 主标题
+ * introduction 内容
+ * ---
+ * ## 子文章1标题
+ * 子文章1内容
+ * > 🔗 **文章链接**：[url](url)
+ * ---
+ * ## 子文章2标题
+ * ...
+ * ---
+ * 结语内容
+ */
+function parseFullMarkdown(markdown: string, originalArticles: any[]) {
+  const lines = markdown.split('\n');
+
+  let title = '';
+  let introduction = '';
+  let footer = '';
+  const articles: { title: string; content: string; url?: string }[] = [];
+
+  // 第一步：找到主标题
+  let lineIndex = 0;
+  for (; lineIndex < lines.length; lineIndex++) {
+    const line = lines[lineIndex];
+    if (line.startsWith('# ')) {
+      title = line.replace(/^# /, '').trim();
+      lineIndex++;
+      break;
+    }
+  }
+
+  // 第二步：收集 introduction（第一个 ## 之前的内容）
+  const introLines: string[] = [];
+  for (; lineIndex < lines.length; lineIndex++) {
+    const line = lines[lineIndex];
+    if (line.startsWith('## ')) {
+      break;
+    }
+    // 跳过 introduction 末尾的分隔线
+    if (line.trim() === '---' && lines[lineIndex + 1]?.startsWith('## ')) {
+      lineIndex++;
+      break;
+    }
+    introLines.push(line);
+  }
+  introduction = introLines.join('\n').trim();
+  // 移除 introduction 末尾的 ---
+  introduction = introduction.replace(/\n*---\s*$/, '').trim();
+
+  // 第三步：解析所有 ## 子文章
+  let currentArticle: { title: string; content: string; url?: string } | null = null;
+  let currentContent: string[] = [];
+
+  for (; lineIndex < lines.length; lineIndex++) {
+    const line = lines[lineIndex];
+
+    // 检测新的子文章标题
+    if (line.startsWith('## ')) {
+      // 保存之前的子文章
+      if (currentArticle) {
+        currentArticle.content = processArticleContent(currentContent.join('\n'));
+        // 提取 URL
+        const urlMatch = currentArticle.content.match(/>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[([^\]]*)\]\(([^)]+)\)/);
+        if (urlMatch) {
+          currentArticle.url = urlMatch[2];
+          currentArticle.content = currentArticle.content.replace(/\n*>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[[^\]]*\]\([^)]+\)\n*/g, '').trim();
+        }
+        articles.push(currentArticle);
+      }
+
+      // 开始新的子文章
+      currentArticle = { title: line.replace(/^## /, '').trim(), content: '' };
+      currentContent = [];
+      continue;
+    }
+
+    // 检测分隔线
+    if (line.trim() === '---') {
+      // 检查是否是最后一个分隔线（后面没有 ## 开头的内容）
+      let hasMoreArticles = false;
+      for (let j = lineIndex + 1; j < lines.length; j++) {
+        const nextLine = lines[j].trim();
+        if (nextLine === '') continue;
+        if (nextLine.startsWith('## ')) {
+          hasMoreArticles = true;
+        }
+        break;
+      }
+
+      if (!hasMoreArticles) {
+        // 这是结语前的分隔线，保存当前文章并收集结语
+        if (currentArticle) {
+          currentArticle.content = processArticleContent(currentContent.join('\n'));
+          const urlMatch = currentArticle.content.match(/>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[([^\]]*)\]\(([^)]+)\)/);
+          if (urlMatch) {
+            currentArticle.url = urlMatch[2];
+            currentArticle.content = currentArticle.content.replace(/\n*>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[[^\]]*\]\([^)]+\)\n*/g, '').trim();
+          }
+          articles.push(currentArticle);
+          currentArticle = null;
+        }
+
+        // 剩余内容作为结语
+        footer = lines.slice(lineIndex + 1).join('\n').trim();
+        break;
+      }
+
+      // 文章之间的分隔线，保存当前文章
+      if (currentArticle) {
+        currentArticle.content = processArticleContent(currentContent.join('\n'));
+        const urlMatch = currentArticle.content.match(/>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[([^\]]*)\]\(([^)]+)\)/);
+        if (urlMatch) {
+          currentArticle.url = urlMatch[2];
+          currentArticle.content = currentArticle.content.replace(/\n*>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[[^\]]*\]\([^)]+\)\n*/g, '').trim();
+        }
+        articles.push(currentArticle);
+        currentArticle = null;
+        currentContent = [];
+      }
+      continue;
+    }
+
+    // 收集当前内容
+    if (currentArticle) {
+      currentContent.push(line);
+    }
+  }
+
+  // 处理最后一个子文章（如果没有结语）
+  if (currentArticle) {
+    currentArticle.content = processArticleContent(currentContent.join('\n'));
+    const urlMatch = currentArticle.content.match(/>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[([^\]]*)\]\(([^)]+)\)/);
+    if (urlMatch) {
+      currentArticle.url = urlMatch[2];
+      currentArticle.content = currentArticle.content.replace(/\n*>\s*🔗\s*\*\*(?:文章链接|项目地址)\*\*：\[[^\]]*\]\([^)]+\)\n*/g, '').trim();
+    }
+    articles.push(currentArticle);
+  }
+
+  // 如果解析出的文章数量为 0，则保留原有结构
+  if (articles.length === 0 && originalArticles.length > 0) {
+    logger.warn(`[全文解析] 未能解析出子文章，保留原有的 ${originalArticles.length} 篇文章结构`);
+    return {
+      title,
+      introduction,
+      articles: originalArticles,
+      footer,
+    };
+  }
+
+  // 合并原有文章的元数据（如 url、thumbnail 等）
+  const mergedArticles = articles.map((art, idx) => {
+    const originalArt = originalArticles[idx] || {};
+    return {
+      ...originalArt,
+      title: art.title,
+      content: art.content,
+      url: art.url || originalArt.url || "",
+    };
+  });
+
+  logger.info(`[全文解析] 解析完成: 标题="${title}", 引入=${introduction.length}字, 文章=${mergedArticles.length}篇, 结语=${footer.length}字`);
+
+  return {
+    title,
+    introduction,
+    articles: mergedArticles,
+    footer,
+  };
+}
+
+/**
+ * 处理文章内容，清理首尾空白
+ */
+function processArticleContent(content: string): string {
+  return content.trim();
 }
 
 export async function renderMarkdown(params: { markdown: string; template?: string }) {
   const { markdown, template } = params;
-  
+
   if (!markdown || !markdown.trim()) {
     return { html: '<p class="text-gray-400 text-center">内容为空</p>' };
   }
@@ -358,18 +515,10 @@ export async function renderMarkdown(params: { markdown: string; template?: stri
       showCitation: true,
     });
 
-    // 将 Markdown 渲染为简单的 HTML（不包含完整文章结构）
-    const templateData = [{
-      title: "",
-      content: markdown,
-      url: "",
-      publishTime: "",
-      description: "",
-      thumbnail: "",
-    }];
-
-    const rendered = await doocsMdRenderer.render(templateData, {
-      skipImageProcessing: true, // 预览时跳过图片处理
+    // 直接渲染 Markdown，不经过 articlesToMarkdown 的标题层级修复
+    // 这样可以保持用户编辑时的原始标题层级
+    const rendered = await doocsMdRenderer.renderRawMarkdown(markdown, {
+      skipImageProcessing: true,
     });
 
     logger.info(`[Markdown 渲染] 渲染完成`);

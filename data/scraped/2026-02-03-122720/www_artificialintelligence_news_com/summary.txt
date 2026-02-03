@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T04:27:20.765Z
+文件夹: 2026-02-03-122720
+总数量: 2 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. ThoughtSpot: On the new fleet of agents delivering modern analytics - AI News
+   来源: https://www.artificialintelligence-news.com/news/thoughtspot-on-the-new-fleet-of-agents-delivering-modern-analytics/
+   发布时间: 2026/02/03 04:26:28
+   内容长度: 1721 字符
+   图片数量: 1
+
+2. AI use surges at Travelers as call centre roles reduce - AI News
+   来源: https://www.artificialintelligence-news.com/news/travelers-ai-in-contact-centres-two-stage-innovation-strategy/
+   发布时间: 2026/02/03 04:26:39
+   内容长度: 2473 字符
+   图片数量: 1
+

@@ -43,18 +43,30 @@ export class OpenAICompatibleLLM implements LLMProvider {
 
     // 2. 特殊处理：如果是 QWEN，且没有设置特定的 API_KEY，则尝试使用通用的 DASHSCOPE_API_KEY
     if (this.configKeyPrefix === "QWEN_") {
+      // 检查区域配置
+      const region = await configManager.get<string>("DASHSCOPE_REGION").catch(() => "cn");
+      const isIntl = region.toLowerCase() === "intl" || region.toLowerCase() === "singapore";
+
       if (!this.token) {
-        try {
-          this.token = await configManager.get("DASHSCOPE_API_KEY");
-        } catch {
-          // DASHSCOPE_API_KEY 也没有，最后会在后面统一报错
+        if (isIntl) {
+          // 国际版：严格只使用 DASHSCOPE_INTL_API_KEY
+          try {
+            this.token = await configManager.get("DASHSCOPE_INTL_API_KEY");
+          } catch {
+            // 没找到将保持为空，后续统一报错
+          }
+        } else {
+          // 国内版：严格只使用 DASHSCOPE_API_KEY
+          try {
+            this.token = await configManager.get("DASHSCOPE_API_KEY");
+          } catch {
+            // 没找到将保持为空，后续统一报错
+          }
         }
       }
       
       // 如果没有设置 BASE_URL，根据区域自动生成
       if (!this.baseURL) {
-        const region = await configManager.get<string>("DASHSCOPE_REGION").catch(() => "cn");
-        const isIntl = region.toLowerCase() === "intl" || region.toLowerCase() === "singapore";
         this.baseURL = isIntl 
           ? "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
           : "https://dashscope.aliyuncs.com/compatible-mode/v1";

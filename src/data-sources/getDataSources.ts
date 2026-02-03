@@ -40,7 +40,12 @@ export const techNewsSourceConfigs: SourceConfig = {
     { identifier: "http://therobotreport.com/category/financial/", name: "The Robot Report", category: "robotics-news", maxRecursiveLinks: 3 },
     
     // // AI Magazine - AI 杂志（爬取1篇）
-     { identifier: "https://aimagazine.com/news", name: "AI Magazine", category: "ai-news", maxRecursiveLinks: 3 },    
+     { identifier: "https://aimagazine.com/news", name: "AI Magazine", category: "ai-news", maxRecursiveLinks: 3 },
+     
+    // AI News (TechForge) - AI 行业资讯
+    { identifier: "https://www.artificialintelligence-news.com/artificial-intelligence-news/", name: "AI News", category: "ai-news", maxRecursiveLinks: 3 },
+    
+     
   ],
   github: [],
 };
@@ -89,13 +94,18 @@ export const getDataSources = async (mode?: ContentMode, maxArticles?: number): 
       logger.info("使用科技新闻模式数据源");
       
       // 动态设置每个源的抓取数量
+      // 保留源配置中已设置的 maxRecursiveLinks，仅为未配置的源设置默认值
       if (baseSources.firecrawl && baseSources.firecrawl.length > 0) {
         const sourceCount = baseSources.firecrawl.length;
-        const linksPerSource = Math.ceil(articleLimit / sourceCount);
+        const defaultLinksPerSource = Math.max(3, Math.ceil(articleLimit / sourceCount)); // 至少 3 篇
         baseSources.firecrawl.forEach(source => {
-          source.maxRecursiveLinks = linksPerSource;
+          // 如果源已配置了 maxRecursiveLinks，保留它；否则使用计算值
+          if (!source.maxRecursiveLinks) {
+            source.maxRecursiveLinks = defaultLinksPerSource;
+          }
         });
-        logger.info(`每个数据源将抓取 ${linksPerSource} 篇文章（共 ${sourceCount} 个源，目标 ${articleLimit} 篇）`);
+        const actualLinksPerSource = baseSources.firecrawl[0].maxRecursiveLinks || defaultLinksPerSource;
+        logger.info(`每个数据源将抓取 ${actualLinksPerSource} 篇文章（共 ${sourceCount} 个源）`);
       }
     }
 

@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T14:46:43.863Z
+文件夹: 2026-02-02-224643
+总数量: 2 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. How SAP is modernising HMRC’s tax infrastructure with AI
+   来源: https://www.artificialintelligence-news.com/news/how-sap-modernising-hmrc-tax-infrastructure-with-ai/
+   发布时间: 2026/02/02 14:45:41
+   内容长度: 1217 字符
+   图片数量: 1
+
+2. ThoughtSpot: On the new fleet of agents delivering modern analytics - AI News
+   来源: https://www.artificialintelligence-news.com/news/thoughtspot-on-the-new-fleet-of-agents-delivering-modern-analytics/
+   发布时间: 2026/02/02 14:45:55
+   内容长度: 3533 字符
+   图片数量: 1
+

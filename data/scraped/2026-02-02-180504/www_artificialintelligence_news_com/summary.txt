@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-02T10:05:04.327Z
+文件夹: 2026-02-02-180504
+总数量: 1 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. AI use surges at Travelers as call centre roles reduce - AI News
+   来源: https://www.artificialintelligence-news.com/news/travelers-ai-in-contact-centres-two-stage-innovation-strategy/
+   发布时间: 2026/02/02 10:04:41
+   内容长度: 2412 字符
+   图片数量: 1
+

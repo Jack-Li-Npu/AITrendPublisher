@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T04:27:20.751Z
+文件夹: 2026-02-03-122720
+总数量: 2 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. Dario Amodei: Why the World Must Confront Powerful AI | AI Magazine
+   来源: https://aimagazine.com/news/mark-zuckerberg-top-100-ai-leaders-2026
+   发布时间: 2026/02/03 04:25:14
+   内容长度: 1841 字符
+   图片数量: 5
+
+2. Why CEOs are Turning to M&A for AI-Propelled Growth | AI Magazine
+   来源: https://aimagazine.com/news/jane-fraser-on-how-citi-is-harnessing-ai
+   发布时间: 2026/02/03 04:25:45
+   内容长度: 1616 字符
+   图片数量: 5
+

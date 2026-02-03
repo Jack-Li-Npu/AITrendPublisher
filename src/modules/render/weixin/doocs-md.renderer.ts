@@ -560,6 +560,93 @@ export class DoocsMdRenderer {
   }
 
   /**
+   * 直接渲染原始 Markdown，不经过 articlesToMarkdown 的标题层级修复
+   * 用于"再改改"界面的实时预览，保持用户编辑时的原始标题层级
+   */
+  async renderRawMarkdown(
+    markdown: string,
+    options?: {
+      skipImageProcessing?: boolean;
+    }
+  ): Promise<string> {
+    console.log(`[DoocsMdRenderer] 开始直接渲染 Markdown，长度：${markdown.length} 字符`);
+
+    // 初始化渲染器
+    const renderer = initRenderer({
+      citeStatus: this.options.showCitation,
+      isShowLineNumber: this.options.showLineNumber,
+      countStatus: this.options.showWordCount,
+      legend: "",
+    });
+
+    // 配置 marked 选项
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      pedantic: false,
+      silent: false,
+    });
+
+    // 解析 front-matter 并渲染
+    const { markdownContent } = renderer.parseFrontMatterAndContent(markdown);
+
+    // 渲染 Markdown（不修改标题层级）
+    const cleanedMarkdown = markdownContent.replace(/\\\*\*/g, '**');
+    let htmlBody = marked.parse(cleanedMarkdown) as string;
+
+    const footnotes = renderer.buildFootnotes();
+    const container = renderer.createContainer(htmlBody + footnotes);
+
+    // 加载 CSS
+    const defaultCSS = DEFAULT_THEME_CSS;
+    let themeCSS = "";
+    if (this.options.theme !== "default") {
+      themeCSS = await this.loadThemeCSS();
+    }
+
+    const codeBlockCSS = `
+      pre.code__pre, .hljs.code__pre {
+        background-color: ${this.options.codeBackgroundColor} !important;
+        color: ${this.options.codeTextColor} !important;
+      }
+      pre.code__pre > code, .hljs.code__pre > code {
+        background-color: transparent !important;
+        color: ${this.options.codeTextColor} !important;
+      }
+    `;
+
+    const combinedCSS = `
+      @import url("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css");
+      .katex-block { margin: 1em 0; overflow-x: auto; text-align: center; }
+      .katex { font-size: 1.1em; line-height: 1.2; }
+    ` + defaultCSS + "\n" + themeCSS + "\n" + codeBlockCSS;
+    const processedCSS = this.processCSSVariables(combinedCSS);
+
+    // 内联样式
+    let renderedHtml = this.inlineStyles(container, processedCSS);
+
+    console.log(`[DoocsMdRenderer] 直接渲染完成，HTML 长度：${renderedHtml.length}`);
+
+    // 处理图片
+    if (options?.skipImageProcessing) {
+      return renderedHtml;
+    }
+
+    try {
+      const { WeixinImageProcessor } = await import("@src/utils/image/image-processor.ts");
+      const { WeixinPublisher } = await import("@src/modules/publishers/weixin.publisher.ts");
+
+      const imageProcessor = new WeixinImageProcessor(new WeixinPublisher());
+      const { content: processedHtml } = await imageProcessor.processContent(renderedHtml);
+
+      return processedHtml;
+    } catch (error) {
+      console.warn(`[DoocsMdRenderer] 图片处理失败，返回原始 HTML:`, error instanceof Error ? error.message : String(error));
+      return renderedHtml;
+    }
+  }
+
+  /**
    * 静态方法：快速渲染（使用默认配置）
    */
   static async quickRender(

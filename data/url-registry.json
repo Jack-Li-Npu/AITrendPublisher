@@ -1,26 +1,50 @@
 [
   {
-    "url": "https://www.therobotreport.com/waabi-raises-1b-to-advance-autonomous-trucks-and-robotaxis/",
-    "title": "Waabi完成10亿美元C轮融资，AI平台将同时赋能卡车与出租车",
-    "processedAt": "2026-02-02T04:30:18.937Z",
+    "url": "https://www.therobotreport.com/robco-raises-100m-scale-industrial-automation/",
+    "title": "RobCo 获 1 亿美元 C 轮融资，加速物理 AI 工业自动化部署",
+    "processedAt": "2026-02-03T03:55:59.467Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://aimagazine.com/news/jane-fraser-on-how-citi-is-harnessing-ai",
-    "title": "花旗集团推行AI优先文化：员工培训与道德原则并重",
-    "processedAt": "2026-02-02T04:30:18.937Z",
+    "url": "https://aimagazine.com/news/how-ai-helps-nasa-seek-life-on-mars-titan-and-beyond",
+    "title": "AI赋能NASA深空探测：自主决策与数据分析",
+    "processedAt": "2026-02-03T03:55:59.467Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://aibusiness.com/responsible-ai/combatting-cultural-bias-in-the-translation-of-ai-models",
+    "title": "AI翻译模型文化偏见：Articul8的LLM-IQ评估框架",
+    "processedAt": "2026-02-03T03:55:59.467Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://www.artificialintelligence-news.com/news/how-sap-modernising-hmrc-tax-infrastructure-with-ai/",
+    "title": "SAP以AI重构英国税务核心，主权云保障数据合规",
+    "processedAt": "2026-02-03T04:15:47.875Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://www.therobotreport.com/top-10-robotics-developments-of-january-2026/",
+    "title": "2026年1月机器人行业十大进展：从CES到工厂落地",
+    "processedAt": "2026-02-03T04:15:47.876Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://www.therobotreport.com/waabi-raises-1b-to-advance-autonomous-trucks-and-robotaxis/",
+    "title": "Waabi获10亿美元融资，通用AI平台驱动卡车与Robotaxi双线扩张",
+    "processedAt": "2026-02-03T04:28:24.864Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://www.artificialintelligence-news.com/news/thoughtspot-on-the-new-fleet-of-agents-delivering-modern-analytics/",
+    "title": "ThoughtSpot发布智能体舰队，定义现代分析与决策智能新范式",
+    "processedAt": "2026-02-03T04:28:24.864Z",
     "mode": "TECH_NEWS"
   },
   {
     "url": "https://aibusiness.com/agentic-ai/servicenow-and-anthropic-ai-deal",
-    "title": "ServiceNow与Anthropic达成AI合作，集成Claude模型",
-    "processedAt": "2026-02-02T04:30:18.937Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://aimagazine.com/news/mark-zuckerberg-top-100-ai-leaders-2026",
-    "title": "扎克伯格引领Meta，聚焦开源与超级智能",
-    "processedAt": "2026-02-02T04:30:18.937Z",
+    "title": "ServiceNow与Anthropic达成AI协议，Claude模型深度集成工作流",
+    "processedAt": "2026-02-03T04:28:24.864Z",
     "mode": "TECH_NEWS"
   }
 ]

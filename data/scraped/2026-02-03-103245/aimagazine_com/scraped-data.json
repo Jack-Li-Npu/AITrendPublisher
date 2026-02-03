@@ -1,0 +1,61 @@
+[
+  {
+    "id": "fc_1770085926479_7021_21990688",
+    "title": "How AI Helps NASA Seek Life on Mars, Titan and Beyond | AI Magazine",
+    "content": "# AI如何帮助NASA在火星、土卫六及其他地方寻找生命\n\n![](https://assets.bizclikmedia.net/138/1d69be13c7846f9593fca39a35265ec7:ae36aa074d14563fd280a70ab44acf75/titan-nasa.webp)\nNASA的卡西尼号探测器拍摄了这张俯瞰土卫六北极的照片 | 图片来源：NASA\n随着NASA计划于2028年发射前往土卫六的“蜻蜓”任务以及作为ExoMars计划的一部分，AI将被用于分析样本并做出自主决策。\n在她的博士论文《生命与NASA的AI：科学家和工程师如何制造工具探索其他世界》中，查尔姆斯理工大学的博士候选人Alicja Ostrowska深入探讨了AI在天体生物学中的应用。\n该研究基于对NASA戈达德太空飞行中心的科学家和工程师的实地考察，他们正在开发旨在帮助人类在遥远行星和卫星上寻找生物标志物或生命迹象的漫游车、机器人和火箭。\n## 机器人任务和光谱学\n截至2026年，NASA的好奇号和毅力号漫游车仍在红色星球上积极活动，收集样本并向地球发送大量数据。\n这些是天体生物学的任务，调查古代生命的迹象——这些生命可能存在于火星更湿润和温暖的时候。\n两个漫游车都携带着强大的质谱仪，用于通过创建光谱图像来识别样本中的分子，并将这些图像发送回地球供科学家进行分析。\n另一个特别引起科学家兴趣的遥远天体是土星的最大卫星——土卫六——“除地球外唯一有液态水体表面的地方”。\n唯一的问题是，土卫六及其秘密距离我们15亿公里。\n![](https://i.ytimg.com/vi/t9G36CDLzIg/hqdefault.jpg)\n鉴于这一距离，从土卫六传输任何数据到地球需要70-90分钟。\n即使如此，科学家们预计一些数据会在传输过程中丢失，正如Alicja解释的：“在整个以光速进行的星际旅程中，信号会变得越来越弱，行星越远就越弱。”\n随着其雄心勃勃的“蜻蜓”任务计划于2028年7月发射，并预计于2034年抵达土卫六，NASA转向AI来解决数据传输问题。\n## 科学自主性的AI\n对于NASA戈达德太空飞行中心的一群科学家和程序员来说，解决数据传输挑战的方法被称为“科学自主性”。\n在她的论文中，Alicja将科学自主性描述为一种原则，即“科学仪器应自主运行、分析、调整和指导自己”。\n“在未来任务中，算法可能会决定宇宙中哪些东西值得了解。”\n国家标准与技术研究所（NIST）维护权威的质谱参考数据库，而NASA则提供来自哈勃、詹姆斯·韦伯、开普勒、TESS、斯皮策、WISE和钱德拉等任务的大规模公开数据集，这些数据通过官方存储库如MAST、IRSA、HEASARC和行星数据系统存档，广泛应用于机器学习应用。\n无人机器人任务，如欧洲航天局的ExoMars罗莎琳德·富兰克林漫游车前往火星和NASA的蜻蜓前往土卫六，都配备了机载光谱仪器来分析样本，ExoMars将数据发送回地球进行ML辅助分析，而蜻蜓将在使用AI在土卫六上自主优先处理和处理数据。\n“在戈达德开发的AI将决定哪些质谱是最有趣的，以便发送到地球，”Alicja指出。\n“最终，当NASA地球上的科学家收到由AI分析的数据时，他们将在计算机屏幕上看到显示的顶级类别，建议哪些最有可能符合样本。”\n## 使用AI进行天体生物学的担忧\n在这些复杂项目中使用AI的主要问题是“AI的好坏取决于它所学习的数据”。\n![](https://assets.bizclikmedia.net/127/a3ee940afc7eb1a782bf6ca2ed2ec8e8:6f08d3ada2f26291b1982416cd522529/picture)\n由于我们没有任何来自土卫六的数据，科学家和程序员将训练这些算法使用所谓的“行星模拟”数据——地球上不同的地方用作现场站点。\nAlicja指出，这些数据来自“可访问、受欢迎或有声望的研究地点。这是AI训练数据存在偏见的一个例子，偏向于具有吸引力或工业相关性的现象，而不是行星科学。”\n即使忽略这种偏好，我们拥有的数据也“严重偏向地球生命”。\n由于某些元素在其他行星上可能干扰实验仪器，结果可能会出现偏差。\n作为一种新兴科学，考虑到当前的发现机制，一些科学家认为“天体生物学作为一个整体是一个巨大的类比”。",
+    "url": "https://aimagazine.com/news/how-ai-helps-nasa-seek-life-on-mars-titan-and-beyond",
+    "publishDate": "2026/02/03 02:32:06",
+    "score": 0,
+    "media": [
+      {
+        "url": "https://assets.bizclikmedia.net/138/1d69be13c7846f9593fca39a35265ec7:ae36aa074d14563fd280a70ab44acf75/titan-nasa.webp",
+        "type": "image/webp",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://i.ytimg.com/vi/t9G36CDLzIg/hqdefault.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/127/a3ee940afc7eb1a782bf6ca2ed2ec8e8:6f08d3ada2f26291b1982416cd522529/picture",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/220/35f865e266a57c296714adbe4a5e39c5:df149f923805b1430e18213475c4f513/alicja-ostrowska.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      {
+        "url": "https://assets.bizclikmedia.net/321/fd84578bc357db861082d425b268e504:d6adddda7ca1d8f4f84227f17c28e789/01-cover-ai-jan2026.jpg",
+        "type": "image/jpeg",
+        "size": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    ],
+    "metadata": {
+      "source": "fireCrawl",
+      "originalUrl": "https://aimagazine.com/news/how-ai-helps-nasa-seek-life-on-mars-titan-and-beyond",
+      "datePosted": "2026-02-03 02:32:06",
+      "sourceId": "https://aimagazine.com/news",
+      "imageCount": 5,
+      "rawMarkdown": "AI Applications\n# How AI Helps NASA Seek Life on Mars, Titan and Beyond\nBy [Rithula Nisha Ebrahim](https://aimagazine.com/author/rithula-nisha-ebrahim)\nJanuary 29, 2026\n![](https://assets.bizclikmedia.net/138/1d69be13c7846f9593fca39a35265ec7:ae36aa074d14563fd280a70ab44acf75/titan-nasa.webp)\nNASA's Cassini spacecraft took this image looking down on the north pole of Titan \\| Credit: NASA\nWith NASA's Dragonfly mission to Titan & part of the ExoMars program set to launch in 2028, AI will be used to analyse samples & make autonomous decisions\nIn her doctoral thesis, _Life and AI at NASA: An Ethnography of How Scientists and Engineers Make Tools to Explore Other Worlds_, Alicja Ostrowska, a doctoral candidate at Chalmers University of Technology, dives deep into the use of AI in astrobiology.\nThe study is based on fieldwork with scientists and engineers at NASA Goddard Space Flight Center, who are developing the rovers, robots and rockets designed to help humans look for biosignatures, or signs of life, in distant planets and moons.\nAlicja Ostrowska, doctoral candidate at Chalmers University of Technology\n## Robot missions and spectrometry\nAs of 2026, NASA’s Curiosity and Perseverance rovers actively roam the red planet, collecting samples and broadcasting vast amounts of data back to Earth.\nThey are missions in astrobiology, investigating signs of ancient life – which may have existed back when Mars was wetter and warmer.\nBoth rovers carry powerful mass spectrometers inside their “bellies”, which are used to identify molecules in a sample by creating a spectral image, which they send back to Earth to be analysed by the expert eyes of scientists.\nAnother distant heavenly body of particular interest to scientists is Titan, Saturn’s largest moon – “the only place beyond Earth with bodies of liquids on its surface”.\nThe only problem is that Titan and its secrets are 1.5 billion kilometres away.\nThe photogenic rover created this self-portrait at Gale Crater on Sol 2082 (June 15, 2018) using the Mars Hand Lens Imager or MAHLI \\| Credit: NASA\nGiven this distance, it would take 70-90 minutes for any data from Titan to be transmitted back to Earth.\nEven then, scientists expect some data to be lost on the way, as Alicja explains: \"Throughout the interstellar journey at the speed of light, the signal becomes weaker and weaker, the farther away the planet is”.\nWith its ambitious “Dragonfly” mission to explore the surface of Titan set to launch in July 2028, with an expected arrival in 2034, NASA has turned to AI to solve the data-distance problem.\n## AI for science autonomy\nFor a group of scientists and programmers at the [NASA](https://aimagazine.com/news/nasa-taps-planette-for-quantum-weather-prediction-system) Goddard Space Flight Center, the solution to the challenge of data transfer is what is called “science autonomy”.\nIn her thesis, Alicja describes science autonomy as the principle where “scientific instruments should operate, analyse, tune and direct themselves autonomously”.\n“In future missions, algorithms might make decisions about what is worth knowing about the universe.”\n![Youtube Placeholder](https://i.ytimg.com/vi/t9G36CDLzIg/hqdefault.jpg)\nNational institute of standards and technology (NIST) maintains authoritative mass spectrometry reference databases and NASA provides large, publicly accessible datasets from missions such as Hubble, James Webb, Kepler, TESS, Spitzer, WISE and Chandra, archived through official repositories including MAST, IRSA, HEASARC and the Planetary Data System, all of which are widely used in machine-learning applications.\nNon-crewed robotic missions such as the European Space Agency's ExoMars Rosalind Franklin rover to Mars and NASA’s Dragonfly to Titan are equipped with onboard spectrometry instruments to analyse samples, with ExoMars sending data back to Earth for ML-assisted analysis, while Dragonfly will use AI to autonomously prioritise and process data on Titan.\n“The AI being developed at Goddard will make decisions about which mass spectra are the most interesting to send to Earth,” Alicja notes.\n“Ultimately, when NASA scientists on Earth receive the data analysed by AI, they will see it on a computer screen with a display of the top categories, suggesting which are the most likely to fit the sample”.\n## Concerns of using AI for astrobiology\nThe major problem in using AI for these sophisticated projects is that “AI is only as good as the data it learns from”.\nArtist's concept of NASA's Dragonfly on the surface of Saturn's moon Titan \\| Credit: NASA\nSince we do not have any data from Titan, scientists and programmers will be training these algorithms on data from what are called “planet analogs” – different places on Earth which are used as field sites.\nAlicja notes that this data comes from places “that are accessible, popular or prestigious to study. This is one example of how the data that AI is trained on, are biased towards phenomena that are charismatic or relevant for industrial purposes, rather than planetary science.”\nEven if this favouritism is ignored, the data we have is “biased heavily toward Earth life”.\nAs certain elements found on other planets could interfere with the instruments used for the experiments, there is a possibility for results to be skewed.\nAs a science in its infancy, taking the current mechanisms of discovery into account, some scientists say that “astrobiology as a whole is one single, great analogy\".\n## Company portals\n- ![](https://assets.bizclikmedia.net/127/a3ee940afc7eb1a782bf6ca2ed2ec8e8:6f08d3ada2f26291b1982416cd522529/picture)\n### [Chalmers University of Technology](https://aimagazine.com/company/chalmers-university-of-technology)\n## Executives\n- ![](https://assets.bizclikmedia.net/220/35f865e266a57c296714adbe4a5e39c5:df149f923805b1430e18213475c4f513/alicja-ostrowska.jpg)![](https://assets.bizclikmedia.net/220/35f865e266a57c296714adbe4a5e39c5:df149f923805b1430e18213475c4f513/alicja-ostrowska.jpg)\n### [Alicja Ostrowska](https://aimagazine.com/executive/alicja-ostrowska)\n## Tags\nCompany Portals\n- ![](https://assets.bizclikmedia.net/127/a3ee940afc7eb1a782bf6ca2ed2ec8e8:6f08d3ada2f26291b1982416cd522529/picture)\n### [Chalmers University of Technology](https://aimagazine.com/company/chalmers-university-of-technology)\n![](https://assets.bizclikmedia.net/321/fd84578bc357db861082d425b268e504:d6adddda7ca1d8f4f84227f17c28e789/01-cover-ai-jan2026.jpg)\n![](https://assets.bizclikmedia.net/321/fd84578bc357db861082d425b268e504:d6adddda7ca1d8f4f84227f17c28e789/01-cover-ai-jan2026.jpg)\n![](https://assets.bizclikmedia.net/321/5b351568edbdddf5645b07dd9ada7957:17e321d8b753b6103f75d4df9706199e/01-cover-ai-dec2025-1.jpg)\n![](https://assets.bizclikmedia.net/321/5b351568edbdddf5645b07dd9ada7957:17e321d8b753b6103f75d4df9706199e/01-cover-ai-dec2025-1.jpg)\n![](https://assets.bizclikmedia.net/321/61721ee07fb345f687be7c71f31da4a9:af54c938d17f9e60aa9ba7f843aa4eb6/01-ai-top100-cover-2026.jpg)\n![](https://assets.bizclikmedia.net/321/61721ee07fb345f687be7c71f31da4a9:af54c938d17f9e60aa9ba7f843aa4eb6/01-ai-top100-cover-2026.jpg)\nRelatedContent\n- [A Non-Starter? Gartner Offers Humanoid Robot Reality Check\\\\\nRobotics](https://aimagazine.com/news/the-ai-reality-check-humanoid-robots-in-supply-chains)\n- [Australian Open: How Infosys Transforms Sports With AI\\\\\nAI Applications](https://aimagazine.com/news/australian-open-how-infosys-transforms-sports-with-ai)\n- [Inside Tesla's US$20bn CapEx Shift to AI, Robots and Energy\\\\\nAI Strategy](https://aimagazine.com/news/tesla-20bn-shift-to-ai-robots-energy)\n- [Can Microsoft's AI Tools Deliver F1 Success for Mercedes?\\\\\nCloud & Infrastructure](https://aimagazine.com/news/how-microsoft-ai-data-is-driving-speed-for-mercedes-f1)",
+      "hasLlmExtraction": true
+    }
+  }
+]

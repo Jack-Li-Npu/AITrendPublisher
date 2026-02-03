@@ -1,0 +1,22 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T04:27:20.737Z
+文件夹: 2026-02-03-122720
+总数量: 2 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. New York Robotics Consortium Launches with 160 Startups
+   来源: https://aibusiness.com/robotics/new-york-robotics-consortium-launches-160-startups
+   发布时间: 2026/02/03 04:23:00
+   内容长度: 1205 字符
+   图片数量: 5
+
+2. ServiceNow and Anthropic Disclose AI Deal
+   来源: https://aibusiness.com/agentic-ai/servicenow-and-anthropic-ai-deal
+   发布时间: 2026/02/03 04:23:11
+   内容长度: 1638 字符
+   图片数量: 5
+

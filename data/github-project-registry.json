@@ -1,25 +1,16 @@
 {
   "version": "1.0",
-  "updatedAt": "2026-02-02T08:42:14.883Z",
-  "totalCount": 2,
+  "updatedAt": "2026-02-03T04:04:33.327Z",
+  "totalCount": 1,
   "projects": [
     {
-      "fullName": "openclaw/openclaw",
-      "url": "https://github.com/openclaw/openclaw",
-      "firstScrapedAt": "2026-02-02T08:40:00.204Z",
-      "lastScrapedAt": "2026-02-02T08:40:00.204Z",
+      "fullName": "thedotmack/claude-mem",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "firstScrapedAt": "2026-02-03T04:04:33.321Z",
+      "lastScrapedAt": "2026-02-03T04:04:33.321Z",
       "scrapeCount": 1,
-      "stars": 146437,
-      "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞"
-    },
-    {
-      "fullName": "ThePrimeagen/99",
-      "url": "https://github.com/ThePrimeagen/99",
-      "firstScrapedAt": "2026-02-02T08:42:14.883Z",
-      "lastScrapedAt": "2026-02-02T08:42:14.883Z",
-      "scrapeCount": 1,
-      "stars": 2845,
-      "description": "Neovim AI agent done right"
+      "stars": 18330,
+      "description": "A Claude Code plugin that automatically captures everything Claude does during your coding sessions, compresses it with AI (using Claude's agent-sdk), and injects relevant context back into future sessions."
     }
   ]
 }

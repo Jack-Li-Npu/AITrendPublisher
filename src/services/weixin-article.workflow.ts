@@ -238,7 +238,7 @@ export class WeixinArticleWorkflow
           let totalArticles = 0;
 
           for (const source of sourceConfigs.firecrawl) {
-            const maxRecursiveLinks = (source as any).maxRecursiveLinks || 1;
+            const maxRecursiveLinks = (source as any).maxRecursiveLinks || 3; // 默认每个 URL 最多抓取 3 个链接
             const sourceContents = await this.scrapeSource("FireCrawl", source, fireCrawlScraper, {
               filters: { enableRecursive: true, maxRecursiveLinks: maxRecursiveLinks }
             });
@@ -369,6 +369,10 @@ export class WeixinArticleWorkflow
       });
 
       // 4. 从本地读取爬取的数据（针对模式做不同处理）
+      // 先获取期望的文章数量
+      const expectedArticles = event.payload.maxArticles ||
+        await ConfigManager.getInstance().get("ARTICLE_NUM") || 5;
+
       const localContents = await step.do("load-local-data", {
         retries: { limit: 1, delay: "2 second", backoff: "linear" },
         timeout: "2 minutes",
@@ -378,14 +382,14 @@ export class WeixinArticleWorkflow
           return allContents;
         }
 
-        logger.info("[数据读取] 从本地文件读取爬取的数据，每个网站1篇");
-        // 每个网站1篇，总共4个网站，所以选择4篇
-        const contents = await this.scrapedDataStorage.loadRandomArticlesFromSources(4);
+        // ✅ 使用期望的文章数量，而不是固定的 4
+        logger.info(`[数据读取] 从本地文件读取爬取的数据，期望 ${expectedArticles} 篇`);
+        const contents = await this.scrapedDataStorage.loadRandomArticlesFromSources(expectedArticles);
         if (contents.length === 0) {
           logger.warn("[数据读取] 本地文件为空，使用内存中的爬取数据");
-          // 如果本地没有数据，从内存数据中随机选择4篇
+          // 如果本地没有数据，从内存数据中选择
           const shuffled = [...allContents].sort(() => Math.random() - 0.5);
-          return shuffled.slice(0, Math.min(4, shuffled.length));
+          return shuffled.slice(0, Math.min(expectedArticles, shuffled.length));
         }
         logger.info(`[数据读取] 从本地文件随机挑选到 ${contents.length} 条数据`);
         return contents;
@@ -504,6 +508,7 @@ export class WeixinArticleWorkflow
         score: 100 - index, // 保持原有顺序
         reason: "保持原始顺序",
       }));
+      logger.info(`[内容流程追踪] 抓取: ${allContents.length} 篇 -> 本地加载: ${localContents.length} 篇 -> 去重后: ${uniqueContents.length} 篇 -> 准备处理: ${rankedContents.length} 篇`);
       logger.info(`[内容处理] 使用 ${rankedContents.length} 条内容`);
 
       // 7. 处理内容
@@ -518,11 +523,10 @@ export class WeixinArticleWorkflow
         if (contentMode === "GITHUB_TRENDING" || contentMode === "SINGLE_URL" || contentMode === "TOPIC_SEARCH") {
           maxArticles = rankedContents.length;
         }
-        
-        // AI_NEWS_SITE 模式也使用 maxArticles 参数
-        if (contentMode === "AI_NEWS_SITE") {
-          logger.info(`[内容处理] AI_NEWS_SITE 模式，输出 ${maxArticles} 篇文章`);
-        }
+
+        // ✅ 增强日志：打印配置和实际使用的 maxArticles
+        logger.info(`[内容处理] maxArticles 配置: payload=${event.payload.maxArticles || "未设置"}, 配置文件=${await ConfigManager.getInstance().get("ARTICLE_NUM") || "未设置"}, 最终使用=${maxArticles}`);
+        logger.info(`[内容处理] 模式=${contentMode}, 可用内容=${rankedContents.length} 篇, 将处理=${Math.min(maxArticles, rankedContents.length)} 篇`);
 
         // 取前maxArticles篇文章
         const topContents: ScrapedContent[] = [];
@@ -1130,7 +1134,58 @@ export class WeixinArticleWorkflow
     
     return urls;
   }
-  
+
+  /**
+   * 将 media 数组中的图片插入到文章正文中
+   * 策略：在文章开头（第一个段落后）插入第一张图片
+   * @param content 文章正文
+   * @param media 图片数组
+   * @returns 插入图片后的正文
+   */
+  private insertMediaImagesToContent(content: string, media: Array<{ url: string; type?: string; size?: { width: number; height: number } }>): string {
+    if (!media || media.length === 0) return content;
+
+    // 过滤有效的图片 URL
+    const validImages = media.filter(m => m.url && m.url.startsWith('http'));
+    if (validImages.length === 0) return content;
+
+    // 取第一张图片插入到文章中
+    const firstImage = validImages[0];
+    const imageMarkdown = `\n\n![配图](${firstImage.url})\n\n`;
+
+    // 找到第一个段落结束的位置（第一个空行或第一个标题之前）
+    const lines = content.split('\n');
+    let insertIndex = -1;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      // 跳过开头的标题
+      if (i === 0 && line.startsWith('#')) continue;
+      // 找到第一个非空段落后的空行
+      if (line === '' && i > 0 && lines[i - 1].trim() !== '') {
+        insertIndex = i;
+        break;
+      }
+      // 或者找到第一个二级/三级标题
+      if (line.startsWith('## ') || line.startsWith('### ')) {
+        insertIndex = i;
+        break;
+      }
+    }
+
+    // 如果没找到合适位置，在文章末尾插入
+    if (insertIndex === -1) {
+      return content + imageMarkdown;
+    }
+
+    // 在找到的位置插入图片
+    lines.splice(insertIndex, 0, imageMarkdown.trim());
+    const result = lines.join('\n');
+
+    logger.info(`[图片插入] 已将图片插入到正文第 ${insertIndex} 行: ${firstImage.url.substring(0, 50)}...`);
+    return result;
+  }
+
   /**
    * 替换内容中的图片 URL
    * @param content 原始内容
@@ -1313,12 +1368,18 @@ export class WeixinArticleWorkflow
           // 检查是否有现有图片（包括 media 数组和正文内容中）
           const mediaImageCount = content.media?.length || 0;
           const contentHasImages = /!\[.*?\]\(.*?\)|<img.*?>/i.test(content.content);
-          
+
           logger.info(`[内容处理] ${content.id} 现有 media 图片: ${mediaImageCount}, 正文已有图片: ${contentHasImages}`);
-          
+
           // 策略：优先使用网上获取或正文已有的图片，只有在完全没有图片时才调用AI补充
           if (mediaImageCount >= 1 || contentHasImages) {
             logger.info(`[内容处理] ${content.id} 已有图片，无需额外补充`);
+
+            // ✅ 关键修复：如果 media 数组有图片但正文中没有，需要将图片插入到正文中
+            if (mediaImageCount > 0 && !contentHasImages) {
+              logger.info(`[内容处理] ${content.id} 正文无图片引用，将 media 数组中的 ${mediaImageCount} 张图片插入正文`);
+              content.content = this.insertMediaImagesToContent(content.content, content.media || []);
+            }
           } else {
             logger.info(`[内容处理] ${content.id} 完全没有图片，调用AI生成一张图片`);
             const filledContent = await this.imageFillerService.fillImages(content, {
@@ -1331,6 +1392,11 @@ export class WeixinArticleWorkflow
             logger.info(
               `[内容处理] ${content.id} 图片补充完成，共 ${content.media?.length || 0} 张（AI生成${aiGeneratedCount}张）`
             );
+
+            // AI 生成的图片也需要插入到正文
+            if (content.media && content.media.length > 0) {
+              content.content = this.insertMediaImagesToContent(content.content, content.media);
+            }
           }
         } catch (imageError) {
           logger.warn(`[内容处理] ${content.id} 图片补充失败:`, imageError);

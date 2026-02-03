@@ -310,6 +310,65 @@ export class WeixinImageProcessor {
           continue;
         }
 
+        // ✅ 处理本地路径图片（data/... 或 /data/...）
+        if (imageUrl.startsWith('data/') || imageUrl.startsWith('/data/')) {
+          try {
+            // 规范化路径：去掉开头的 /
+            const localPath = imageUrl.startsWith('/') ? imageUrl.substring(1) : imageUrl;
+            logger.info(`处理本地图片: ${localPath}`);
+
+            // 读取本地文件
+            const imageBuffer = await Deno.readFile(localPath);
+            if (imageBuffer.length === 0) {
+              throw new Error("本地图片文件为空");
+            }
+
+            logger.debug(`本地图片大小: ${(imageBuffer.length / 1024).toFixed(2)}KB`);
+
+            // 压缩并转换格式
+            let processedImage: Uint8Array;
+            try {
+              processedImage = await this.compressImage(imageBuffer, 0.8);
+              logger.info(`本地图片压缩后大小: ${(processedImage.length / 1024).toFixed(2)}KB`);
+            } catch (compressError) {
+              // 压缩失败，如果原图不太大，尝试直接使用
+              if (imageBuffer.byteLength <= WeixinImageProcessor.MAX_IMAGE_SIZE * 2) {
+                logger.warn("本地图片压缩失败，尝试直接上传原图");
+                processedImage = imageBuffer;
+              } else {
+                throw compressError;
+              }
+            }
+
+            // 上传到微信
+            const newUrl = await this.weixinPublisher.uploadContentImage(
+              localPath,
+              processedImage,
+            );
+
+            results.push({
+              originalUrl: imageUrl.substring(0, 100),
+              newUrl,
+            });
+
+            processedContent = this.replaceImageUrl(
+              processedContent,
+              imageUrl,
+              newUrl,
+            );
+            logger.info(`本地图片上传成功: ${localPath} -> ${newUrl.substring(0, 50)}...`);
+          } catch (localError) {
+            logger.error(`处理本地图片失败: ${imageUrl}`, localError);
+            results.push({
+              originalUrl: imageUrl.substring(0, 100) + "...",
+              error: localError instanceof Error ? localError.message : "本地图片处理失败",
+            });
+            // 移除处理失败的图片
+            processedContent = this.removeImage(processedContent, imageUrl);
+          }
+          continue;
+        }
+
         // 处理 Next.js 优化的图片 URL
         let realImageUrl = imageUrl;
         if (imageUrl.includes('/_next/image?url=')) {
@@ -554,25 +613,27 @@ export class WeixinImageProcessor {
   }
 
   /**
-   * 从文章内容中提取所有有效的图片URL（包括 base64）
+   * 从文章内容中提取所有有效的图片URL（包括 base64 和本地路径）
    */
   private extractImageUrls(content: string): string[] {
     const urls = new Set<string>();
-    
+
     // 基础过滤函数：排除明显非图片或垃圾 URL
     const isValid = (url: string) => {
       if (!url) return false;
       // 允许 base64
       if (url.startsWith('data:image/')) return true;
+      // 允许本地路径（data/... 或 /data/...）
+      if (url.startsWith('data/') || url.startsWith('/data/')) return true;
       // 必须是 http 开头
       if (!url.startsWith('http')) return false;
-      
+
       const lower = url.toLowerCase();
       // 排除常见的徽章、图标、追踪像素等
-      return !lower.includes('badge') && 
-             !lower.includes('shields.io') && 
-             !lower.includes('travis-ci') && 
-             !lower.includes('coveralls.io') && 
+      return !lower.includes('badge') &&
+             !lower.includes('shields.io') &&
+             !lower.includes('travis-ci') &&
+             !lower.includes('coveralls.io') &&
              !lower.includes('codecov.io') &&
              !lower.includes('favicon') &&
              !lower.includes('pixel');
@@ -839,8 +900,11 @@ export class WeixinImageProcessor {
       try {
         logger.info(`正在处理 Mermaid 图表...`);
         // 使用 mermaid.ink 将代码转换为图片 URL
-        // 这里的代码需要 base64 编码，使用 @std/encoding/base64 处理 Unicode
-        const base64Code = encodeBase64(new TextEncoder().encode(item.code));
+        // 这里的代码需要 base64 编码，并且必须是 URL-Safe 的
+        let base64Code = encodeBase64(new TextEncoder().encode(item.code));
+        // 转换为 URL-Safe Base64: + -> -, / -> _, 移除 =
+        base64Code = base64Code.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        
         const mermaidInkUrl = `https://mermaid.ink/img/${base64Code}`;
         
         const response = await fetch(mermaidInkUrl);

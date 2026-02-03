@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-03T04:04:45.053Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "thedotmack/claude-mem",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "title": "thedotmack/claude-mem",
+      "stars": 18330,
+      "description": "A Claude Code plugin that automatically captures everything Claude does during your coding sessions, compresses it with AI (using Claude's agent-sdk), and injects relevant context back into future sessions.",
+      "scrapedAt": "2026-02-03",
+      "contentId": "github_thedotmack_claude-mem_1770091472818",
+      "imageCount": 3
+    }
+  ],
+  "indexByFullName": {
+    "thedotmack/claude-mem": 0
+  },
+  "indexByUrl": {
+    "https://github.com/thedotmack/claude-mem": 0
+  }
+}
