@@ -94,11 +94,11 @@
                 <div id="param-word-range">
                     <div class="flex justify-between mb-2">
                         <label class="text-sm font-semibold text-gray-700">内容长度 (字数)</label>
-                        <span id="word-range-val" class="text-xs text-blue-600 font-bold">300 - 800</span>
+                        <span id="word-range-val" class="text-xs text-blue-600 font-bold">500 - 1300</span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <input type="range" id="min-words" min="100" max="2000" step="50" value="300" oninput="updateWordRange()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                        <input type="range" id="max-words" min="200" max="3000" step="50" value="800" oninput="updateWordRange()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <input type="range" id="min-words" min="500" max="1000" step="50" value="500" oninput="updateWordRange()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <input type="range" id="max-words" min="1300" max="1800" step="50" value="1300" oninput="updateWordRange()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
                     </div>
                 </div>
                 <div id="param-max-articles">
@@ -738,15 +738,11 @@
         }
 
         function updateWordRange() {
-            let min = parseInt(document.getElementById('min-words').value);
-            let max = parseInt(document.getElementById('max-words').value);
-            
-            // 确保最小字数不大于最大字数
-            if (min > max) {
-                min = max;
-                document.getElementById('min-words').value = min;
-            }
-            
+            const minEl = document.getElementById('min-words');
+            const maxEl = document.getElementById('max-words');
+            let min = parseInt(minEl.value);
+            let max = parseInt(maxEl.value);
+            // 左侧 500–1000，右侧 1300–1800，区间不重叠，仅做展示同步
             document.getElementById('word-range-val').innerText = `${min} - ${max}`;
         }
 

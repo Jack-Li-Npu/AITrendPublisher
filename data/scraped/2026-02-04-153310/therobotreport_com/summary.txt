@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-04T07:33:10.835Z
+文件夹: 2026-02-04-153310
+总数量: 1 条
+数据源: www.therobotreport.com
+
+文章列表:
+------------------
+1. Waabi raises $1B to advance autonomous trucks and robotaxis - The Robot Report
+   来源: https://www.therobotreport.com/waabi-raises-1b-to-advance-autonomous-trucks-and-robotaxis/
+   发布时间: 2026/02/04 07:32:10
+   内容长度: 1131 字符
+   图片数量: 1
+

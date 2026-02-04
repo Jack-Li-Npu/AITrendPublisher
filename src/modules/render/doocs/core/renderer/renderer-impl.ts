@@ -70,8 +70,9 @@ function transform(legend: string, text: string | null, title: string | null): s
   return ``
 }
 
+// macOS 风格代码块三点：小尺寸（24×7），避免转图后过大
 const macCodeSvg = `
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" width="36px" height="10px" viewBox="0 0 450 130">
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 450 130" width="24" height="7" style="width: 24px; height: 7px; flex-shrink: 0;">
     <ellipse cx="50" cy="65" rx="50" ry="52" stroke="rgb(220,60,54)" stroke-width="2" fill="rgb(237,108,96)" />
     <ellipse cx="225" cy="65" rx="50" ry="52" stroke="rgb(218,151,33)" stroke-width="2" fill="rgb(247,193,81)" />
     <ellipse cx="400" cy="65" rx="50" ry="52" stroke="rgb(27,161,37)" stroke-width="2" fill="rgb(100,200,86)" />
@@ -198,7 +199,7 @@ export function initRenderer(opts: IOpts = {}): RendererAPI {
 
       const highlighted = highlightAndFormatCode(text, language, hljs, !!opts.isShowLineNumber)
 
-      const span = `<span class="mac-sign" style="padding: 8px 10px 0 12px;">${macCodeSvg}</span>`
+      const span = `<span class="mac-sign" style="padding: 6px 8px 0 10px;">${macCodeSvg}</span>`
       const code = `<code class="language-${lang}">${highlighted}</code>`
 
       return `<pre class="hljs code__pre">${span}${code}</pre>`

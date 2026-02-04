@@ -236,36 +236,59 @@ export class WeixinImageProcessor {
   /**
    * 将 SVG 转换为 PNG
    * @param svgBuffer SVG 图片的二进制数据
+   * @param options 可选：targetWidth/targetHeight 用于小图标（如代码块三点），输出固定尺寸
    * @returns PNG 格式的二进制数据
    */
-  private async convertSvgToPng(svgBuffer: Uint8Array): Promise<Uint8Array> {
+  private async convertSvgToPng(
+    svgBuffer: Uint8Array,
+    options?: { targetWidth?: number; targetHeight?: number },
+  ): Promise<Uint8Array> {
     try {
-      // 使用 sharp 将 SVG 转换为 PNG
       const svgString = new TextDecoder().decode(svgBuffer);
       const sharp = await getSharp();
-      const pngBuffer = await sharp(Buffer.from(svgString), {
-        density: 300, // 提高 SVG 渲染分辨率
-      })
-        .resize(WeixinImageProcessor.STANDARD_MAX_WIDTH, null, {
-          fit: 'inside',
+      const targetWidth = options?.targetWidth;
+      const targetHeight = options?.targetHeight;
+      const isSmallIcon = targetWidth != null && targetHeight != null;
+
+      let pipeline = sharp(Buffer.from(svgString), {
+        density: isSmallIcon ? 96 : 300,
+      });
+
+      if (isSmallIcon) {
+        pipeline = pipeline.resize(targetWidth, targetHeight, { fit: "fill" });
+      } else {
+        pipeline = pipeline.resize(WeixinImageProcessor.STANDARD_MAX_WIDTH, null, {
+          fit: "inside",
           withoutEnlargement: true,
-        })
-        .png({ quality: 90 })
-        .toBuffer();
-      
-      logger.info(`SVG 转换为 PNG 成功，大小: ${(pngBuffer.length / 1024).toFixed(2)}KB`);
-      
-      // 如果 PNG 仍然太大，进行压缩
-      if (pngBuffer.length > 2 * 1024 * 1024) {
+        });
+      }
+
+      const pngBuffer = await pipeline.png({ quality: 90 }).toBuffer();
+
+      logger.info(
+        `SVG 转换为 PNG 成功，大小: ${(pngBuffer.length / 1024).toFixed(2)}KB` +
+          (isSmallIcon ? ` (${targetWidth}x${targetHeight})` : ""),
+      );
+
+      if (!isSmallIcon && pngBuffer.length > 2 * 1024 * 1024) {
         logger.debug(`PNG 仍然过大，进行二次压缩`);
         return await this.compressImage(pngBuffer);
       }
-      
+
       return new Uint8Array(pngBuffer);
     } catch (error) {
       logger.error("SVG 转换失败:", error);
       throw new Error(`SVG 转换失败: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
+
+  /** 判断是否为代码块 macOS 风格三点 SVG（需小图输出） */
+  private static isMacCodeDotsSvg(svgHtml: string): boolean {
+    const hasViewBox = /viewBox=["']0\s+0\s+450\s+130["']/.test(svgHtml);
+    const hasRed = /rgb\(220,60,54\)|rgb\(237,108,96\)/.test(svgHtml);
+    const hasGreen = /rgb\(27,161,37\)|rgb\(100,200,86\)/.test(svgHtml);
+    const hasYellow = /rgb\(218,151,33\)|rgb\(247,193,81\)/.test(svgHtml);
+    return hasViewBox && hasRed && hasGreen && hasYellow;
   }
 
   /**
@@ -966,10 +989,20 @@ export class WeixinImageProcessor {
     for (const svg of svgMatches) {
       try {
         const svgBuffer = new TextEncoder().encode(svg);
-        const pngBuffer = await this.convertSvgToPng(svgBuffer);
-        
-        const weixinUrl = await this.weixinPublisher.uploadContentImage("math-formula.png", pngBuffer);
-        processedContent = processedContent.replace(svg, `<img src="${weixinUrl}" style="vertical-align: middle; display: inline-block;" />`);
+        const isMacDots = WeixinImageProcessor.isMacCodeDotsSvg(svg);
+        const pngBuffer = isMacDots
+          ? await this.convertSvgToPng(svgBuffer, { targetWidth: 24, targetHeight: 7 })
+          : await this.convertSvgToPng(svgBuffer);
+
+        const filename = isMacDots ? "mac-code-dots.png" : "math-formula.png";
+        const weixinUrl = await this.weixinPublisher.uploadContentImage(filename, pngBuffer);
+        const imgStyle = isMacDots
+          ? "vertical-align: middle; display: inline-block; width: 24px; height: 7px;"
+          : "vertical-align: middle; display: inline-block;";
+        processedContent = processedContent.replace(
+          svg,
+          `<img src="${weixinUrl}" style="${imgStyle}" />`,
+        );
         results.push({ originalUrl: "inline-svg", newUrl: weixinUrl });
       } catch (error) {
         logger.error(`内联 SVG 处理失败:`, error);

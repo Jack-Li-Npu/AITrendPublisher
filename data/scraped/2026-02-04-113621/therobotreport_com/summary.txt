@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-04T03:36:21.754Z
+文件夹: 2026-02-04-113621
+总数量: 1 条
+数据源: www.therobotreport.com
+
+文章列表:
+------------------
+1. Vention raises $110M to accelerate physical AI deployments in manufacturing - The Robot Report
+   来源: https://www.therobotreport.com/vention-raises-110m-to-accelerate-physical-ai-deployments-in-manufacturing/
+   发布时间: 2026/02/04 03:35:50
+   内容长度: 3152 字符
+   图片数量: 2
+

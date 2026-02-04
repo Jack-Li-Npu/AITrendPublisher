@@ -358,7 +358,7 @@ export class AISummarizer implements ContentSummarizer {
         },
       ], {
         temperature: this.getRecommendedTemperature(providerConfig, 0.3),
-        max_tokens: 8000, // DeepSeek 最大限制 8192，设置为 8000 以策安全
+        max_tokens: 16384, // README 可能很长
         response_format: { type: "json_object" },
         thinkingLevel: "none",
       });
@@ -453,19 +453,16 @@ export class AISummarizer implements ContentSummarizer {
         SummarizarSetting.AI_SUMMARIZER_LLM_PROVIDER,
       );
       const llm = await this.llmFactory.getLLMProvider(providerConfig);
-      const contentMode = options?.contentMode;
-      
       const response = await llm.createChatCompletion([
         {
           role: "system",
-          content: getTitleSystemPrompt(contentMode),
+          content: getTitleSystemPrompt(),
         },
         {
           role: "user",
           content: getTitleUserPrompt({
             content,
             language: options?.language,
-            contentMode,
           }),
         },
       ], {
@@ -628,9 +625,7 @@ export class AISummarizer implements ContentSummarizer {
 
   /**
    * 从网页内容中提取新闻链接
-   * @param content 网页 Markdown 内容
-   * @param baseUrl 基础 URL
-   * @param usedUrls 已使用的 URL 列表（LLM 会跳过这些 URL）
+   * @param usedUrls 已使用（已发布）的 URL 列表，LLM 会排除这些链接
    */
   async extractLinks(
     content: string,

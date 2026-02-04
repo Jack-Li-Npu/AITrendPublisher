@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-04T07:33:10.827Z
+文件夹: 2026-02-04-153310
+总数量: 1 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. FedEx tests how far AI can go in tracking and returns management
+   来源: https://www.artificialintelligence-news.com/news/fedex-tests-how-far-ai-can-go-in-tracking-and-returns-management/
+   发布时间: 2026/02/04 07:30:27
+   内容长度: 1888 字符
+   图片数量: 1
+

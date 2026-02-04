@@ -8,6 +8,7 @@ import {
 import { BarkNotifier } from "@src/modules/notify/bark.notify.ts";
 import { WeixinPublisher } from "@src/modules/publishers/weixin.publisher.ts";
 import { WeixinTemplate } from "../modules/render/weixin/interfaces/article.type.ts";
+import { ARTICLE_SEPARATOR } from "@src/modules/render/weixin/doocs-md.renderer.ts";
 import { FireCrawlScraper } from "@src/modules/scrapers/fireCrawl.scraper.ts";
 import { GitHubTrendingScraper } from "@src/modules/scrapers/github-trending.scraper.ts";
 import { AINewsScraper } from "@src/modules/scrapers/ai-news.scraper.ts";
@@ -251,39 +252,7 @@ export class WeixinArticleWorkflow
           }
         }
 
-        // 过滤掉超过一周的新闻
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-        
-        const recentContents = contents.filter((content) => {
-          if (!content.publishDate) {
-            // 如果没有发布日期，保留（可能是实时新闻）
-            return true;
-          }
-          
-          try {
-            const publishDate = new Date(content.publishDate);
-            if (isNaN(publishDate.getTime())) {
-              // 日期格式无效，保留
-              return true;
-            }
-            
-            const isRecent = publishDate >= oneWeekAgo;
-            if (!isRecent) {
-              logger.debug(`[时间过滤] 过滤掉过期内容: ${content.title} (发布日期: ${content.publishDate})`);
-            }
-            return isRecent;
-          } catch (error) {
-            // 解析日期失败，保留
-            logger.warn(`[时间过滤] 无法解析日期: ${content.publishDate}`, error);
-            return true;
-          }
-        });
-        
-        const filteredCount = contents.length - recentContents.length;
-        if (filteredCount > 0) {
-          logger.info(`[时间过滤] 过滤掉 ${filteredCount} 篇超过一周的旧新闻`);
-        }
+        const recentContents = contents;
         
         // --- 统一对所有抓取的内容进行 URL 去重（GitHub 项目除外） ---
         const filteredContents = recentContents.filter(content => {
@@ -319,33 +288,11 @@ export class WeixinArticleWorkflow
           const recentSourceContents = sourceContents.filter((content) => {
             // GitHub 项目只使用 github-project-registry.json 去重，不使用 url-registry.json
             if (contentMode === "GITHUB_TRENDING") {
-              if (!content.publishDate) {
-                return true;
-              }
-              try {
-                const publishDate = new Date(content.publishDate);
-                if (isNaN(publishDate.getTime())) {
-                  return true;
-                }
-                return publishDate >= oneWeekAgo;
-              } catch {
-                return true;
-              }
+              return true;
             }
             
-            // 其他模式：同时应用时间过滤和 URL 过滤
-            if (!content.publishDate) {
-              return !this.urlRegistry.isProcessed(content.url);
-            }
-            try {
-              const publishDate = new Date(content.publishDate);
-              if (isNaN(publishDate.getTime())) {
-                return !this.urlRegistry.isProcessed(content.url);
-              }
-              return publishDate >= oneWeekAgo && !this.urlRegistry.isProcessed(content.url);
-            } catch {
-              return !this.urlRegistry.isProcessed(content.url);
-            }
+            // 其他模式：应用 URL 过滤
+            return !this.urlRegistry.isProcessed(content.url);
           });
           if (recentSourceContents.length > 0) {
             recentContentsBySource.set(sourceIdentifier, recentSourceContents);
@@ -617,7 +564,7 @@ export class WeixinArticleWorkflow
               if (contentMode === "GITHUB_TRENDING") {
                 introduction = `本期精选 ${processedContents.length} 个 GitHub 热门项目：${articleTitles.slice(0, 2).map(t => t.split("(")[0].trim()).join("，")}等。`;
               } else {
-                introduction = `今天为大家带来${processedContents.length}篇精选AI科技新闻，涵盖${articleTitles.slice(0, 3).join("、")}等前沿话题。让我们一起探索人工智能领域的最新动态和技术突破。`;
+                introduction = `本期精选${processedContents.length}篇，涵盖${articleTitles.slice(0, 2).join("、")}等。`;
               }
             }
           } else {
@@ -639,7 +586,7 @@ export class WeixinArticleWorkflow
           );
 
           // 直接使用默认结语（不再生成）
-          const footer = `\n\n## 结语\n\n感谢您的阅读，我们将继续为您捕捉人工智能领域的每一个创新瞬间。\n\n💬 你对本期哪个内容最感兴趣？欢迎在评论区交流心得！\n⭐ 觉得文章不错？点个「在看」分享给同样热爱技术的伙伴们！\n\n<center>\n    <img src="https://fastly.jsdelivr.net/gh/bucketio/img18@main/2026/01/06/1767672738369-47fc1fed-2c8b-49d2-ae30-f8a45edc41bb.png" style="width: 100px;">\n</center>`;
+          const footer = `\n\n## 结语\n\n感谢您的阅读，我们将继续为您捕捉人工智能领域的每一个创新瞬间。\n\n💬 你对本期哪个内容最感兴趣？欢迎在评论区交流心得！\n⭐ 觉得文章不错？点个「在看」分享给同样热爱技术的伙伴们！`;
 
           // 渲染文章（包含引入内容）
           logger.info("[渲染] 使用 DoocsMd 渲染器（文章渲染，包含引入内容）");
@@ -679,12 +626,17 @@ export class WeixinArticleWorkflow
             generatedTitle = processedContents[0].title;
             logger.info(`[标题生成] SINGLE_URL 转载模式，使用标题: ${generatedTitle}`);
           } else if (processedContents.length > 0) {
-            // 使用 LLM 生成标题（基于第一篇文章内容）
+            // 使用 LLM 生成标题（基于所有文章标题）
             try {
-              const firstArticle = processedContents[0];
-              // 取第一篇文章的前2000字符作为生成标题的依据
-              const contentForTitle = firstArticle.content.substring(0, 2000);
-              generatedTitle = await this.summarizer.generateTitle(contentForTitle, { contentMode });
+              // 收集所有文章的标题
+              const articleTitles = processedContents.map(a => a.title).filter(t => t && t.trim());
+              // 同时提供第一篇文章的内容作为上下文
+              const contentForTitle = processedContents[0].content.substring(0, 2000);
+              
+              generatedTitle = await this.summarizer.generateTitle(contentForTitle, { 
+                contentMode,
+                articleTitles, // 传入所有文章标题
+              });
               logger.info(`[标题生成] LLM 生成标题成功: ${generatedTitle}`);
             } catch (titleError) {
               // LLM 生成失败时，回退到从文章中提取标题
@@ -701,35 +653,6 @@ export class WeixinArticleWorkflow
           } else {
             generatedTitle = "AI 科技速递";
             logger.warn(`[标题生成] 没有文章内容，使用默认标题: ${generatedTitle}`);
-          }
-          
-          // 验证字节数（微信公众号限制：64字节）
-          const getByteLength = (str: string): number => {
-            return new TextEncoder().encode(str).length;
-          };
-          
-          const maxBytes = 64; // 微信公众号标题最大64字节，必须严格遵守
-          const titleBytes = getByteLength(generatedTitle);
-          
-          if (titleBytes > maxBytes) {
-            logger.warn(`[标题验证] 标题字节数 ${titleBytes} 超过限制 ${maxBytes}，进行截断`);
-            
-            // 按字节截断
-            let truncated = "";
-            let byteCount = 0;
-            for (const char of generatedTitle) {
-              const charBytes = getByteLength(char);
-              if (byteCount + charBytes > maxBytes) {
-                break;
-              }
-              truncated += char;
-              byteCount += charBytes;
-            }
-            
-            generatedTitle = truncated;
-            logger.info(`[标题验证] 截断后标题: ${generatedTitle} (${getByteLength(generatedTitle)} 字节)`);
-          } else {
-            logger.info(`[标题验证] 标题长度符合要求: ${generatedTitle} (${titleBytes} 字节)`);
           }
           
           logger.info(`[标题生成] 最终标题: ${generatedTitle}`);
@@ -761,20 +684,23 @@ export class WeixinArticleWorkflow
               throw new Error(`不支持的图片生成器类型: ${imageGeneratorType}`);
             }
           } catch (imageError) {
-            logger.error(`[封面图片] 生成失败，尝试使用默认封面: ${imageError instanceof Error ? imageError.message : String(imageError)}`);
-            // 如果生成失败，使用一个默认图片 URL
+            logger.error(`[封面图片] 生成失败: ${imageError instanceof Error ? imageError.message : String(imageError)}`);
+            // 交付友好：不强制使用默认二维码图。仅当配置了 DEFAULT_COVER_IMAGE_URL 时才用，否则不上传封面
             try {
               const defaultUrl = await ConfigManager.getInstance().get<string>("DEFAULT_COVER_IMAGE_URL");
-              coverImageUrl = defaultUrl || "https://fastly.jsdelivr.net/gh/bucketio/img18@main/2026/01/06/1767672738369-47fc1fed-2c8b-49d2-ae30-f8a45edc41bb.png";
+              coverImageUrl = defaultUrl ?? "";
             } catch {
-              // 如果配置项不存在，使用硬编码的默认图片
-              coverImageUrl = "https://fastly.jsdelivr.net/gh/bucketio/img18@main/2026/01/06/1767672738369-47fc1fed-2c8b-49d2-ae30-f8a45edc41bb.png";
+              coverImageUrl = "";
             }
-            logger.info(`[封面图片] 使用默认封面: ${coverImageUrl}`);
+            if (coverImageUrl) {
+              logger.info(`[封面图片] 使用配置的默认封面`);
+            } else {
+              logger.info(`[封面图片] 未配置默认封面，将不上传封面图（由发布端使用占位）`);
+            }
           }
 
-          // 上传封面图片
-          const media = await this.publisher.uploadImage(coverImageUrl);
+          // 上传封面图片（无封面时传空，publisher 会返回占位 media_id）
+          const media = await this.publisher.uploadImage(coverImageUrl ?? "");
           
           logger.info(`[封面图片] 封面图片已生成并上传，mediaId: ${media}`);
 
@@ -786,15 +712,15 @@ export class WeixinArticleWorkflow
             logger.info("[Markdown组装] SINGLE_URL 单篇模式，直接使用翻译后的内容");
             articleMarkdown += processedContents[0].content + "\n\n";
           } else {
-            // 多篇文章模式：添加引入、为每篇文章添加 ## 标题
+            // 多篇文章模式：添加引入、为每篇文章添加 ## 标题，文章之间强制插入 ---
             if (introduction) {
-              articleMarkdown += `${introduction}\n\n---\n\n`;
+              articleMarkdown += `${introduction}${ARTICLE_SEPARATOR}`;
             }
             
             processedContents.forEach((content, index) => {
               articleMarkdown += `## ${content.title}\n\n${content.content}\n\n`;
               if (index < processedContents.length - 1) {
-                articleMarkdown += `\n---\n\n`;
+                articleMarkdown += ARTICLE_SEPARATOR;
               }
             });
           }
@@ -828,14 +754,14 @@ export class WeixinArticleWorkflow
           if (contentMode === "SINGLE_URL" && templateData.length > 0) {
             finalLocalMarkdown += templateData[0].content + "\n\n";
           } else {
-            if (localIntroduction) finalLocalMarkdown += `${localIntroduction}\n\n---\n\n`;
+            if (localIntroduction) finalLocalMarkdown += `${localIntroduction}${ARTICLE_SEPARATOR}`;
             templateData.forEach((art, idx) => {
               const articleContent = art.content || "";
               finalLocalMarkdown += `## ${art.title}\n\n${articleContent}\n\n`;
-              if (idx < templateData.length - 1) finalLocalMarkdown += `---\n\n`;
+              if (idx < templateData.length - 1) finalLocalMarkdown += ARTICLE_SEPARATOR;
             });
           }
-          if (footer) finalLocalMarkdown += `\n---\n\n${footer}`;
+          if (footer) finalLocalMarkdown += ARTICLE_SEPARATOR + footer;
 
           // 重新渲染本地化后的 HTML（包含结语）
           const finalLocalHtml = await doocsMdRenderer.render(templateData, {
@@ -1247,27 +1173,54 @@ export class WeixinArticleWorkflow
         // 跳过已经是本地路径的
         if (url.startsWith('data/')) continue;
         
-        // 1. 下载图片（增加超时）
+        // 1. 下载图片（超时 + 模拟浏览器请求，降低防盗链/反爬拒绝）
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
-        
-        const response = await fetch(url, { signal: controller.signal });
+        const urlObj = new URL(url);
+        const referer = `${urlObj.origin}/`; // 带末尾斜杠的站点根路径，更接近从页面加载图片
+        const response = await fetch(url, { 
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': referer,
+            'Sec-Fetch-Dest': 'image',
+            'Sec-Fetch-Mode': 'no-cors',
+            'Sec-Fetch-Site': 'same-origin',
+          },
+        });
         clearTimeout(timeoutId);
         
         if (!response.ok) {
-          logger.warn(`[图片本地化] 下载失败 (${response.status}): ${url.substring(0, 50)}...`);
+          logger.warn(`[图片本地化] 下载失败 (${response.status})，可能被站点防盗链/反爬拒绝: ${url.substring(0, 50)}...`);
           failCount++;
           continue; // 保留原始 URL，不删除图片
         }
         
+        // 检查 Content-Type 是否为图片类型（部分站点反爬会返回 text/html）
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("image") && !contentType.includes("octet-stream")) {
+          logger.warn(`[图片本地化] 响应非图片类型 (${contentType})，可能被反爬返回了 HTML: ${url.substring(0, 50)}...`);
+          failCount++;
+          continue; // 保留原始 URL
+        }
+        
         const buffer = new Uint8Array(await response.arrayBuffer());
+        
+        // 验证图片 magic bytes（防止保存 HTML 错误页面）
+        const isValidImage = this.isValidImageBuffer(buffer);
+        if (!isValidImage) {
+          logger.warn(`[图片本地化] 下载内容不是有效图片（可能是验证码页面）: ${url.substring(0, 50)}...`);
+          failCount++;
+          continue; // 保留原始 URL
+        }
         
         // 2. 确定文件名
         const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(url));
         const hashHex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
         
         let ext = "jpg";
-        const contentType = response.headers.get("content-type") || "";
         if (contentType.includes("png")) ext = "png";
         else if (contentType.includes("gif")) ext = "gif";
         else if (contentType.includes("webp")) ext = "webp";
@@ -1300,6 +1253,35 @@ export class WeixinArticleWorkflow
     
     logger.info(`[图片本地化] 完成：成功 ${successCount}，失败 ${failCount}（失败的图片保留原始URL）`);
     return localizedContent;
+  }
+
+  /**
+   * 验证 buffer 是否为有效图片格式（通过 magic bytes）
+   */
+  private isValidImageBuffer(buffer: Uint8Array): boolean {
+    if (buffer.length < 4) return false;
+    
+    // JPEG: FF D8 FF
+    if (buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF) return true;
+    
+    // PNG: 89 50 4E 47
+    if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47) return true;
+    
+    // GIF: 47 49 46 38
+    if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x38) return true;
+    
+    // WebP: 52 49 46 46 ... 57 45 42 50
+    if (buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46 &&
+        buffer.length > 11 && buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50) return true;
+    
+    // SVG: 以 '<' 或 '<?xml' 开头，且包含 '<svg'
+    const textStart = new TextDecoder().decode(buffer.slice(0, Math.min(500, buffer.length)));
+    if ((textStart.startsWith('<') || textStart.startsWith('<?xml')) && textStart.includes('<svg')) return true;
+    
+    // BMP: 42 4D
+    if (buffer[0] === 0x42 && buffer[1] === 0x4D) return true;
+    
+    return false;
   }
 
   private async processContent(content: ScrapedContent, mode: ContentMode, options?: { minWords?: number; maxWords?: number }): Promise<void> {

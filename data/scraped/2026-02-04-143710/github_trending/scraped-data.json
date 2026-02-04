@@ -1,0 +1,29 @@
+[
+  {
+    "id": "github_kovidgoyal_calibre_1770187007505",
+    "title": "kovidgoyal/calibre",
+    "content": "# Calibre\n\n![](https://raw.githubusercontent.com/kovidgoyal/calibre/master/resources/images/lt.png)\n\ncalibre 是一个电子书管理工具。它可以查看、转换、编辑和分类所有主要格式的电子书。它还可以与电子书阅读设备进行通信。它可以连接互联网并为您的书籍获取元数据。它可以下载报纸并将其转换为电子书，方便阅读。calibre 是跨平台的，可以在 Linux、Windows 和 macOS 上运行。\n\n---\n\n## 截图\n\n请参阅截图页面以查看 calibre 的界面。\n\n---\n\n## 使用方法\n\n请参阅用户手册以了解如何使用 calibre。\n\n---\n\n## 开发\n\n设置 calibre 开发环境的步骤如下：\n\n1. 安装必要的依赖项。\n2. 克隆 calibre 源代码仓库。\n3. 配置开发环境。\n4. 编译和运行 calibre。\n\n当前版本的 calibre 源代码 tarball 可以在 [这里](https://calibre-ebook.com/dist/src) 下载。\n\n---\n\n## 错误报告\n\n错误报告和功能请求应在 [Launchpad](https://bugs.launchpad.net/calibre) 上的 calibre 错误跟踪器中提交。GitHub 仅用于代码托管和拉取请求。\n\n---\n\n## 支持 calibre\n\ncalibre 是来自世界各地许多志愿者共同努力的结果。如果您觉得它有用，请考虑捐款支持其开发。\n\n---\n\n## 构建 calibre 二进制文件\n\n有关如何构建 calibre 二进制文件和安装程序的说明，请参阅 [构建说明](bypy/README.rst)。\n\n---\n\n## 各种存储库中的 calibre 包版本\n\n请参阅 [Repology](https://repology.org/project/calibre/versions) 以查看不同存储库中的 calibre 包版本。",
+    "url": "https://github.com/kovidgoyal/calibre",
+    "publishDate": "2026-02-04",
+    "media": [
+      {
+        "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/master/resources/images/lt.png",
+        "type": "image/jpeg",
+        "size": {
+          "width": 1200,
+          "height": 630
+        }
+      }
+    ],
+    "metadata": {
+      "source": "github-trending",
+      "fullName": "kovidgoyal/calibre",
+      "originalUrl": "https://github.com/kovidgoyal/calibre",
+      "description": "The official source code repository for the calibre ebook manager",
+      "stars": 23952,
+      "rawMarkdown": "# calibre\n\n<img align=\"left\" src=\"https://raw.githubusercontent.com/kovidgoyal/calibre/master/resources/images/lt.png\" height=\"200\" width=\"200\"/>\n\ncalibre is an e-book manager. It can view, convert, edit and catalog e-books \nin all of the major e-book formats. It can also talk to e-book reader \ndevices. It can go out to the internet and fetch metadata for your books. \nIt can download newspapers and convert them into e-books for convenient \nreading. It is cross platform, running on Linux, Windows and macOS.\n\nFor more information, see the [calibre About page](https://calibre-ebook.com/about).\n\n[![Build Status](https://github.com/kovidgoyal/calibre/workflows/CI/badge.svg)](https://github.com/kovidgoyal/calibre/actions?query=workflow%3ACI)\n\n## Screenshots  \n\n[Screenshots page](https://calibre-ebook.com/demo)\n\n## Usage\n\nSee the [User Manual](https://manual.calibre-ebook.com).\n\n## Development\n\n[Setting up a development environment for calibre](https://manual.calibre-ebook.com/develop.html).\n\nA [tarball of the source code](https://calibre-ebook.com/dist/src) for the \ncurrent calibre release.\n\n## Bugs\n\nBug reports and feature requests should be made in the calibre bug tracker at [Launchpad](https://bugs.launchpad.net/calibre).\nGitHub is only used for code hosting and pull requests.\n\n## Support calibre\n\ncalibre is a result of the efforts of many volunteers from all over the world.\nIf you find it useful, please consider contributing to support its development.\n[Donate to support calibre development](https://calibre-ebook.com/donate).\n\n## Building calibre binaries\n\nSee [Build instructions](bypy/README.rst) for instructions on how to build the\ncalibre binaries and installers for all the platforms calibre supports.\n\n## calibre package versions in various repositories\n\n[![Packaging Status](https://repology.org/badge/vertical-allrepos/calibre.svg?columns=3&header=calibre)](https://repology.org/project/calibre/versions)\n",
+      "hasLlmExtraction": true,
+      "imageCount": 1
+    }
+  }
+]

@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-04T05:54:34.493Z
+文件夹: 2026-02-04-135434
+总数量: 1 条
+数据源: www.therobotreport.com
+
+文章列表:
+------------------
+1. Hadrian raises funding for automated manufacturing, bringing valuation to $1.6B - The Robot Report
+   来源: https://www.therobotreport.com/hadrian-brings-in-additional-funding-bringing-its-valuation-to-1-6b/
+   发布时间: 2026/02/04 05:53:57
+   内容长度: 1722 字符
+   图片数量: 1
+

@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-04T06:12:29.173Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "virattt/dexter",
+      "url": "https://github.com/virattt/dexter",
+      "title": "virattt/dexter",
+      "stars": 10191,
+      "description": "An autonomous agent for deep financial research",
+      "scrapedAt": "2026-02-04",
+      "contentId": "github_virattt_dexter_1770185489949",
+      "imageCount": 2
+    }
+  ],
+  "indexByFullName": {
+    "virattt/dexter": 0
+  },
+  "indexByUrl": {
+    "https://github.com/virattt/dexter": 0
+  }
+}

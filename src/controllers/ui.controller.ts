@@ -3,7 +3,7 @@ import { PreviewStore } from "@src/utils/preview-store.ts";
 import { WeixinPublisher } from "@src/modules/publishers/weixin.publisher.ts";
 import { Logger } from "@zilla/logger";
 import { ConfigManager } from "@src/utils/config/config-manager.ts";
-import { DoocsMdRenderer } from "@src/modules/render/weixin/doocs-md.renderer.ts";
+import { DoocsMdRenderer, ARTICLE_SEPARATOR } from "@src/modules/render/weixin/doocs-md.renderer.ts";
 import { AISummarizer } from "@src/modules/summarizer/ai.summarizer.ts";
 
 const logger = new Logger("ui-controller");
@@ -130,12 +130,12 @@ export async function updatePreview(params: { template?: string; customFooter?: 
   // 这里我们调用 render 逻辑中相同的 articlesToMarkdown 逻辑
   // 简单起见，如果需要 full markdown 同步，可以在此处组装
   let fullMarkdown = `# ${preview.title}\n\n`;
-  if (preview.introduction) fullMarkdown += `${preview.introduction}\n\n---\n\n`;
+  if (preview.introduction) fullMarkdown += `${preview.introduction}${ARTICLE_SEPARATOR}`;
   templateData.forEach((art, idx) => {
     fullMarkdown += `## ${art.title}\n\n${art.content}\n\n`;
-    if (idx < templateData.length - 1) fullMarkdown += `---\n\n`;
+    if (idx < templateData.length - 1) fullMarkdown += ARTICLE_SEPARATOR;
   });
-  if (finalFooter) fullMarkdown += `\n---\n\n${finalFooter}`;
+  if (finalFooter) fullMarkdown += ARTICLE_SEPARATOR + finalFooter;
   updatedPreview.markdown = fullMarkdown;
 
   store.setPreview(updatedPreview);

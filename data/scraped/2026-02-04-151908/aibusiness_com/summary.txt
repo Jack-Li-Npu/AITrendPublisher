@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-04T07:19:08.255Z
+文件夹: 2026-02-04-151908
+总数量: 1 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. Snowflake Deal Latest Move into Enterprise Market by OpenAI
+   来源: https://aibusiness.com/generative-ai/snowflake-deal-latest-move-by-openai
+   发布时间: 2026/02/04 07:17:39
+   内容长度: 2387 字符
+   图片数量: 5
+

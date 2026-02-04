@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-04T06:00:06.221Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "automazeio/ccpm",
+      "url": "https://github.com/automazeio/ccpm",
+      "title": "automazeio/ccpm",
+      "stars": 6784,
+      "description": "Project management system for Claude Code using GitHub Issues and Git worktrees for parallel agent execution.",
+      "scrapedAt": "2026-02-04",
+      "contentId": "github_automazeio_ccpm_1770184787356",
+      "imageCount": 1
+    }
+  ],
+  "indexByFullName": {
+    "automazeio/ccpm": 0
+  },
+  "indexByUrl": {
+    "https://github.com/automazeio/ccpm": 0
+  }
+}

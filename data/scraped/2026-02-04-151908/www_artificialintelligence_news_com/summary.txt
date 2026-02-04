@@ -1,0 +1,16 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-04T07:19:08.249Z
+文件夹: 2026-02-04-151908
+总数量: 1 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. Apptio: Why scaling intelligent automation requires financial rigour
+   来源: https://www.artificialintelligence-news.com/news/apptio-why-scaling-intelligent-automation-requires-financial-rigour/
+   发布时间: 2026/02/04 07:17:09
+   内容长度: 2185 字符
+   图片数量: 2
+

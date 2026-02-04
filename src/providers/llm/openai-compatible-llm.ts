@@ -165,13 +165,18 @@ export class OpenAICompatibleLLM implements LLMProvider {
 
       console.log(`[LLM请求] 目标地址: ${endpoint}, 模型: ${options.model || this.defaultModel}`);
 
-      // 构建请求体
+      // 构建请求体（仅 Qwen 模型时限制 max_tokens 上限为 8192，其他模型不限制）
+      const rawMaxTokens = options.max_tokens ?? 1500;
+      const modelName = (options.model || this.defaultModel || "").toLowerCase();
+      const isQwen = modelName.includes("qwen");
+      const max_tokens = isQwen ? Math.min(rawMaxTokens, 8192) : rawMaxTokens;
+
       const body: any = {
         model: options.model || this.defaultModel,
         messages,
         temperature: options.temperature ?? 0.7,
         // top_p: options.top_p ?? 1, // 移除 top_p，使用模型默认值，避免部分模型 400 错误
-        max_tokens: options.max_tokens ?? 2000,
+        max_tokens,
         stream: options.stream ?? false,
       };
 
@@ -190,7 +195,7 @@ export class OpenAICompatibleLLM implements LLMProvider {
           "Authorization": `Bearer ${this.token}`,
         },
         body: JSON.stringify(body),
-        timeout: 60000, // 60秒超时
+        timeout: 120000, // 120秒超时（DashScope 等可能较慢）
         retries: 3, // 最多重试3次
         retryDelay: 1000, // 重试间隔1秒
       });

@@ -1,0 +1,41 @@
+FunctionalFunctional Always active
+PreferencesPreferences
+StatisticsStatistics
+The technical storage or access that is used exclusively for statistical purposes.The technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this purpose alone cannot usually be used to identify you.
+MarketingMarketing
+The technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes.
+- [{title}](https://www.artificialintelligence-news.com/news/fedex-tests-how-far-ai-can-go-in-tracking-and-returns-management/#)
+# [FedEx tests how far AI can go in tracking and returns management](https://www.artificialintelligence-news.com/news/fedex-tests-how-far-ai-can-go-in-tracking-and-returns-management/)
+February 3, 2026
+![FedEx tests how far AI can go in tracking and returns management](https://www.artificialintelligence-news.com/wp-content/uploads/2026/02/FedEx-tests-how-far-AI-can-go-in-tracking-and-returns-management-1024x683.jpg)
+Share this story:
+## [ai](https://www.artificialintelligence-news.com/news/tag/ai/)  [artificial intelligence](https://www.artificialintelligence-news.com/news/tag/artificial-intelligence/)  [enterprise](https://www.artificialintelligence-news.com/news/tag/enterprise/)  [featured](https://www.artificialintelligence-news.com/news/tag/featured/)  [retail](https://www.artificialintelligence-news.com/news/tag/retail/)
+Categories:
+## [AI Business Strategy](https://www.artificialintelligence-news.com/categories/inside-ai/ai-business-strategy/)  [AI in Action](https://www.artificialintelligence-news.com/categories/ai-in-action/)  [Artificial Intelligence](https://www.artificialintelligence-news.com/categories/artificial-intelligence/)  [Featured News](https://www.artificialintelligence-news.com/categories/featured-news/)  [Features](https://www.artificialintelligence-news.com/categories/features/)  [Retail & Logistics AI](https://www.artificialintelligence-news.com/categories/ai-in-action/retail-logistics-ai/)
+FedEx is using AI to change how package tracking and returns work for large enterprise shippers. For companies moving high volumes of goods, tracking no longer ends when a package leaves the warehouse. Customers expect real-time updates, flexible delivery options, and returns that do not turn into support tickets or delays.
+That pressure is pushing logistics firms to rethink how tracking and returns operate at scale, especially across complex supply chains.
+This is where artificial intelligence is starting to move from pilot projects into daily operations.
+FedEx plans to roll out AI-powered tracking and returns tools designed for enterprise shippers, according to a report by _PYMNTS_. The tools are aimed at automating routine customer service tasks, improving visibility into shipments, and reducing friction when packages need to be rerouted or sent back.
+Rather than focusing on consumer-facing chatbots, the effort centres on operational workflows that sit behind the scenes. These are the systems enterprise customers rely on to manage exceptions, returns, and delivery changes without manual intervention.
+### How FedEx is applying AI to package tracking
+Traditional tracking systems tell customers where a package is and when it might arrive. AI-powered tracking takes a step further by utilising historical delivery data, traffic patterns, weather conditions, and network constraints to flag potential delays before they happen.
+According to the _PYMNTS_ report, FedEx’s AI tools are designed to help enterprise shippers anticipate issues earlier in the delivery process. Instead of reacting to missed delivery windows, shippers may be able to reroute packages or notify customers ahead of time.
+For businesses that ship thousands of parcels per day, that shift matters. Small improvements in prediction accuracy can reduce support calls, lower refund rates, and improve customer trust, particularly in retail, healthcare, and manufacturing supply chains.
+This approach also reflects a broader trend in enterprise software, in which AI is being embedded into existing systems rather than introduced as standalone tools. The goal is not to replace logistics teams, but to minimise the number of manual decisions they need to make.
+### Returns as an operational problem, not a customer issue
+Returns are one of the most expensive parts of logistics. For enterprise shippers, particularly those in e-commerce, returns affect warehouse capacity, inventory planning, and transportation costs.
+According to _PYMNTS_, FedEx’s AI-enabled returns tools aim to automate parts of the returns process, including label generation, routing decisions, and status updates. Companies that use AI to determine the most efficient return path may be able to reduce delays and avoid returning things to the wrong facility.
+This is less about convenience and more about operational discipline. Returns that sit idle or move through the wrong channel create cost and uncertainty across the supply chain. AI systems trained on past return patterns can help standardise decisions that were previously handled case by case.
+For enterprise customers, this type of automation supports scale. As return volumes fluctuate, especially during peak seasons, systems that adjust automatically reduce the need for temporary staffing or manual overrides.
+### What FedEx’s AI tracking approach says about enterprise adoption
+What stands out in FedEx’s approach is how narrowly focused the AI use case is. There are no broad claims about transformation or reinvention. The emphasis is on reducing friction in processes that already exist.
+This mirrors how other large organisations are adopting AI internally. In a separate context, Microsoft described a similar pattern in its [article](https://www.microsoft.com/insidetrack/blog/microsoft-365-copilot-for-executives-sharing-our-deployment-and-adoption-journey-at-microsoft/). The company outlined how AI tools were rolled out gradually, with clear limits, governance rules, and feedback loops.
+While Microsoft’s case focused on knowledge work and FedEx’s on logistics operations, the underlying lesson is the same. AI adoption tends to work best when applied to specific activities with measurable results rather than broad promises of efficiency.
+For logistics firms, those advantages include fewer delivery exceptions, lower return handling costs, and better coordination between shipping partners and enterprise clients.
+### What this signals for enterprise customers
+For end-user companies, FedEx’s move signals that logistics providers are investing in AI as a way to support more complex shipping demands. As supply chains become more distributed, visibility and predictability become harder to maintain without automation.
+AI-driven tracking and returns could also change how businesses measure logistics performance. Companies may focus less on delivery speed and more on how quickly issues are recognised and resolved.
+That shift could influence procurement decisions, contract structures, and service-level agreements. Enterprise customers may start asking not just where a shipment is, but how well a provider anticipates problems.
+FedEx’s plans reflect a quieter phase of enterprise AI adoption. The focus is less on experimentation and more on integration. These systems are not designed to draw attention but to reduce noise in operations that customers only notice when something goes wrong.
+_(Photo by [Liam Kevan](https://unsplash.com/@shotbyliam?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText))_
+**See also: [PepsiCo is using AI to rethink how factories are designed and updated](https://www.artificialintelligence-news.com/news/pepsico-is-using-ai-to-rethink-how-factories-are-desig...

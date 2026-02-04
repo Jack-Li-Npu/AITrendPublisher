@@ -1,4 +1,4 @@
-import { vectorItems } from "../../drizzle/schema.ts";
+import { vectorItems } from "@src/db/schema.ts";
 import { and, eq, inArray } from "drizzle-orm";
 import { VectorSimilarityUtil } from "../utils/VectorSimilarityUtil.ts";
 import { RowDataPacket } from "mysql2";

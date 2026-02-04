@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-04T06:37:10.050Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "kovidgoyal/calibre",
+      "url": "https://github.com/kovidgoyal/calibre",
+      "title": "kovidgoyal/calibre",
+      "stars": 23952,
+      "description": "The official source code repository for the calibre ebook manager",
+      "scrapedAt": "2026-02-04",
+      "contentId": "github_kovidgoyal_calibre_1770187007505",
+      "imageCount": 1
+    }
+  ],
+  "indexByFullName": {
+    "kovidgoyal/calibre": 0
+  },
+  "indexByUrl": {
+    "https://github.com/kovidgoyal/calibre": 0
+  }
+}

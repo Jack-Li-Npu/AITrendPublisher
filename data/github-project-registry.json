@@ -1,8 +1,35 @@
 {
   "version": "1.0",
-  "updatedAt": "2026-02-03T13:15:29.602Z",
-  "totalCount": 3,
+  "updatedAt": "2026-02-04T06:36:48.008Z",
+  "totalCount": 8,
   "projects": [
+    {
+      "fullName": "automazeio/ccpm",
+      "url": "https://github.com/automazeio/ccpm",
+      "firstScrapedAt": "2026-02-04T05:59:47.860Z",
+      "lastScrapedAt": "2026-02-04T05:59:47.860Z",
+      "scrapeCount": 1,
+      "stars": 6784,
+      "description": "Project management system for Claude Code using GitHub Issues and Git worktrees for parallel agent execution."
+    },
+    {
+      "fullName": "karpathy/nanochat",
+      "url": "https://github.com/karpathy/nanochat",
+      "firstScrapedAt": "2026-02-04T06:31:07.067Z",
+      "lastScrapedAt": "2026-02-04T06:31:07.067Z",
+      "scrapeCount": 1,
+      "stars": 42102,
+      "description": "The best ChatGPT that $100 can buy."
+    },
+    {
+      "fullName": "kovidgoyal/calibre",
+      "url": "https://github.com/kovidgoyal/calibre",
+      "firstScrapedAt": "2026-02-04T06:36:48.007Z",
+      "lastScrapedAt": "2026-02-04T06:36:48.007Z",
+      "scrapeCount": 1,
+      "stars": 23952,
+      "description": "The official source code repository for the calibre ebook manager"
+    },
     {
       "fullName": "masoncl/review-prompts",
       "url": "https://github.com/masoncl/review-prompts",
@@ -11,6 +38,15 @@
       "scrapeCount": 1,
       "stars": 217,
       "description": "AI review prompts"
+    },
+    {
+      "fullName": "obra/superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "firstScrapedAt": "2026-02-04T06:08:31.719Z",
+      "lastScrapedAt": "2026-02-04T06:08:31.719Z",
+      "scrapeCount": 1,
+      "stars": 43763,
+      "description": "An agentic skills framework & software development methodology that works."
     },
     {
       "fullName": "openai/skills",
@@ -29,6 +65,15 @@
       "scrapeCount": 1,
       "stars": 18330,
       "description": "A Claude Code plugin that automatically captures everything Claude does during your coding sessions, compresses it with AI (using Claude's agent-sdk), and injects relevant context back into future sessions."
+    },
+    {
+      "fullName": "virattt/dexter",
+      "url": "https://github.com/virattt/dexter",
+      "firstScrapedAt": "2026-02-04T06:11:30.452Z",
+      "lastScrapedAt": "2026-02-04T06:11:30.452Z",
+      "scrapeCount": 1,
+      "stars": 10191,
+      "description": "An autonomous agent for deep financial research"
     }
   ]
 }

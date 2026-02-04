@@ -1,68 +1,62 @@
 [
   {
+    "url": "https://www.artificialintelligence-news.com/news/ronnie-sheth-ceo-senen-group-why-now-is-the-time-for-enterprise-ai-to-get-practical/",
+    "title": "企业AI需务实：SENEN Group CEO Ronnie Sheth的观点",
+    "processedAt": "2026-02-04T06:48:24.581Z",
+    "mode": "TECH_NEWS"
+  },
+  {
     "url": "https://www.therobotreport.com/robco-raises-100m-scale-industrial-automation/",
-    "title": "RobCo 获 1 亿美元 C 轮融资，加速物理 AI 工业自动化部署",
-    "processedAt": "2026-02-03T03:55:59.467Z",
+    "title": "RobCo筹集1亿美元C轮融资扩大工业自动化",
+    "processedAt": "2026-02-04T06:48:24.581Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://aimagazine.com/news/how-ai-helps-nasa-seek-life-on-mars-titan-and-beyond",
-    "title": "AI赋能NASA深空探测：自主决策与数据分析",
-    "processedAt": "2026-02-03T03:55:59.467Z",
+    "url": "https://aibusiness.com/generative-ai/change-is-coming-to-xai-with-spacex",
+    "title": "马斯克合并xAI与SpaceX：财务支持与垂直整合",
+    "processedAt": "2026-02-04T06:48:24.581Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://aibusiness.com/responsible-ai/combatting-cultural-bias-in-the-translation-of-ai-models",
-    "title": "AI翻译模型文化偏见：Articul8的LLM-IQ评估框架",
-    "processedAt": "2026-02-03T03:55:59.467Z",
+    "url": "https://aimagazine.com/news/australian-open-how-infosys-transforms-sports-with-ai",
+    "title": "澳大利亚公开赛：Infosys 用 AI 改变体育",
+    "processedAt": "2026-02-04T06:56:29.206Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://www.artificialintelligence-news.com/news/how-sap-modernising-hmrc-tax-infrastructure-with-ai/",
-    "title": "SAP以AI重构英国税务核心，主权云保障数据合规",
-    "processedAt": "2026-02-03T04:15:47.875Z",
+    "url": "https://www.artificialintelligence-news.com/news/apptio-why-scaling-intelligent-automation-requires-financial-rigour/",
+    "title": "Apptio：扩展智能自动化需财务严谨性",
+    "processedAt": "2026-02-04T07:21:57.622Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://www.therobotreport.com/top-10-robotics-developments-of-january-2026/",
-    "title": "2026年1月机器人行业十大进展：从CES到工厂落地",
-    "processedAt": "2026-02-03T04:15:47.876Z",
+    "url": "https://aimagazine.com/news/tesla-20bn-shift-to-ai-robots-energy",
+    "title": "特斯拉200亿美元资本支出转向AI、机器人和能源",
+    "processedAt": "2026-02-04T07:21:57.622Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://aibusiness.com/generative-ai/snowflake-deal-latest-move-by-openai",
+    "title": "Snowflake 与 OpenAI 合作进军企业市场",
+    "processedAt": "2026-02-04T07:21:57.622Z",
+    "mode": "TECH_NEWS"
+  },
+  {
+    "url": "https://www.artificialintelligence-news.com/news/fedex-tests-how-far-ai-can-go-in-tracking-and-returns-management/",
+    "title": "FedEx 用 AI 改进包裹跟踪和退货管理",
+    "processedAt": "2026-02-04T07:36:04.508Z",
     "mode": "TECH_NEWS"
   },
   {
     "url": "https://www.therobotreport.com/waabi-raises-1b-to-advance-autonomous-trucks-and-robotaxis/",
-    "title": "Waabi获10亿美元融资，通用AI平台驱动卡车与Robotaxi双线扩张",
-    "processedAt": "2026-02-03T04:28:24.864Z",
+    "title": "Waabi 融资 10 亿美元推进自动驾驶卡车和机器人出租车",
+    "processedAt": "2026-02-04T07:36:04.508Z",
     "mode": "TECH_NEWS"
   },
   {
-    "url": "https://www.artificialintelligence-news.com/news/thoughtspot-on-the-new-fleet-of-agents-delivering-modern-analytics/",
-    "title": "ThoughtSpot发布智能体舰队，定义现代分析与决策智能新范式",
-    "processedAt": "2026-02-03T04:28:24.864Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://aibusiness.com/agentic-ai/servicenow-and-anthropic-ai-deal",
-    "title": "ServiceNow与Anthropic达成AI协议，Claude模型深度集成工作流",
-    "processedAt": "2026-02-03T04:28:24.864Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://www.artificialintelligence-news.com/news/pepsico-is-using-ai-to-rethink-how-factories-are-designed-and-updated/",
-    "title": "百事以AI数字孪生重塑工厂规划，制造业AI进入务实阶段",
-    "processedAt": "2026-02-03T12:38:55.269Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://www.therobotreport.com/state-of-robotics-industry-report-2026/",
-    "title": "机器人产业2026：从概念验证转向现实部署的关键转折",
-    "processedAt": "2026-02-03T12:38:55.269Z",
-    "mode": "TECH_NEWS"
-  },
-  {
-    "url": "https://aimagazine.com/news/how-microsoft-ai-data-is-driving-speed-for-mercedes-f1",
-    "title": "微软AI与云技术驱动梅赛德斯F1车队，瞄准2026新规",
-    "processedAt": "2026-02-03T12:38:55.269Z",
+    "url": "https://aibusiness.com/responsible-ai/combatting-cultural-bias-in-the-translation-of-ai-models",
+    "title": "克服人工智能翻译模型中的文化偏见",
+    "processedAt": "2026-02-04T07:36:04.508Z",
     "mode": "TECH_NEWS"
   }
 ]

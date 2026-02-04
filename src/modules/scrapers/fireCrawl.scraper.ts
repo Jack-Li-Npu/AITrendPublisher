@@ -471,7 +471,13 @@ export class FireCrawlScraper implements ContentScraper {
       });
     }
 
-    // 4. 限制链接数量并截取
+    // 4. 排除已使用（已保存在本地的）URL，再按 maxRecursiveLinks 取前 N 条
+    const usedSet = new Set(usedUrls.map(u => u.replace(/\/$/, "")));
+    const beforeFilter = articleLinks.length;
+    articleLinks = articleLinks.filter(link => !usedSet.has(link.replace(/\/$/, "")));
+    if (beforeFilter > articleLinks.length) {
+      logger.info(`[FireCrawl] 排除已使用 URL 后剩余 ${articleLinks.length} 条（过滤掉 ${beforeFilter - articleLinks.length} 条）`);
+    }
     articleLinks = articleLinks.slice(0, maxLinks);
     logger.info(`[FireCrawl] 最终进入抓取流程的有效链接共 ${articleLinks.length} 个`);
 

@@ -9,6 +9,10 @@
  */
 
 import { WeixinTemplate } from "@src/modules/render/weixin/interfaces/article.type.ts";
+
+/** 多篇文章之间强制插入的分隔符，所有组装多篇内容的逻辑必须使用此常量 */
+export const ARTICLE_SEPARATOR = "\n\n---\n\n";
+
 // 动态导入图片处理模块（避免启动时加载 imagescript）
 // import { WeixinImageProcessor } from "@src/utils/image/image-processor.ts";
 // import { WeixinPublisher } from "@src/modules/publishers/weixin.publisher.ts";
@@ -183,8 +187,8 @@ export class DoocsMdRenderer {
         console.log(`[DoocsMdRenderer] 在开头插入引入内容，长度: ${options.introduction.length} 字符`);
       }
 
-      // 添加分隔线
-      markdown += `---\n\n`;
+      // 强制插入文章前分隔线
+      markdown += ARTICLE_SEPARATOR;
     }
 
     articles.forEach((article, index) => {
@@ -294,9 +298,9 @@ export class DoocsMdRenderer {
         }
       }
 
-      // 文章之间添加分隔线
+      // 不同文章之间强制插入分隔符
       if (index < articles.length - 1) {
-        markdown += `---\n\n`;
+        markdown += ARTICLE_SEPARATOR;
       }
     });
 
@@ -305,7 +309,7 @@ export class DoocsMdRenderer {
     // 避免重复添加结语
     const hasFooterInContent = markdown.includes("\n## 结语");
     if (options?.footer && !hasFooterInContent) {
-      markdown += `\n---\n\n${options.footer}\n\n`;
+      markdown += ARTICLE_SEPARATOR + options.footer + "\n\n";
       console.log(`[DoocsMdRenderer] 在末尾添加结语，长度: ${options.footer.length} 字符`);
     } else if (hasFooterInContent) {
       console.log(`[DoocsMdRenderer] 文章内容中已有结语，跳过 footer 参数`);
