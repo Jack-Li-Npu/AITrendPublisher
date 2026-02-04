@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-03T13:06:24.064Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "masoncl/review-prompts",
+      "url": "https://github.com/masoncl/review-prompts",
+      "title": "masoncl/review-prompts",
+      "stars": 217,
+      "description": "AI review prompts",
+      "scrapedAt": "2026-02-03",
+      "contentId": "github_masoncl_review-prompts_1770123918428",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "masoncl/review-prompts": 0
+  },
+  "indexByUrl": {
+    "https://github.com/masoncl/review-prompts": 0
+  }
+}

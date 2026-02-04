@@ -165,7 +165,29 @@ ${content}
 // 标题生成
 // ============================================
 
-export const getTitleSystemPrompt = (): string => {
+export const getTitleSystemPrompt = (contentMode?: string): string => {
+  if (contentMode === "GITHUB_TRENDING") {
+    return `你是顶级科技自媒体标题专家，专门为 **GitHub 热门开源项目** 撰写微信公众号爆款标题。
+
+## 核心目标
+让读者看到标题就想点进来了解这个项目！
+
+## 标题公式（任选其一）
+1. **痛点+解决方案**：「还在为 XX 头疼？这个开源神器一键搞定」
+2. **数据冲击**：「GitHub 狂飙 10K Star！XX 项目凭什么火了」
+3. **身份认同**：「程序员必装！这个 XX 工具我吹爆」
+4. **好奇悬念**：「XX 公司开源的这个项目，藏着什么黑科技？」
+5. **效率诱惑**：「用了这个 XX 工具，效率直接翻 10 倍」
+6. **权威背书**：「XX 大厂出品！这个开源项目太能打了」
+
+## 硬性要求
+- 字数：15-22 汉字（≤64 字节）
+- **必须体现项目核心功能或价值**
+- 使用口语化表达，避免生硬技术术语
+- 可适当使用「！」增加情绪感染力
+- 禁止使用「震惊」「竟然」等低质词汇`;
+  }
+  
   return `你是科技新闻标题编辑，撰写微信公众号标题。
 
 **要求**：
@@ -177,7 +199,20 @@ export const getTitleSystemPrompt = (): string => {
 export const getTitleUserPrompt = ({
   content,
   language = "中文",
-}: SummarizerPromptParams): string => {
+  contentMode,
+}: SummarizerPromptParams & { contentMode?: string }): string => {
+  if (contentMode === "GITHUB_TRENDING") {
+    return `为以下 GitHub 开源项目生成一个吸睛的微信公众号标题（15-22 汉字）。
+
+**项目内容摘要**：
+${content.substring(0, 2000)}
+
+**要求**：
+1. 标题必须体现项目的**核心功能或解决的痛点**
+2. 让普通程序员看到就想点进来
+3. 只返回标题本身，不要任何解释`;
+  }
+  
   return `为以下内容生成${language}新闻标题（≤20 汉字），只返回标题：
 
 ${content}`;
@@ -197,7 +232,7 @@ export const getGithubExtractionSystemPrompt = (): string => {
 4. **严禁保留贡献者图片**：必须删除所有形如「Contributors」、「Authors」部分的头像、列表和相关图片。
 5. **严禁保留 Icon/徽章**：删除所有徽章(Badges)、社交图标、favicon、装饰性图标。
 6. **保留安装部署**：严禁跳过或简化「安装」、「部署」、「使用方法」等实战内容。
-7. **字数控制**：正文字数控制在 1000-1500 字之间，确保内容充实且不冗余。
+7. **字数控制**：正文字数控制在 **1000-1500 字**之间，确保内容充实且不冗余。
 8. **输出格式**：直接输出 JSON。
 
 ## 提取与翻译规则
@@ -207,25 +242,48 @@ export const getGithubExtractionSystemPrompt = (): string => {
 - **翻译质量**：使用专业的技术术语翻译，保持语气客观。
 - **禁止转义**：正文输出必须为原生 Markdown，禁止输出任何转义字符（如 \\n、\\t、\\\" 等），不得用字符串转义来表示换行。
 
+## 图表与流程图（可视化呈现）
+当文中涉及复杂的**技术架构、数据流向、业务流程**时，优先使用图表呈现：
+
+### Mermaid（推荐用于流程、架构）
+\`\`\`mermaid
+graph LR
+  A[开始] --> B{是否成功}
+  B -- 是 --> C[结束]
+  B -- 否 --> D[重试]
+\`\`\`
+
+### PlantUML（推荐用于复杂时序图、类图）
+\`\`\`plantuml
+@startuml
+participant User
+participant System
+User -> System : 发送请求
+System --> User : 返回响应
+@enduml
+\`\`\`
+
 ## 输出格式 (JSON)
 \`\`\`json
-{ "mainContent": "翻译后的中文正文", "imageUrls": ["提取出的重要图片 URL"] }
+{ "mainContent": "翻译后的中文正文（1000-1500字）", "imageUrls": ["提取出的重要图片 URL"] }
 \`\`\``;
 };
 
 export const getGithubExtractionUserPrompt = (content: string): string => {
-  return `请对以下 GitHub README 进行清理和翻译提取：
+  return `请对以下 GitHub README 进行清理和翻译提取（**1000-1500 字**）：
 
 ${content.substring(0, 12000)}
 
 **严格要求（红线）**：
 1. **翻译为中文**：正文必须全部翻译为中文。
-2. **清洗 HTML**：彻底删除所有 HTML 标签，将 <pre> 内容转换为 Markdown 代码块。
-3. **删除文档链接**：彻底删除所有指向 docs.xxx.ai 等外部文档的链接列表和跳转。
-4. **删除贡献者**：彻底删除所有贡献者名单、头像图片、作者列表。
-5. **删除图标**：删除所有徽章、小图标、Icon。
-6. **保留安装部署**：必须保留完整的安装说明和部署步骤。
-7. **直接输出 JSON**。`;
+2. **字数控制**：正文 1000-1500 字，不要太短。
+3. **清洗 HTML**：彻底删除所有 HTML 标签，将 <pre> 内容转换为 Markdown 代码块。
+4. **删除文档链接**：彻底删除所有指向 docs.xxx.ai 等外部文档的链接列表和跳转。
+5. **删除贡献者**：彻底删除所有贡献者名单、头像图片、作者列表。
+6. **删除图标**：删除所有徽章、小图标、Icon。
+7. **保留安装部署**：必须保留完整的安装说明和部署步骤。
+8. **可视化呈现**：如有架构/流程，可使用 Mermaid 或 PlantUML 图表。
+9. **直接输出 JSON**。`;
 };
 
 // ============================================
@@ -336,10 +394,22 @@ ${JSON_OUTPUT_NOTE}
 \`\`\``;
 };
 
-export const getLinkExtractionUserPrompt = (content: string, baseUrl: string): string => {
+export const getLinkExtractionUserPrompt = (content: string, baseUrl: string, usedUrls?: string[]): string => {
+  let usedUrlsHint = "";
+  if (usedUrls && usedUrls.length > 0) {
+    usedUrlsHint = `
+
+**已使用的 URL（必须跳过）**：
+${usedUrls.slice(0, 50).map(url => `- ${url}`).join("\n")}
+${usedUrls.length > 50 ? `\n... 等共 ${usedUrls.length} 条` : ""}
+
+请不要返回以上任何已使用的 URL，选择其他未使用的新闻链接。`;
+  }
+
   return `从 ${baseUrl} 的 Markdown 中提取新闻链接：
 
 ${content.substring(0, 10000)}
+${usedUrlsHint}
 
 请直接输出 JSON result。`;
 };

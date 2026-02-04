@@ -7,6 +7,7 @@ import { ConfigManager } from "@src/utils/config/config-manager.ts";
 import { formatDate } from "@src/utils/common.ts";
 import { HttpClient } from "@src/utils/http/http-client.ts";
 import { AISummarizer } from "@src/modules/summarizer/ai.summarizer.ts";
+import { UrlRegistry } from "@src/utils/url-registry.ts";
 import { Logger } from "@zilla/logger";
 
 const logger = new Logger("fireCrawl-scraper");
@@ -431,8 +432,13 @@ export class FireCrawlScraper implements ContentScraper {
     // 2. 使用 LLM 提取高质量新闻链接
     const homepageMarkdown = homepageResponse.data.markdown || "";
     logger.info(`[FireCrawl] 调用 LLM 从首页提取高质量链接...`);
-    
-    let extractedLinks = await this.summarizer.extractLinks(homepageMarkdown, sourceId).catch(err => {
+
+    // 获取已使用的 URL 列表，让 LLM 跳过这些 URL
+    const urlRegistry = UrlRegistry.getInstance();
+    const usedUrls = urlRegistry.getAllRecords().map(r => r.url);
+    logger.info(`[FireCrawl] 已使用 URL 数量: ${usedUrls.length}，将传递给 LLM 进行排除`);
+
+    let extractedLinks = await this.summarizer.extractLinks(homepageMarkdown, sourceId, usedUrls).catch(err => {
       logger.error(`[FireCrawl] LLM 链接提取失败，回退到普通 HTML 链接提取: ${err.message}`);
       return null;
     });

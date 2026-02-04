@@ -34,16 +34,16 @@ type SourceConfig = Record<NewsPlatform, SourceItem[]>;
 export const techNewsSourceConfigs: SourceConfig = {
   firecrawl: [
     // AI Business - AI 商业新闻
-    { identifier: "https://aibusiness.com/latest-news#close-modal", name: "AI Business", category: "ai-news", maxRecursiveLinks: 3 },
+    { identifier: "https://aibusiness.com/latest-news#close-modal", name: "AI Business", category: "ai-news", maxRecursiveLinks: 1 },
     
     // The Robot Report - 机器人新闻
-    { identifier: "http://therobotreport.com/category/financial/", name: "The Robot Report", category: "robotics-news", maxRecursiveLinks: 3 },
+    { identifier: "http://therobotreport.com/category/financial/", name: "The Robot Report", category: "robotics-news", maxRecursiveLinks: 1 },
     
     // // AI Magazine - AI 杂志（爬取1篇）
-     { identifier: "https://aimagazine.com/news", name: "AI Magazine", category: "ai-news", maxRecursiveLinks: 3 },
+     { identifier: "https://aimagazine.com/news", name: "AI Magazine", category: "ai-news", maxRecursiveLinks: 1 },
      
     // AI News (TechForge) - AI 行业资讯
-    { identifier: "https://www.artificialintelligence-news.com/artificial-intelligence-news/", name: "AI News", category: "ai-news", maxRecursiveLinks: 3 },
+    { identifier: "https://www.artificialintelligence-news.com/artificial-intelligence-news/", name: "AI News", category: "ai-news", maxRecursiveLinks: 1 },
     
      
   ],
@@ -67,20 +67,32 @@ interface DbSource {
 }
 
 /**
+ * Fisher-Yates 洗牌算法，随机打乱数组
+ */
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+/**
  * 获取数据源配置
  * @param mode 内容模式，默认为 TECH_NEWS
- * @param maxArticles 最大文章数（用于动态设置每个源的抓取数量）
+ * @param maxArticles 最大文章数（即需要选择的源数量，每个源固定爬取1篇）
  */
 export const getDataSources = async (mode?: ContentMode, maxArticles?: number): Promise<SourceConfig> => {
   const configManager = ConfigManager.getInstance();
-  
+
   try {
     // 读取配置的内容模式
     const configMode = mode || await configManager.get<ContentMode>("CONTENT_MODE") || "TECH_NEWS";
-    
-    // 获取最大文章数
+
+    // 获取最大文章数（即需要选择的源数量）
     const articleLimit = maxArticles || await configManager.get("ARTICLE_NUM") || 5;
-    
+
     // 根据模式选择基础配置
     let baseSources: SourceConfig;
     if (configMode === "GITHUB_TRENDING") {
@@ -90,22 +102,32 @@ export const getDataSources = async (mode?: ContentMode, maxArticles?: number): 
       baseSources = { firecrawl: [], github: [] };
       logger.info(`使用 ${configMode} 模式，无需基础数据源`);
     } else {
-      baseSources = JSON.parse(JSON.stringify(techNewsSourceConfigs));
-      logger.info("使用科技新闻模式数据源");
-      
-      // 动态设置每个源的抓取数量
-      // 保留源配置中已设置的 maxRecursiveLinks，仅为未配置的源设置默认值
-      if (baseSources.firecrawl && baseSources.firecrawl.length > 0) {
-        const sourceCount = baseSources.firecrawl.length;
-        const defaultLinksPerSource = Math.max(3, Math.ceil(articleLimit / sourceCount)); // 至少 3 篇
-        baseSources.firecrawl.forEach(source => {
-          // 如果源已配置了 maxRecursiveLinks，保留它；否则使用计算值
-          if (!source.maxRecursiveLinks) {
-            source.maxRecursiveLinks = defaultLinksPerSource;
-          }
+      // TECH_NEWS 模式：随机选择 articleLimit 个源，每个源固定爬取 1 篇
+      const allSources = JSON.parse(JSON.stringify(techNewsSourceConfigs)) as SourceConfig;
+      logger.info(`使用科技新闻模式数据源，共 ${allSources.firecrawl.length} 个可用源`);
+
+      if (allSources.firecrawl && allSources.firecrawl.length > 0) {
+        // 随机打乱源列表
+        const shuffledSources = shuffleArray(allSources.firecrawl);
+
+        // 选择 articleLimit 个源（如果源数量不足，则全选）
+        const selectedCount = Math.min(articleLimit, shuffledSources.length);
+        const selectedSources = shuffledSources.slice(0, selectedCount);
+
+        // 确保每个源只爬取 1 篇（maxRecursiveLinks = 1）
+        selectedSources.forEach(source => {
+          source.maxRecursiveLinks = 1;
         });
-        const actualLinksPerSource = baseSources.firecrawl[0].maxRecursiveLinks || defaultLinksPerSource;
-        logger.info(`每个数据源将抓取 ${actualLinksPerSource} 篇文章（共 ${sourceCount} 个源）`);
+
+        baseSources = {
+          firecrawl: selectedSources,
+          github: [],
+        };
+
+        const selectedNames = selectedSources.map(s => s.name || s.identifier).join(", ");
+        logger.info(`随机选择了 ${selectedCount} 个源（每个源爬取1篇）: ${selectedNames}`);
+      } else {
+        baseSources = allSources;
       }
     }
 

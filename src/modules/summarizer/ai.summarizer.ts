@@ -453,16 +453,19 @@ export class AISummarizer implements ContentSummarizer {
         SummarizarSetting.AI_SUMMARIZER_LLM_PROVIDER,
       );
       const llm = await this.llmFactory.getLLMProvider(providerConfig);
+      const contentMode = options?.contentMode;
+      
       const response = await llm.createChatCompletion([
         {
           role: "system",
-          content: getTitleSystemPrompt(),
+          content: getTitleSystemPrompt(contentMode),
         },
         {
           role: "user",
           content: getTitleUserPrompt({
             content,
             language: options?.language,
+            contentMode,
           }),
         },
       ], {
@@ -625,10 +628,14 @@ export class AISummarizer implements ContentSummarizer {
 
   /**
    * 从网页内容中提取新闻链接
+   * @param content 网页 Markdown 内容
+   * @param baseUrl 基础 URL
+   * @param usedUrls 已使用的 URL 列表（LLM 会跳过这些 URL）
    */
   async extractLinks(
     content: string,
     baseUrl: string,
+    usedUrls?: string[],
   ): Promise<{ title: string; url: string }[]> {
     if (!content) {
       return [];
@@ -647,7 +654,7 @@ export class AISummarizer implements ContentSummarizer {
         },
         {
           role: "user",
-          content: getLinkExtractionUserPrompt(content, baseUrl),
+          content: getLinkExtractionUserPrompt(content, baseUrl, usedUrls),
         },
       ], {
         temperature: this.getRecommendedTemperature(providerConfig, 0.1),

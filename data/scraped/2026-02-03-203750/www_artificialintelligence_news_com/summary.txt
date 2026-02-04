@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T12:37:50.838Z
+文件夹: 2026-02-03-203750
+总数量: 3 条
+数据源: www.artificialintelligence-news.com
+
+文章列表:
+------------------
+1. AI use surges at Travelers as call centre roles reduce - AI News
+   来源: https://www.artificialintelligence-news.com/news/travelers-ai-in-contact-centres-two-stage-innovation-strategy/
+   发布时间: 2026/02/03 12:36:39
+   内容长度: 2464 字符
+   图片数量: 1
+
+2. PepsiCo uses AI to rethink how factories are designed and updated
+   来源: https://www.artificialintelligence-news.com/news/pepsico-is-using-ai-to-rethink-how-factories-are-designed-and-updated/
+   发布时间: 2026/02/03 12:36:43
+   内容长度: 2532 字符
+   图片数量: 1
+
+3. China's Hyperscalers Bet Billions on Agentic AI Commerce
+   来源: https://www.artificialintelligence-news.com/news/china-hyperscalers-agentic-ai-commerce-battleground/
+   发布时间: 2026/02/03 12:36:50
+   内容长度: 1215 字符
+   图片数量: 1
+

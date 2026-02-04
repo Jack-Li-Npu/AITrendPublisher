@@ -1,8 +1,26 @@
 {
   "version": "1.0",
-  "updatedAt": "2026-02-03T04:04:33.327Z",
-  "totalCount": 1,
+  "updatedAt": "2026-02-03T13:15:29.602Z",
+  "totalCount": 3,
   "projects": [
+    {
+      "fullName": "masoncl/review-prompts",
+      "url": "https://github.com/masoncl/review-prompts",
+      "firstScrapedAt": "2026-02-03T13:05:18.930Z",
+      "lastScrapedAt": "2026-02-03T13:05:18.930Z",
+      "scrapeCount": 1,
+      "stars": 217,
+      "description": "AI review prompts"
+    },
+    {
+      "fullName": "openai/skills",
+      "url": "https://github.com/openai/skills",
+      "firstScrapedAt": "2026-02-03T13:15:29.593Z",
+      "lastScrapedAt": "2026-02-03T13:15:29.593Z",
+      "scrapeCount": 1,
+      "stars": 2707,
+      "description": "Skills Catalog for Codex"
+    },
     {
       "fullName": "thedotmack/claude-mem",
       "url": "https://github.com/thedotmack/claude-mem",

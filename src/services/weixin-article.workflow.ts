@@ -672,23 +672,31 @@ export class WeixinArticleWorkflow
 
           // 等待文章生成完毕后确定主标题
           logger.info("[标题生成] 文章生成完毕，开始确定主标题");
-          
+
           let generatedTitle = "";
-          // SINGLE_URL 转载模式：直接使用文章标题「转载某某人（作者）」
+          // SINGLE_URL 转载模式：直接使用文章标题
           if (contentMode === "SINGLE_URL" && processedContents.length > 0) {
             generatedTitle = processedContents[0].title;
             logger.info(`[标题生成] SINGLE_URL 转载模式，使用标题: ${generatedTitle}`);
           } else if (processedContents.length > 0) {
-            // 从第一篇文章中提取第一个 ### 标题
-            const firstArticle = processedContents[0];
-            const headingMatch = firstArticle.content.match(/^###\s+(.+)$/m);
-            
-            if (headingMatch && headingMatch[1]) {
-              generatedTitle = headingMatch[1].trim();
-              logger.info(`[标题生成] 从第一篇文章提取到标题: ${generatedTitle}`);
-            } else {
-              generatedTitle = firstArticle.title;
-              logger.warn(`[标题生成] 未找到 ### 标题，使用文章标题: ${generatedTitle}`);
+            // 使用 LLM 生成标题（基于第一篇文章内容）
+            try {
+              const firstArticle = processedContents[0];
+              // 取第一篇文章的前2000字符作为生成标题的依据
+              const contentForTitle = firstArticle.content.substring(0, 2000);
+              generatedTitle = await this.summarizer.generateTitle(contentForTitle, { contentMode });
+              logger.info(`[标题生成] LLM 生成标题成功: ${generatedTitle}`);
+            } catch (titleError) {
+              // LLM 生成失败时，回退到从文章中提取标题
+              logger.warn(`[标题生成] LLM 生成标题失败，回退到提取模式: ${titleError instanceof Error ? titleError.message : String(titleError)}`);
+              const firstArticle = processedContents[0];
+              const headingMatch = firstArticle.content.match(/^###\s+(.+)$/m);
+              if (headingMatch && headingMatch[1]) {
+                generatedTitle = headingMatch[1].trim();
+              } else {
+                generatedTitle = firstArticle.title;
+              }
+              logger.info(`[标题生成] 回退后使用标题: ${generatedTitle}`);
             }
           } else {
             generatedTitle = "AI 科技速递";

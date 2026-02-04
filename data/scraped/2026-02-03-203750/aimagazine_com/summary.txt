@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T12:37:50.830Z
+文件夹: 2026-02-03-203750
+总数量: 3 条
+数据源: aimagazine.com
+
+文章列表:
+------------------
+1. IBM: Where Will AI Contribute to Revenue Growth? | AI Magazine
+   来源: https://aimagazine.com/news/australian-open-how-infosys-transforms-sports-with-ai
+   发布时间: 2026/02/03 12:35:32
+   内容长度: 2571 字符
+   图片数量: 6
+
+2. Inside Tesla's US$20bn CapEx Shift to AI, Robots and Energy | AI Magazine
+   来源: https://aimagazine.com/news/tesla-20bn-shift-to-ai-robots-energy
+   发布时间: 2026/02/03 12:35:35
+   内容长度: 2732 字符
+   图片数量: 5
+
+3. How Mustafa Suleyman Became an Era-Defining AI Leader | AI Magazine
+   来源: https://aimagazine.com/news/how-microsoft-ai-data-is-driving-speed-for-mercedes-f1
+   发布时间: 2026/02/03 12:36:00
+   内容长度: 2889 字符
+   图片数量: 7
+

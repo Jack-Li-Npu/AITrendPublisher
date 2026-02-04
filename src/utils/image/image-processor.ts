@@ -907,8 +907,26 @@ export class WeixinImageProcessor {
         
         const mermaidInkUrl = `https://mermaid.ink/img/${base64Code}`;
         
-        const response = await fetch(mermaidInkUrl);
-        if (!response.ok) throw new Error(`Mermaid 获取失败: ${response.status}`);
+        // 添加重试机制 (最多 3 次)
+        let response: Response | null = null;
+        let lastError: Error | null = null;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            response = await fetch(mermaidInkUrl);
+            if (response.ok) break;
+            lastError = new Error(`Mermaid 获取失败: ${response.status}`);
+            logger.warn(`Mermaid 请求失败 (尝试 ${attempt}/3): ${response.status}`);
+            if (attempt < 3) await new Promise(r => setTimeout(r, 2000 * attempt)); // 指数退避
+          } catch (fetchErr) {
+            lastError = fetchErr instanceof Error ? fetchErr : new Error(String(fetchErr));
+            logger.warn(`Mermaid 网络错误 (尝试 ${attempt}/3): ${lastError.message}`);
+            if (attempt < 3) await new Promise(r => setTimeout(r, 2000 * attempt));
+          }
+        }
+        
+        if (!response || !response.ok) {
+          throw lastError || new Error("Mermaid 请求失败");
+        }
         
         const buffer = new Uint8Array(await response.arrayBuffer());
         const pngBuffer = await this.compressImage(buffer);
@@ -917,7 +935,10 @@ export class WeixinImageProcessor {
         processedContent = processedContent.replace(item.full, `<img src="${weixinUrl}" style="max-width: 100%; margin: 10px 0;" />`);
         results.push({ originalUrl: "mermaid", newUrl: weixinUrl });
       } catch (error) {
-        logger.error(`Mermaid 处理失败:`, error);
+        logger.error(`Mermaid 处理失败，降级为代码块:`, error);
+        // 降级：将 Mermaid 图表替换为代码块展示
+        const fallbackCodeBlock = `<pre style="background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 12px;"><code>${item.code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
+        processedContent = processedContent.replace(item.full, fallbackCodeBlock);
       }
     }
 

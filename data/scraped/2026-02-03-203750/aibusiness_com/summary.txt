@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T12:37:50.819Z
+文件夹: 2026-02-03-203750
+总数量: 3 条
+数据源: aibusiness.com
+
+文章列表:
+------------------
+1. New York Robotics Consortium Launches with 160 Startups
+   来源: https://aibusiness.com/robotics/new-york-robotics-consortium-launches-160-startups
+   发布时间: 2026/02/03 12:33:43
+   内容长度: 1193 字符
+   图片数量: 5
+
+2. Apple Acquires Israeli Startup Q.AI
+   来源: https://aibusiness.com/consumer-tech/apple-acquires-israeli-startup-qai
+   发布时间: 2026/02/03 12:33:51
+   内容长度: 1038 字符
+   图片数量: 5
+
+3. Google DeepMind Introduces Agentic Vision to Gemini 3 Flash
+   来源: https://aibusiness.com/image-recognition/google-deepmind-agentic-vision-gemini-3-flash
+   发布时间: 2026/02/03 12:33:59
+   内容长度: 1004 字符
+   图片数量: 5
+

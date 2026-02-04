@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-03T13:16:09.883Z",
+  "totalCount": 1,
+  "projects": [
+    {
+      "fullName": "openai/skills",
+      "url": "https://github.com/openai/skills",
+      "title": "openai/skills",
+      "stars": 2707,
+      "description": "Skills Catalog for Codex",
+      "scrapedAt": "2026-02-03",
+      "contentId": "github_openai_skills_1770124529089",
+      "imageCount": 0
+    }
+  ],
+  "indexByFullName": {
+    "openai/skills": 0
+  },
+  "indexByUrl": {
+    "https://github.com/openai/skills": 0
+  }
+}

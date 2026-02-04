@@ -1,0 +1,28 @@
+爬取数据摘要
+==================
+
+时间戳: 2026-02-03T12:37:50.825Z
+文件夹: 2026-02-03-203750
+总数量: 3 条
+数据源: www.therobotreport.com
+
+文章列表:
+------------------
+1. Vention raises $110M to accelerate physical AI deployments in manufacturing - The Robot Report
+   来源: https://www.therobotreport.com/vention-raises-110m-to-accelerate-physical-ai-deployments-in-manufacturing/
+   发布时间: 2026/02/03 12:34:39
+   内容长度: 2040 字符
+   图片数量: 1
+
+2. State of robotics industry report 2026
+   来源: https://www.therobotreport.com/state-of-robotics-industry-report-2026/
+   发布时间: 2026/02/03 12:34:50
+   内容长度: 700 字符
+   图片数量: 1
+
+3. Hadrian raises funding for automated manufacturing, bringing valuation to $1.6B - The Robot Report
+   来源: https://www.therobotreport.com/hadrian-brings-in-additional-funding-bringing-its-valuation-to-1-6b/
+   发布时间: 2026/02/03 12:34:59
+   内容长度: 973 字符
+   图片数量: 0
+
