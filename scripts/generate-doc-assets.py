@@ -69,3 +69,51 @@ body += rect(40, 331, 1116, 49, '#e2eeec', 10)
 body += text(60, 361, 'UI: review before draft upload  ·  Deno + TypeScript  ·  Local-first  ·  Scheduled runs are opt-in', 16, '#365d59')
 (OUT / 'workflow.svg').write_text(svg(412, 'Discover, prepare, edit, and create a WeChat draft', body))
 print('Generated hero.svg and workflow.svg')
+
+# Localized copies preserve the same composition; only visible labels change.
+translations = {
+    'hero': {
+        'AITrendPublisher — From signal to story': 'AITrendPublisher：从技术线索到好文章',
+        'THE LOCAL PUBLISHING DESK': '你的本地采编工作台',
+        'From signal': '从技术线索',
+        'to story.': '到好文章。',
+        'AI news. Open-source discoveries.': '发现 AI 资讯，读懂开源项目。',
+        'Articles with an editor in the loop.': 'AI 整理素材，由你把关文章。',
+        'DISCOVER  /  DRAFT  /  REFINE  /  WECHAT DRAFT BOX': '发现素材  /  整理文章  /  编辑润色  /  微信草稿箱',
+        'YOUR NEXT ARTICLE': '你的下一篇文章',
+        'EDITOR REVIEW': '等待编辑审核',
+        'A discovery worth sharing': '一个值得分享的新发现',
+        'Clear context. Your perspective.': '交代清楚背景，写出你的观点。',
+        'Send to draft box  →': '上传至草稿箱  →',
+        'You decide when.': '由你决定何时发送',
+        'WORKFLOW ILLUSTRATION': '流程示意图',
+    },
+    'workflow': {
+        'Discover, prepare, edit, and create a WeChat draft': '发现素材、整理文章、编辑审核、上传微信草稿箱',
+        'ONE ARTICLE. FOUR CLEAR STEPS.': '一篇文章，四个清晰步骤。',
+        'A publishing workflow you can follow': '从素材到草稿，每一步都看得见',
+        'Find the signal': '发现值得写的内容',
+        'News sites': '科技新闻网站',
+        'GitHub Trending + README': 'GitHub 热门项目与 README',
+        'Prepare a draft': '整理出文章初稿',
+        'Mode-specific processing': '根据内容模式处理素材',
+        'Text + image providers': '调用文本与图片服务',
+        'Make it yours': '改成自己的表达',
+        'Markdown + preview': 'Markdown 编辑与预览',
+        'Review, edit, refine': '阅读、修改、润色',
+        'Create a draft': '交付到微信草稿箱',
+        'WeChat draft box': '创建公众号草稿',
+        'Send from WeChat later': '在微信后台完成发送',
+        'UI: review before draft upload  ·  Deno + TypeScript  ·  Local-first  ·  Scheduled runs are opt-in': '界面流程：审核后上传草稿  ·  Deno + TypeScript  ·  本地运行  ·  定时任务需显式开启',
+    },
+}
+for name, labels in translations.items():
+    localized = (OUT / f'{name}.svg').read_text()
+    for source, translation in labels.items():
+        needle = f'>{escape(source)}<'
+        assert needle in localized, f'Missing illustration label: {source}'
+        localized = localized.replace(needle, f'>{escape(translation)}<')
+    localized = localized.replace('Arial, Helvetica, sans-serif',
+                                  'Arial, Helvetica, PingFang SC, Microsoft YaHei, sans-serif')
+    (OUT / f'{name}.zh-CN.svg').write_text(localized)
+print('Generated hero.zh-CN.svg and workflow.zh-CN.svg')

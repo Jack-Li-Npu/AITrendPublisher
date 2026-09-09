@@ -1,5 +1,7 @@
 # Verification notes
 
+**English** | [简体中文](VERIFICATION.zh-CN.md) · [All guides](README.md) · [Project introduction](../README.md)
+
 Verified on 2026-09-09 with Deno 2.6.4, V8 14.2, and TypeScript 5.9.2 on macOS ARM64.
 
 ## Passing checks
@@ -17,7 +19,7 @@ The two demo tests cover initial empty state, mode-specific sample selection, in
 
 Browser verification uses the real control panel served by `deno task --config demo.json demo`: sample preview, opening the Markdown editor, editing text, and saving the updated article preview, reopening the editor with the saved text retained, and confirming that attempted WeChat upload shows a demo-only refusal. Screenshots use hand-authored samples and the demo renderer.
 
-Documentation SVGs parse successfully, and relative documentation links and image paths are checked before submission. `scripts/generate-doc-assets.py` regenerates the two SVG illustrations.
+Documentation SVGs parse successfully, and relative documentation links and image paths are checked before submission. `scripts/generate-doc-assets.py` regenerates the documentation illustrations.
 
 ## Main application baseline
 
@@ -31,6 +33,10 @@ Examples of existing issues:
 - Additional renderer/provider/workflow typing issues remain in the production module graph.
 
 These errors require a separate production-code cleanup with suitable integration fixtures. They do not prevent the isolated demo from type checking and running.
+
+## Bilingual documentation checks
+
+English and Chinese guides offer a language switch to the same topic. Checks cover documentation links, heading anchors, image paths, Chinese SVG parsing, and matching key commands/configuration names across languages. App controls retain their actual Chinese labels with explanations for English readers. This documentation update does not change production application code; the 70-error count above is the previously recorded baseline.
 
 ## Not verified here
 

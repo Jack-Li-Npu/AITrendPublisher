@@ -1,3 +1,5 @@
+<p align="center"><strong>English</strong> | <a href="README.zh-CN.md">简体中文</a></p>
+
 <div align="center">
 
 <img src="docs/assets/hero.svg" alt="AITrendPublisher — From signal to story. Discover, draft, refine, and send to the WeChat draft box." width="100%">
@@ -8,7 +10,7 @@
 
 Deno · TypeScript · Markdown · WeChat Official Accounts
 
-[中文介绍](README.zh-CN.md) · [Try the demo](#try-it-before-configuring-anything) · [Setup guide](docs/GETTING_STARTED.md) · [Architecture](docs/ARCHITECTURE.md)
+[Documentation / 文档导航](docs/README.md) · [Try the demo](#try-it-before-configuring-anything) · [Setup guide](docs/GETTING_STARTED.md) · [Architecture](docs/ARCHITECTURE.md)
 
 </div>
 
@@ -17,6 +19,12 @@ You find an interesting project. Then come the tabs, notes, translation, formatt
 The application calls itself **TrendPublish** in the interface. `AITrendPublisher` is the repository name; `WX_Publisher` is an older local folder name for the same codebase.
 
 > **What “publish” means:** the implemented WeChat publisher creates a **draft**. Review and send the article from the WeChat Official Account backend. This project does not automatically broadcast it to subscribers.
+
+## Who is it for?
+
+For editors, developers, and newsletter writers who want to turn technology sources into an article they can review. **WeChat Official Accounts** are publishing accounts inside WeChat; the current delivery adapter sends an article to their draft box. You can explore the demo without a WeChat account, but a real publishing run currently requires one.
+
+**Language support:** these project guides are available in English and Simplified Chinese. The application interface and demo article are currently in Chinese, and the existing writing prompts primarily target Chinese articles. English documentation does not imply an English UI or automatic support for every output language. The [English UI label guide](docs/DEMO.md#find-your-way-around-the-chinese-interface) helps you follow the screenshots and controls.
 
 ## See the workflow
 
@@ -36,7 +44,7 @@ Preview the assembled article, try a template, and check its structure before up
 
 ### 3. Make it sound like you
 
-Open **再改改** to edit the full Markdown beside its preview. The live application also offers model-assisted rewriting; the demo supports manual editing and blocks AI calls.
+Open **再改改 (Edit / refine)** to edit the full Markdown beside its preview. The live application also offers model-assisted rewriting; the demo supports manual editing and blocks AI calls.
 
 ![The real Markdown editor with sample content and a side-by-side preview](docs/assets/markdown-editor.png)
 
@@ -44,13 +52,15 @@ Open **再改改** to edit the full Markdown beside its preview. The live applic
 
 ## Try it before configuring anything
 
-Install [Deno 2](https://docs.deno.com/runtime/getting_started/installation/), then run from the project root:
+Install [Deno 2](https://docs.deno.com/runtime/getting_started/installation/), then clone the public repository and start the demo:
 
 ```bash
+git clone https://github.com/Jack-Li-Npu/AITrendPublisher.git
+cd AITrendPublisher
 deno task --config demo.json demo
 ```
 
-Open **http://127.0.0.1:8001**. Choose a mode → **开始运行任务** → **再改改** → edit Markdown → **保存修改**.
+Open **http://127.0.0.1:8001**. Choose a mode → **开始运行任务 (Run task)** → **再改改 (Edit / refine)** → edit Markdown → **保存修改 (Save changes)**.
 
 - No `.env`, API keys, database, or backend dependency installation needed.
 - Demo changes live in memory and disappear when the demo server stops.
@@ -70,7 +80,7 @@ deno install --allow-scripts
 deno task start
 ```
 
-Windows: use `Copy-Item .env.example .env` in PowerShell. The repository also includes `setup.ps1`, `setup.bat`, `setup.sh`, `start.bat`, and `start.sh`.
+If you already cloned the repository for the demo, continue in that directory and skip the clone commands. Windows: use `Copy-Item .env.example .env` in PowerShell. The repository also includes `setup.ps1`, `setup.bat`, `setup.sh`, `start.bat`, and `start.sh`.
 
 The live panel opens at **http://127.0.0.1:8000**. Start with the demo if you only want to understand the project. A real run needs model credentials and currently checks WeChat credentials/IP access even when `previewOnly` is set. Technology news additionally uses Firecrawl; cover generation requires its own provider configuration.
 
@@ -93,7 +103,7 @@ The live panel opens at **http://127.0.0.1:8000**. Start with the demo if you on
 | Storage | Local article/source files and registries; optional MySQL + Drizzle/vector support |
 | Scheduling | Opt-in daily workflow at 03:00 Asia/Shanghai; scheduled runs can create drafts without the UI review step |
 
-## Remembering the framework
+## How it is built
 
 This is a **single-process Deno application with a plain HTML/JavaScript frontend**. There is no React or Next.js build step. The page talks to a Deno HTTP server using JSON-RPC and receives logs through Server-Sent Events.
 

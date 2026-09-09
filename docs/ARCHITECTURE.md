@@ -1,6 +1,6 @@
 # Architecture and code tour
 
-[Back to the introduction](../README.md)
+**English** | [简体中文](ARCHITECTURE.zh-CN.md) · [All guides](README.md) · [Project introduction](../README.md)
 
 ## The project in one minute
 

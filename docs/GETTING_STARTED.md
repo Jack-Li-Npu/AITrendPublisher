@@ -1,6 +1,6 @@
 # Getting started
 
-[Back to the introduction](../README.md) · [中文介绍](../README.zh-CN.md)
+**English** | [简体中文](GETTING_STARTED.zh-CN.md) · [All guides](README.md) · [Project introduction](../README.md)
 
 ## Choose your first run
 
@@ -17,7 +17,7 @@ The demo listens at `http://127.0.0.1:8001`; the live app listens at `http://127
 ## Install
 
 1. Install Deno 2 using the [official installation guide](https://docs.deno.com/runtime/getting_started/installation/). Verify with `deno --version`.
-2. Clone the repository and open its directory. If GitHub returns 404, check the repository URL and sign in with an account that has access.
+2. Clone the public repository with `git clone https://github.com/Jack-Li-Npu/AITrendPublisher.git`, then run `cd AITrendPublisher`.
 3. For the demo, run `deno task --config demo.json demo` immediately. It uses a separate entry point without loading the production backend or `.env`.
 4. For a real run, install dependencies and create your configuration:
 
@@ -59,14 +59,20 @@ Gemini covers use `GEMINI` or `GEMINI_PRO` plus the matching Gemini settings. `T
 
 The configuration center can edit provider and WeChat settings. It persists credentials in `.env`, so use it only on your trusted local machine. Some model names in its menus may be old; edit `.env` when you need a different supported model.
 
+## Interface and language
+
+The documentation supports English and Simplified Chinese. The current control panel and sample article are Chinese. See the [UI label guide](DEMO.md#find-your-way-around-the-chinese-interface) for matching English meanings. A WeChat Official Account is the destination publishing account; a normal personal WeChat login alone is not the API configuration described below. You do not need either for the demo.
+
+The existing article prompts primarily target Chinese writing. Adjusting the output language is a separate prompt/configuration task, not a documentation language switch.
+
 ## First real article
 
 1. Ensure the WeChat Official Account can use the required image/material and draft APIs. Configure its IP allowlist for the machine's outgoing IP.
 2. Run `deno task start` from the project root. The live app attempts to open the browser automatically; `CI=true` suppresses browser opening.
 3. Open `http://127.0.0.1:8000` and select a visible content mode. Start with one article. GitHub Trending already fixes the UI to one project.
-4. Click **开始运行任务** and follow the live logs. A successful trigger response means the workflow was accepted, not that an article has finished.
-5. Read the preview. Open **再改改**, edit Markdown or use AI refinement, and click **保存修改**.
-6. Click **上传至微信草稿箱** only when ready. Review the resulting draft in the WeChat Official Account backend, then send it there.
+4. Click **开始运行任务 (Run task)** and follow the live logs. A successful trigger response means the workflow was accepted, not that an article has finished.
+5. Read the preview. Open **再改改 (Edit / refine)**, edit Markdown or use AI refinement, and click **保存修改 (Save changes)**.
+6. Click **上传至微信草稿箱 (Upload to WeChat drafts)** only when ready. Review the resulting draft in the WeChat Official Account backend, then send it there.
 
 `previewOnly=true` skips the final draft-creation step; it does **not** make the production workflow side-effect-free. The workflow currently validates WeChat access and may upload a generated cover before returning the preview. Use `deno task --config demo.json demo` for an experience with no provider or publishing calls.
 
