@@ -1,0 +1,8 @@
+{
+  "nodeModulesDir": "none",
+  "lock": false,
+  "tasks": {
+    "demo": "deno run --no-config --allow-read=public/index.html --allow-net=127.0.0.1:8001 scripts/demo.ts",
+    "test": "deno test --no-config scripts/demo_test.ts"
+  }
+}

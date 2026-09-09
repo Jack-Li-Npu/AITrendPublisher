@@ -1,108 +1,124 @@
-# TrendPublish
+<div align="center">
 
-AI 趋势发现和内容发布系统，支持多源数据采集、智能总结和自动发布到微信公众号。
+<img src="docs/assets/hero.svg" alt="AITrendPublisher — From signal to story. Discover, draft, refine, and send to the WeChat draft box." width="100%">
 
-## 快速开始
+# AITrendPublisher
 
-### 一键配置环境
+**Turn AI news and GitHub discoveries into articles you can edit and send to WeChat.**
 
-**Windows (PowerShell):**
-```powershell
-.\setup.ps1
-```
-或双击 `setup.bat`
+Deno · TypeScript · Markdown · WeChat Official Accounts
 
-**macOS / Linux:**
-```bash
-./setup.sh
-```
+[中文介绍](README.zh-CN.md) · [Try the demo](#try-it-before-configuring-anything) · [Setup guide](docs/GETTING_STARTED.md) · [Architecture](docs/ARCHITECTURE.md)
 
-### 一键启动
+</div>
 
-**Windows:**
-```cmd
-start.bat
-```
-或双击 `start.bat`
+You find an interesting project. Then come the tabs, notes, translation, formatting, image handling, and copying into WeChat. **AITrendPublisher brings those steps into one local publishing workbench.** Choose a source, prepare an article, refine the Markdown, and review its layout before creating a WeChat draft.
 
-**macOS / Linux:**
-```bash
-./start.sh
-```
+The application calls itself **TrendPublish** in the interface. `AITrendPublisher` is the repository name; `WX_Publisher` is an older local folder name for the same codebase.
 
-**或使用 Deno 命令:**
-```bash
-deno task start
-```
+> **What “publish” means:** the implemented WeChat publisher creates a **draft**. Review and send the article from the WeChat Official Account backend. This project does not automatically broadcast it to subscribers.
 
-启动后自动打开浏览器访问控制面板: http://localhost:8000
+## See the workflow
 
----
+<img src="docs/assets/workflow.svg" alt="News or GitHub README flows through collection, article preparation, Markdown review, and WeChat draft upload. The editor reviews the article before the UI upload step." width="100%">
 
-## 手动安装
+### 1. Choose what to cover
 
-如果一键脚本无法使用，可手动安装：
+Switch between technology news and GitHub Trending. Set the article count and writing length for news, then follow progress in the live log panel. GitHub mode focuses on one project in the current UI.
 
-### 1. 安装 Deno
+![Real control panel running against the demo backend](docs/assets/dashboard.png)
 
-**Windows (PowerShell):**
-```powershell
-irm https://deno.land/install.ps1 | iex
-```
+### 2. Read it as an article
 
-**macOS / Linux:**
-```bash
-curl -fsSL https://deno.land/install.sh | sh
-```
+Preview the assembled article, try a template, and check its structure before uploading. The demo supplies a clearly labeled sample so you can explore immediately.
 
-### 2. 安装依赖
+![Article preview with an explicitly labeled sample](docs/assets/article-preview.png)
+
+### 3. Make it sound like you
+
+Open **再改改** to edit the full Markdown beside its preview. The live application also offers model-assisted rewriting; the demo supports manual editing and blocks AI calls.
+
+![The real Markdown editor with sample content and a side-by-side preview](docs/assets/markdown-editor.png)
+
+*Screenshots show the actual control panel with a fixture backend. Sample text is hand-authored, and demo HTML uses a simplified renderer. These are not evidence of a live scrape, model response, or successful WeChat upload.*
+
+## Try it before configuring anything
+
+Install [Deno 2](https://docs.deno.com/runtime/getting_started/installation/), then run from the project root:
 
 ```bash
+deno task --config demo.json demo
+```
+
+Open **http://127.0.0.1:8001**. Choose a mode → **开始运行任务** → **再改改** → edit Markdown → **保存修改**.
+
+- No `.env`, API keys, database, or backend dependency installation needed.
+- Demo changes live in memory and disappear when the demo server stops.
+- Configuration saving, AI rewriting, and WeChat uploading return explicit demo-only messages.
+- The existing UI loads styles, icons, and Mermaid from public CDNs, so browser internet access is still needed.
+
+[Follow the demo walkthrough →](docs/DEMO.md)
+
+## Run with your own sources and models
+
+```bash
+git clone https://github.com/Jack-Li-Npu/AITrendPublisher.git
+cd AITrendPublisher
+cp .env.example .env
 deno install --allow-scripts
-```
-
-### 3. 配置环境变量
-
-```bash
-cp .env.template .env
-# 编辑 .env 文件，填入你的 API 密钥
-```
-
-### 4. 启动
-
-```bash
+# Fill in your provider credentials and WeChat configuration in .env.
 deno task start
 ```
 
----
+Windows: use `Copy-Item .env.example .env` in PowerShell. The repository also includes `setup.ps1`, `setup.bat`, `setup.sh`, `start.bat`, and `start.sh`.
 
-## 配置说明
+The live panel opens at **http://127.0.0.1:8000**. Start with the demo if you only want to understand the project. A real run needs model credentials and currently checks WeChat credentials/IP access even when `previewOnly` is set. Technology news additionally uses Firecrawl; cover generation requires its own provider configuration.
 
-编辑 `.env` 文件配置以下内容：
+**First-run defaults:** the live server binds to loopback, the database is optional, and scheduled jobs are off unless `ENABLE_CRON=true`. Existing installations that need the daily schedule must explicitly opt in.
 
-| 配置项 | 说明 | 示例 |
-|--------|------|------|
-| `DEFAULT_LLM_PROVIDER` | 默认 AI 模型 | `DEEPSEEK` |
-| `DEEPSEEK_API_KEY` | DeepSeek API 密钥 | `sk-xxx` |
-| `WEIXIN_APP_ID` | 微信公众号 AppID | `wx123456` |
-| `WEIXIN_APP_SECRET` | 微信公众号密钥 | `xxxxx` |
-| `CONTENT_MODE` | 内容模式 | `AI_NEWS_SITE` |
+[Provider settings, prerequisites, troubleshooting, and scheduling →](docs/GETTING_STARTED.md)
 
-详细配置参考 `.env.template` 文件。
+## What is implemented?
 
----
+| Capability | Current behavior |
+| --- | --- |
+| Technology news | Multiple configured sources, fetched through Firecrawl; visible in the UI |
+| GitHub Trending | Trending discovery and README retrieval; visible in the UI; some processing uses README content directly |
+| AI news website | Direct news-site scraper; backend mode `AI_NEWS_SITE` |
+| Single URL / topic search | Backend branches `SINGLE_URL` / `TOPIC_SEARCH`; their UI controls are currently commented out |
+| Article preparation | Mode-dependent translation, summaries, titles, introductions, and image handling |
+| Model adapters | DeepSeek, Gemini, OpenAI-compatible providers, Qwen, Claude, and Xunfei adapters exist; availability depends on configured endpoints/models |
+| Editing and layout | Full Markdown editing, live preview, model-assisted refinement, and Doocs-derived rendering |
+| Delivery | Image upload and WeChat draft creation; final sending happens in WeChat |
+| Storage | Local article/source files and registries; optional MySQL + Drizzle/vector support |
+| Scheduling | Opt-in daily workflow at 03:00 Asia/Shanghai; scheduled runs can create drafts without the UI review step |
 
-## 功能特性
+## Remembering the framework
 
-- 多源数据采集 (AI 新闻、GitHub Trending、网页抓取)
-- 多 AI 模型支持 (DeepSeek, Gemini, OpenAI, 通义千问)
-- 智能内容总结与排序
-- 微信公众号自动发布
-- 图形化控制面板
-- 实时日志监控
+This is a **single-process Deno application with a plain HTML/JavaScript frontend**. There is no React or Next.js build step. The page talks to a Deno HTTP server using JSON-RPC and receives logs through Server-Sent Events.
 
----
+```text
+public/index.html               Control panel, Markdown editor, preview
+        │ JSON-RPC + SSE
+src/server.ts                   HTTP routes and log stream
+        │
+src/controllers/                UI actions, workflow trigger, cron
+        │
+src/services/weixin-article.workflow.ts
+        ├── modules/scrapers/   News, GitHub, Firecrawl
+        ├── providers/llm/      Model adapters
+        ├── modules/render/    Markdown → article HTML
+        └── modules/publishers/ WeChat images + drafts
+```
 
-## 许可证
+[Read the architecture map and “where do I change X?” guide →](docs/ARCHITECTURE.md)
 
-MIT License
+## Project status
+
+This is a local publishing tool under development. The demo has automated checks for editing, HTML escaping, blocked external actions, and file exposure. The main application still has pre-existing TypeScript errors; see [verification notes](docs/VERIFICATION.md). Live provider calls and WeChat draft creation need a configured account and were not exercised for these screenshots.
+
+The preview is held in memory, source sites can change, and the application is intended for one trusted local operator. Keep the live panel on loopback; its configuration API handles credentials. Generated content and `.env` are excluded from new commits.
+
+## License and acknowledgments
+
+[MIT](LICENSE). The article renderer includes code derived from [Doocs MD](https://github.com/doocs/md), alongside the open-source dependencies listed in [deno.json](deno.json).

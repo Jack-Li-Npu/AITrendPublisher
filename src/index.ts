@@ -16,7 +16,9 @@ async function bootstrap() {
   Logger.level = LogLevel.INFO;
 
   // 2. 启动服务
-  startCronJobs();
+  if (Deno.env.get("ENABLE_CRON") === "true") {
+    startCronJobs();
+  }
   startServer(8000);
 
   // 3. 自动打开浏览器 (仅在非 CI 环境下)

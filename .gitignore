@@ -47,3 +47,6 @@ temp/
 tmp/
 *.tmp
 *.bak
+# Generated articles, source caches, and submission bundles
+data/
+artifacts/

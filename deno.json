@@ -2,7 +2,9 @@
   "nodeModulesDir": "auto",
   "npmRegistry": "https://registry.npmjs.org/",
   "tasks": {
-    "start": "deno run -A --env-file=.env src/index.ts"
+    "start": "deno run -A --env-file=.env src/index.ts",
+    "demo": "deno run --no-config --allow-read=public/index.html --allow-net=127.0.0.1:8001 scripts/demo.ts",
+    "test:demo": "deno test --no-config scripts/demo_test.ts"
   },
   "imports": {
     "@deno-library/progress": "jsr:@deno-library/progress@^1.5.1",

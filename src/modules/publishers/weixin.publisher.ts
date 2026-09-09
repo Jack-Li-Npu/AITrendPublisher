@@ -29,10 +29,6 @@ export class WeixinPublisher implements ContentPublisher {
   async refresh(): Promise<void> {
     this.appId = await ConfigManager.getInstance().get("WEIXIN_APP_ID");
     this.appSecret = await ConfigManager.getInstance().get("WEIXIN_APP_SECRET");
-    logger.debug("微信公众号配置:", {
-      appId: this.appId,
-      appSecret: this.appSecret,
-    });
   }
 
   private async ensureAccessToken(forceRefresh = false): Promise<string> {

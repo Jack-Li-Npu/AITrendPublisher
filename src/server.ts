@@ -217,7 +217,7 @@ const handler = async (req: Request): Promise<Response> => {
 };
 
 export default function startServer(port = 8000) {
-  Deno.serve({ port }, handler);
+  Deno.serve({ hostname: "127.0.0.1", port }, handler);
   console.log(`TrendPublish UI 控制面板已运行: http://localhost:${port}`);
   console.log("双击 TrendPublish.exe 即可直接在此界面配置和运行");
 }

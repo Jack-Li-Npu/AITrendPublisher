@@ -10,7 +10,6 @@ const logger = new Logger("DB");
 logger.info("DB_HOST", Deno.env.get("DB_HOST"));
 logger.info("DB_PORT", Deno.env.get("DB_PORT"));
 logger.info("DB_USER", Deno.env.get("DB_USER"));
-logger.info("DB_PASSWORD", Deno.env.get("DB_PASSWORD"));
 logger.info("DB_DATABASE", Deno.env.get("DB_DATABASE"));
 
 const poolConnection = mysql.createPool({
